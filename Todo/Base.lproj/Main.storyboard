@@ -15,16 +15,16 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="bUB-UN-4Ry" kind="relationship" relationship="viewControllers" id="fIx-dS-nnU"/>
                         <segue destination="5OE-b2-v5n" kind="relationship" relationship="viewControllers" id="sgR-qV-mcR"/>
                         <segue destination="iO7-qK-oqj" kind="relationship" relationship="viewControllers" id="T9D-7d-rRI"/>
-                        <segue destination="bUB-UN-4Ry" kind="relationship" relationship="viewControllers" id="fIx-dS-nnU"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-48" y="0.0"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Days-->
         <scene sceneID="lzM-Bt-Aye">
             <objects>
                 <tableViewController clearsSelectionOnViewWillAppear="NO" id="IUR-T3-jgF" sceneMemberID="viewController">
@@ -53,7 +53,7 @@
                             <outlet property="delegate" destination="IUR-T3-jgF" id="x59-1L-k2y"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="EJA-cK-V3i"/>
+                    <navigationItem key="navigationItem" title="Days" id="EJA-cK-V3i"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i9h-ru-dPn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
