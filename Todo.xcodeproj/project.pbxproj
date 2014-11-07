@@ -19,6 +19,7 @@
 		3255D8711A094EBB00A60DC9 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D8701A094EBB00A60DC9 /* TodoItem.swift */; };
 		3255D8731A094EC500A60DC9 /* StoreItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D8721A094EC500A60DC9 /* StoreItem.swift */; };
 		32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32725BB119F9FC68007D79D8 /* UserDataController.swift */; };
+		32F9490D1A0C0A7C00B25B95 /* TemplatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */; };
 		5F6135677EE16F8A8ED35F1B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA5EBC08937AD721E11C64C /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		3255D8721A094EC500A60DC9 /* StoreItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItem.swift; sourceTree = "<group>"; };
 		32725BB119F9FC68007D79D8 /* UserDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataController.swift; sourceTree = "<group>"; };
 		32725BB319F9FE2F007D79D8 /* Todo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Todo-Bridging-Header.h"; sourceTree = "<group>"; };
+		32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplatesViewController.swift; sourceTree = "<group>"; };
 		4906D3BCC1D5FD4AA8611638 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7FA5EBC08937AD721E11C64C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		90694EACA3D33C762846310D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			children = (
 				3255D8691A094E6C00A60DC9 /* User Data */,
 				320B7BE319F73BBE00E8B10C /* AppDelegate.swift */,
+				32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
@@ -299,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32F9490D1A0C0A7C00B25B95 /* TemplatesViewController.swift in Sources */,
 				3255D8711A094EBB00A60DC9 /* TodoItem.swift in Sources */,
 				3255D86D1A094E9D00A60DC9 /* Template.swift in Sources */,
 				32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */,

@@ -8,26 +8,30 @@
 
 import Foundation
 
-class StoreItem: NSCoding {
+class StoreItem: NSObject, NSCoding {
     let id: String
     let points: Int
     let purchased: Bool
+    let position: Int
     
-    init(points: Int) {
+    init(points: Int, position: Int) {
         id = NSUUID().UUIDString
         self.points = points
         purchased = false
+        self.position = position
     }
     
     required init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as String
         points = aDecoder.decodeIntegerForKey("points")
         purchased = aDecoder.decodeBoolForKey("purchased")
+        position = aDecoder.decodeIntegerForKey("position")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(id, forKey: "id")
         aCoder.encodeInteger(points, forKey: "points")
         aCoder.encodeBool(purchased, forKey: "purchased")
+        aCoder.encodeInteger(position, forKey: "position")
     }
 }

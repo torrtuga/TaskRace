@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Day: NSCoding {
+class Day: NSObject, NSCoding {
     let id: String
     let date: Date
     let listID: String?

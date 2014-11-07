@@ -8,11 +8,11 @@
 
 import Foundation
 
-class List: NSCoding {
+class List: NSObject, NSCoding {
     let id: String
     let items: [TodoItem]
     
-    init() {
+    override init() {
         id = NSUUID().UUIDString
         items = []
     }

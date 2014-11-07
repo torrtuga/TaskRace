@@ -8,19 +8,21 @@
 
 import Foundation
 
-class TodoItem: NSCoding {
+class TodoItem: NSObject, NSCoding {
     let id: String
     let name: String
     let points: Int
     let minutes: Int
     let completed: Bool
+    let position: Int
     
-    init(name: String, points: Int, minutes: Int) {
+    init(name: String, points: Int, minutes: Int, position: Int) {
         id = NSUUID().UUIDString
         self.name = name
         self.points = points
         self.minutes = minutes
         completed = false
+        self.position = position
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -29,6 +31,7 @@ class TodoItem: NSCoding {
         points = aDecoder.decodeIntegerForKey("points")
         minutes = aDecoder.decodeIntegerForKey("minutes")
         completed = aDecoder.decodeBoolForKey("completed")
+        position = aDecoder.decodeIntegerForKey("position")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -37,5 +40,6 @@ class TodoItem: NSCoding {
         aCoder.encodeInteger(points, forKey: "points")
         aCoder.encodeInteger(minutes, forKey: "minutes")
         aCoder.encodeBool(completed, forKey: "completed")
+        aCoder.encodeInteger(position, forKey: "position")
     }
 }

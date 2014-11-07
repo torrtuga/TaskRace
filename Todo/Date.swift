@@ -1,9 +1,9 @@
 //
 //  Date.swift
-//  LDSDailyVerse
+//  Todo
 //
-//  Created by Hilton Campbell on 10/10/14.
-//  Copyright (c) 2014 LDS Mobile Apps. All rights reserved.
+//  Created by Heather Shelley on 11/4/14.
+//  Copyright (c) 2014 Mine. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ func < (left: Date, right: Date) -> Bool {
 // The Gregorian calendar should always be available; if not, the app is hosed anyway
 private let calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)!
 
-class Date: Comparable, DebugPrintable, NSCoding {
+class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     let year: Int
     let month: Int
     let day: Int
@@ -40,7 +40,7 @@ class Date: Comparable, DebugPrintable, NSCoding {
         }
     }
     
-    init() {
+    override init() {
         let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay, fromDate: NSDate())
         year = components.year
         month = components.month
@@ -115,7 +115,7 @@ class Date: Comparable, DebugPrintable, NSCoding {
     
     // MARK: - DebugPrintable
     
-    var debugDescription: String {
+    override var debugDescription: String {
         get {
             return string
         }

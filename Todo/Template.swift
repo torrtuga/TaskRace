@@ -28,26 +28,34 @@ struct TemplateDays: RawOptionSetType {
     static var Sunday: TemplateDays { return TemplateDays(1 << 6) }
 }
 
-class Template: NSCoding {
+class Template: NSObject, NSCoding {
     let id: String
+    let name: String
     let listID: String
     let templateDays: TemplateDays
+    let position: Int
     
-    init(listID: String) {
+    init(name: String, position: Int) {
         id = NSUUID().UUIDString
-        self.listID = listID
+        self.name = name
+        self.listID = UserDataController.sharedController().createEmptyList().id
         templateDays = .None
+        self.position = position
     }
     
     required init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as String
+        name = aDecoder.decodeObjectForKey("name") as String
         listID = aDecoder.decodeObjectForKey("listID") as String
         templateDays = TemplateDays(UInt(aDecoder.decodeIntegerForKey("templateDays")))
+        position = aDecoder.decodeIntegerForKey("position")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(id, forKey: "id")
+        aCoder.encodeObject(name, forKey: "name")
         aCoder.encodeObject(listID, forKey: "listID")
         aCoder.encodeInteger(Int(templateDays.rawValue), forKey: "templateDays")
+        aCoder.encodeInteger(position, forKey: "position")
     }
 }
