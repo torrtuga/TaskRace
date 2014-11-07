@@ -13,7 +13,9 @@ class TemplatesViewController: UITableViewController {
     var templates: [Template] = []
     
     override func viewDidLoad() {
+        navigationItem.leftBarButtonItem = editButtonItem()
         templates = UserDataController.sharedController().allTemplates()
+        tableView.allowsSelectionDuringEditing = true
     }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
@@ -25,8 +27,24 @@ class TemplatesViewController: UITableViewController {
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
     
-    
     // MARK: - Table View
+    
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        let movedTemplate = templates.removeAtIndex(sourceIndexPath.row)
+        templates.insert(movedTemplate, atIndex: destinationIndexPath.row)
+        templates.each(){ (i, t) -> Void in
+            t.position = i
+        }
+        UserDataController.sharedController().updateTemplates(templates)
+    }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -43,13 +61,31 @@ class TemplatesViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let template = templates[indexPath.row]
+        if editing {
+            let alertController = UIAlertController(title: "Edit Title", message: nil, preferredStyle: .Alert)
+            alertController.addTextFieldWithConfigurationHandler() { textField in
+                textField.text = template.name
+            }
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
+                let textField = alertController.textFields!.first as UITextField
+                template.name = textField.text
+                UserDataController.sharedController().addOrUpdateTemplate(template)
+                self.tableView.reloadData()
+            }))
+            self .presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            
+        }
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             // TODO: handle deletion
+            UserDataController.sharedController().removeTemplate(templates[indexPath.row])
+            templates.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.

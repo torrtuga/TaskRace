@@ -43,6 +43,20 @@ struct UserDataController {
         }
     }
     
+    func updateTemplates(templates: [Template]) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            for template in templates {
+                transaction.setObject(template, forKey: template.id, inCollection: "templates")
+            }
+        }
+    }
+    
+    func removeTemplate(template: Template) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            transaction.removeObjectForKey(template.id, inCollection: "templates")
+        }
+    }
+    
     func createEmptyList() -> List {
         let list = List()
         self.connection.readWriteWithBlock() { transaction in

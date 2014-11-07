@@ -30,10 +30,10 @@ struct TemplateDays: RawOptionSetType {
 
 class Template: NSObject, NSCoding {
     let id: String
-    let name: String
+    var name: String
     let listID: String
     let templateDays: TemplateDays
-    let position: Int
+    var position: Int
     
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
