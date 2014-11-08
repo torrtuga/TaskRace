@@ -10,7 +10,7 @@ import Foundation
 
 class List: NSObject, NSCoding {
     let id: String
-    let items: [TodoItem]
+    var items: [TodoItem]
     
     override init() {
         id = NSUUID().UUIDString

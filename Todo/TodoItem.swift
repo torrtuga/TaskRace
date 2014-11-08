@@ -10,17 +10,17 @@ import Foundation
 
 class TodoItem: NSObject, NSCoding {
     let id: String
-    let name: String
-    let points: Int
-    let minutes: Int
-    let completed: Bool
-    let position: Int
+    var name: String
+    var points: Int
+    var minutes: Int
+    var completed: Bool
+    var position: Int
     
-    init(name: String, points: Int, minutes: Int, position: Int) {
+    init(name: String, position: Int) {
         id = NSUUID().UUIDString
         self.name = name
-        self.points = points
-        self.minutes = minutes
+        self.points = 0
+        self.minutes = 0
         completed = false
         self.position = position
     }

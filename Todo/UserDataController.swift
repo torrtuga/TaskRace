@@ -17,7 +17,7 @@ struct UserDataController {
         return UserDataController.sharedInstance
     }
     
-    init() {
+    private init() {
         let dbPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent("data")
         NSFileManager.defaultManager().createDirectoryAtPath(dbPath, withIntermediateDirectories: true, attributes: nil, error: nil)
         database = YapDatabase(path: dbPath)
@@ -35,6 +35,19 @@ struct UserDataController {
         }
         
         return sorted(templates) { $0.position < $1.position }
+    }
+    
+    func listWithID(id: String) -> List {
+        var list: List? = nil
+        self.connection.readWithBlock() { transaction in
+            list = transaction.objectForKey(id, inCollection: "lists") as? List
+        }
+        if let list = list {
+            return list
+        } else {
+            assert(false, "No list returned for id \(id)")
+            return List()
+        }
     }
     
     func addOrUpdateTemplate(template: Template) -> Void {
@@ -57,12 +70,9 @@ struct UserDataController {
         }
     }
     
-    func createEmptyList() -> List {
-        let list = List()
+    func addOrUpdateList(list: List) -> Void {
         self.connection.readWriteWithBlock() { transaction in
             transaction.setObject(list, forKey: list.id, inCollection: "lists")
         }
-        
-        return list
     }
 }

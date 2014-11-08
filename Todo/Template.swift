@@ -9,7 +9,6 @@
 import Foundation
 
 struct TemplateDays: RawOptionSetType {
-    typealias RawValue = UInt
     private var value: UInt = 0
     init(_ value: UInt) { self.value = value }
     init(rawValue value: UInt) { self.value = value }
@@ -17,6 +16,51 @@ struct TemplateDays: RawOptionSetType {
     static var allZeros: TemplateDays { return self(0) }
     static func fromMask(raw: UInt) -> TemplateDays { return self(raw) }
     var rawValue: UInt { return self.value }
+    var stringValue: String {
+        switch TemplateDays(value) {
+        case TemplateDays.None:
+            return "None"
+        case TemplateDays.Sunday:
+            return "Sunday"
+        case TemplateDays.Monday:
+            return "Monday"
+        case TemplateDays.Tuesday:
+            return "Tuesday"
+        case TemplateDays.WednesDay:
+            return "WednesDay"
+        case TemplateDays.Thursday:
+            return "Thursday"
+        case TemplateDays.Friday:
+            return "Friday"
+        case TemplateDays.Saturday:
+            return "Saturday"
+        default:
+            return "None"
+        }
+    }
+    
+    var shortStringValue: String {
+        switch TemplateDays(value) {
+        case TemplateDays.None:
+            return "None"
+        case TemplateDays.Sunday:
+            return "Su"
+        case TemplateDays.Monday:
+            return "Mo"
+        case TemplateDays.Tuesday:
+            return "Tu"
+        case TemplateDays.WednesDay:
+            return "We"
+        case TemplateDays.Thursday:
+            return "Th"
+        case TemplateDays.Friday:
+            return "Fr"
+        case TemplateDays.Saturday:
+            return "Sa"
+        default:
+            return "None"
+        }
+    }
     
     static var None: TemplateDays { return self(0) }
     static var Monday: TemplateDays { return TemplateDays(1 << 0) }
@@ -38,7 +82,9 @@ class Template: NSObject, NSCoding {
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
         self.name = name
-        self.listID = UserDataController.sharedController().createEmptyList().id
+        let list = List()
+        UserDataController.sharedController().addOrUpdateList(list)
+        self.listID = list.id
         templateDays = .None
         self.position = position
     }

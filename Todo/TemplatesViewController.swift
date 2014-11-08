@@ -77,7 +77,7 @@ class TemplatesViewController: UITableViewController {
             }))
             self .presentViewController(alertController, animated: true, completion: nil)
         } else {
-            
+            performSegueWithIdentifier("TemplateDetailSegue", sender: template)
         }
     }
     
@@ -89,6 +89,12 @@ class TemplatesViewController: UITableViewController {
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let destination = segue.destinationViewController as? TemplateViewController {
+            destination.template = sender as? Template
         }
     }
     
