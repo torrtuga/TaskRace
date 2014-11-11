@@ -94,7 +94,7 @@ class TemplatesViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destination = segue.destinationViewController as? TemplateViewController {
-            destination.template = sender as? Template
+            destination.template = sender as Template
         }
     }
     

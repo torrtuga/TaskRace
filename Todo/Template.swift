@@ -26,8 +26,8 @@ struct TemplateDays: RawOptionSetType {
             return "Monday"
         case TemplateDays.Tuesday:
             return "Tuesday"
-        case TemplateDays.WednesDay:
-            return "WednesDay"
+        case TemplateDays.Wednesday:
+            return "Wednesday"
         case TemplateDays.Thursday:
             return "Thursday"
         case TemplateDays.Friday:
@@ -49,7 +49,7 @@ struct TemplateDays: RawOptionSetType {
             return "Mo"
         case TemplateDays.Tuesday:
             return "Tu"
-        case TemplateDays.WednesDay:
+        case TemplateDays.Wednesday:
             return "We"
         case TemplateDays.Thursday:
             return "Th"
@@ -65,7 +65,7 @@ struct TemplateDays: RawOptionSetType {
     static var None: TemplateDays { return self(0) }
     static var Monday: TemplateDays { return TemplateDays(1 << 0) }
     static var Tuesday: TemplateDays { return TemplateDays(1 << 1) }
-    static var WednesDay: TemplateDays { return TemplateDays(1 << 2) }
+    static var Wednesday: TemplateDays { return TemplateDays(1 << 2) }
     static var Thursday: TemplateDays { return TemplateDays(1 << 3) }
     static var Friday: TemplateDays { return TemplateDays(1 << 4) }
     static var Saturday: TemplateDays { return TemplateDays(1 << 5) }
@@ -75,16 +75,14 @@ struct TemplateDays: RawOptionSetType {
 class Template: NSObject, NSCoding {
     let id: String
     var name: String
-    let listID: String
-    let templateDays: TemplateDays
+    var listID: String?
+    var templateDays: TemplateDays
     var position: Int
     
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
         self.name = name
-        let list = List()
-        UserDataController.sharedController().addOrUpdateList(list)
-        self.listID = list.id
+        self.listID = nil
         templateDays = .None
         self.position = position
     }
@@ -92,7 +90,7 @@ class Template: NSObject, NSCoding {
     required init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as String
         name = aDecoder.decodeObjectForKey("name") as String
-        listID = aDecoder.decodeObjectForKey("listID") as String
+        listID = aDecoder.decodeObjectForKey("listID") as? String
         templateDays = TemplateDays(UInt(aDecoder.decodeIntegerForKey("templateDays")))
         position = aDecoder.decodeIntegerForKey("position")
     }

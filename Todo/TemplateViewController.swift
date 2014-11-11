@@ -11,11 +11,19 @@ import UIKit
 class TemplateViewController: UITableViewController {
     
     var list: List = List()
-    var template: Template? {
+    var template: Template! {
         didSet {
             if let template = template {
                 navigationItem.title = template.name
-                list = UserDataController.sharedController().listWithID(template.listID)
+                if let listID = template.listID {
+                    list = UserDataController.sharedController().listWithID(listID)
+                } else {
+                    list = List()
+                    template.listID = list.id
+                    UserDataController.sharedController().addOrUpdateList(list)
+                    UserDataController.sharedController().addOrUpdateTemplate(template)
+                }
+                
             }
         }
     }
@@ -55,7 +63,7 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 8
+            return 7
         } else {
             return list.items.count
         }
@@ -67,22 +75,30 @@ class TemplateViewController: UITableViewController {
             switch indexPath.row {
             case 0:
                 cell.textLabel.text = TemplateDays.Sunday.stringValue
+                cell.tag = Int(TemplateDays.Sunday.rawValue)
             case 1:
                 cell.textLabel.text = TemplateDays.Monday.stringValue
+                cell.tag = Int(TemplateDays.Monday.rawValue)
             case 2:
                 cell.textLabel.text = TemplateDays.Tuesday.stringValue
+                cell.tag = Int(TemplateDays.Tuesday.rawValue)
             case 3:
-                cell.textLabel.text = TemplateDays.WednesDay.stringValue
+                cell.textLabel.text = TemplateDays.Wednesday.stringValue
+                cell.tag = Int(TemplateDays.Wednesday.rawValue)
             case 4:
                 cell.textLabel.text = TemplateDays.Thursday.stringValue
+                cell.tag = Int(TemplateDays.Thursday.rawValue)
             case 5:
                 cell.textLabel.text = TemplateDays.Friday.stringValue
+                cell.tag = Int(TemplateDays.Friday.rawValue)
             case 6:
                 cell.textLabel.text = TemplateDays.Saturday.stringValue
-            case 7:
-                cell.textLabel.text = "Select/Unselect All"
+                cell.tag = Int(TemplateDays.Saturday.rawValue)
             default:
                 cell.textLabel.text = "Not handled"
+            }
+            if template!.templateDays.rawValue & UInt(cell.tag) != 0 {
+                cell.accessoryType = .Checkmark
             }
             return cell
         } else {
@@ -98,9 +114,19 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
-            
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            let cell = tableView.cellForRowAtIndexPath(indexPath)!
+            if cell.accessoryType == .Checkmark {
+                cell.accessoryType = .None
+                template!.templateDays = TemplateDays(template!.templateDays.rawValue ^ UInt(cell.tag))
+            } else {
+                cell.accessoryType = .Checkmark
+                template!.templateDays = TemplateDays(template!.templateDays.rawValue | UInt(cell.tag))
+            }
+            UserDataController.sharedController().addOrUpdateTemplate(template)
         } else {
             let item = list.items[indexPath.row]
+            performSegueWithIdentifier("EditItemSegue", sender: item)
         }
     }
     
@@ -121,6 +147,26 @@ class TemplateViewController: UITableViewController {
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let item = sender as? TodoItem {
+            if let editViewController = segue.destinationViewController as? EditTodoItemViewController {
+                editViewController.item = item
+                editViewController.saveFunction = { name, points, minutes in
+                    item.name = name
+                    if let points = points {
+                        item.points = points
+                    }
+                    
+                    if let minutes = minutes {
+                        item.minutes = minutes
+                    }
+                    UserDataController.sharedController().addOrUpdateList(self.list)
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
     

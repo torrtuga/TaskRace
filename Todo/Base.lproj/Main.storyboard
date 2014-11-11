@@ -282,10 +282,120 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="OEI-CO-cL7" kind="show" identifier="EditItemSegue" id="F4m-OK-PKm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="brW-1G-TKb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2469" y="0.0"/>
+        </scene>
+        <!--Edit Item-->
+        <scene sceneID="uj5-jY-MIn">
+            <objects>
+                <viewController id="OEI-CO-cL7" customClass="EditTodoItemViewController" customModule="Todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="sjy-sn-4vS"/>
+                        <viewControllerLayoutGuide type="bottom" id="LZJ-q2-ZKl"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bqf-Zi-s0m">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUd-Rx-Cf5">
+                                <rect key="frame" x="16" y="87" width="51" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Points:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bx9-P9-MPF">
+                                <rect key="frame" x="16" y="139" width="54" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Minutes:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tBK-D3-2zb">
+                                <rect key="frame" x="16" y="192" width="66" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vec-Pl-MDm">
+                                <rect key="frame" x="101" y="83" width="463" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="97" id="Soq-GI-hJq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Soq-GI-hJq"/>
+                                    </mask>
+                                </variation>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9oG-E3-n8H">
+                                <rect key="frame" x="101" y="188" width="80" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="r5K-4w-6QA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Aji-wu-cg3">
+                                <rect key="frame" x="101" y="135" width="80" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="A2v-Va-7ah"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Aji-wu-cg3" firstAttribute="leading" secondItem="9oG-E3-n8H" secondAttribute="leading" id="02C-oL-tGG"/>
+                            <constraint firstItem="tBK-D3-2zb" firstAttribute="top" secondItem="bx9-P9-MPF" secondAttribute="bottom" constant="32" id="198-QB-P58"/>
+                            <constraint firstItem="9oG-E3-n8H" firstAttribute="leading" secondItem="tBK-D3-2zb" secondAttribute="trailing" constant="19" id="6W8-3a-Xt8"/>
+                            <constraint firstItem="EUd-Rx-Cf5" firstAttribute="top" secondItem="sjy-sn-4vS" secondAttribute="bottom" constant="23" id="Ehm-7f-E3M"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="vec-Pl-MDm" secondAttribute="trailing" constant="20" id="Gv4-Oj-ZQm"/>
+                            <constraint firstItem="vec-Pl-MDm" firstAttribute="leading" secondItem="Aji-wu-cg3" secondAttribute="leading" id="LhO-oo-vt8"/>
+                            <constraint firstItem="bx9-P9-MPF" firstAttribute="centerY" secondItem="Aji-wu-cg3" secondAttribute="centerY" id="Luj-1j-i4W"/>
+                            <constraint firstItem="bx9-P9-MPF" firstAttribute="top" secondItem="EUd-Rx-Cf5" secondAttribute="bottom" constant="31" id="Qyq-la-3dK"/>
+                            <constraint firstItem="tBK-D3-2zb" firstAttribute="leading" secondItem="bx9-P9-MPF" secondAttribute="leading" id="Rg1-rI-yxh"/>
+                            <constraint firstItem="9oG-E3-n8H" firstAttribute="centerY" secondItem="tBK-D3-2zb" secondAttribute="centerY" id="Uzg-Ct-hEl"/>
+                            <constraint firstItem="EUd-Rx-Cf5" firstAttribute="leading" secondItem="bx9-P9-MPF" secondAttribute="leading" id="Vq7-OR-yhe"/>
+                            <constraint firstItem="Aji-wu-cg3" firstAttribute="trailing" secondItem="9oG-E3-n8H" secondAttribute="trailing" id="c2e-vm-bw2"/>
+                            <constraint firstItem="Aji-wu-cg3" firstAttribute="trailing" secondItem="vec-Pl-MDm" secondAttribute="trailing" id="lp9-1i-nhJ"/>
+                            <constraint firstItem="bx9-P9-MPF" firstAttribute="leading" secondItem="bqf-Zi-s0m" secondAttribute="leadingMargin" id="moI-40-NMV"/>
+                            <constraint firstItem="vec-Pl-MDm" firstAttribute="centerY" secondItem="EUd-Rx-Cf5" secondAttribute="centerY" id="rH7-DB-GK5"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="c2e-vm-bw2"/>
+                                <exclude reference="lp9-1i-nhJ"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Item" id="3hE-7o-IVe">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ytx-fa-IO2">
+                            <connections>
+                                <action selector="cancelPressed:" destination="OEI-CO-cL7" id="Bgl-yh-TkK"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="gm5-WM-Xmw">
+                            <connections>
+                                <action selector="savePressed:" destination="OEI-CO-cL7" id="ESh-dN-rwH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="minutesTextField" destination="9oG-E3-n8H" id="Yiv-4i-IiR"/>
+                        <outlet property="nameTextField" destination="vec-Pl-MDm" id="8ES-Yl-6rc"/>
+                        <outlet property="pointsTextField" destination="Aji-wu-cg3" id="3gJ-5e-D94"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Umf-Ki-jwa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3233" y="0.0"/>
         </scene>
         <!--Templates-->
         <scene sceneID="gGs-n4-VXn">
