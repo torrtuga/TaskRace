@@ -118,10 +118,10 @@ class TemplateViewController: UITableViewController {
             let cell = tableView.cellForRowAtIndexPath(indexPath)!
             if cell.accessoryType == .Checkmark {
                 cell.accessoryType = .None
-                template!.templateDays = TemplateDays(template!.templateDays.rawValue ^ UInt(cell.tag))
+                template.templateDays = template.templateDays ^ TemplateDays(UInt(cell.tag))
             } else {
                 cell.accessoryType = .Checkmark
-                template!.templateDays = TemplateDays(template!.templateDays.rawValue | UInt(cell.tag))
+                template.templateDays = template.templateDays | TemplateDays(UInt(cell.tag))
             }
             UserDataController.sharedController().addOrUpdateTemplate(template)
         } else {

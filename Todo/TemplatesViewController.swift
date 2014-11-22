@@ -18,6 +18,10 @@ class TemplatesViewController: UITableViewController {
         tableView.allowsSelectionDuringEditing = true
     }
     
+    override func viewDidAppear(animated: Bool) {
+        tableView.reloadData()
+    }
+    
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
         let position = templates.count
         let template = Template(name: "New Template", position: position)
@@ -56,8 +60,8 @@ class TemplatesViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        
         cell.textLabel.text = templates[indexPath.row].name
+        cell.detailTextLabel?.text = daysStringFromTemplateDays(templates[indexPath.row].templateDays)
         return cell
     }
     

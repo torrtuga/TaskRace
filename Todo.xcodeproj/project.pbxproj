@@ -12,6 +12,7 @@
 		320B7BED19F73BBE00E8B10C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 320B7BEC19F73BBE00E8B10C /* Images.xcassets */; };
 		320B7BF019F73BBE00E8B10C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */; };
 		320B7BFC19F73BBE00E8B10C /* TodoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B7BFB19F73BBE00E8B10C /* TodoTests.swift */; };
+		320B87E31A2129D000BBAB5C /* TemplateDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B87E21A2129D000BBAB5C /* TemplateDays.swift */; };
 		323385BE19FC4EFF0043159E /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323385BD19FC4EFF0043159E /* Date.swift */; };
 		324E8A811A0EB3F00075E544 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E8A801A0EB3F00075E544 /* TemplateViewController.swift */; };
 		324E8A831A0EBFDB0075E544 /* TodoItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */; };
@@ -57,6 +58,7 @@
 		320B7BF519F73BBE00E8B10C /* TodoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		320B7BFA19F73BBE00E8B10C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320B7BFB19F73BBE00E8B10C /* TodoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTests.swift; sourceTree = "<group>"; };
+		320B87E21A2129D000BBAB5C /* TemplateDays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateDays.swift; sourceTree = "<group>"; };
 		323385BD19FC4EFF0043159E /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		324E8A801A0EB3F00075E544 /* TemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateViewController.swift; sourceTree = "<group>"; };
 		324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoItemCell.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				324E8A801A0EB3F00075E544 /* TemplateViewController.swift */,
 				324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */,
 				32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */,
+				320B87E21A2129D000BBAB5C /* TemplateDays.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
@@ -384,6 +387,7 @@
 				32F1991E1A0D5E1F005B820E /* Float.swift in Sources */,
 				3255D8731A094EC500A60DC9 /* StoreItem.swift in Sources */,
 				32F199201A0D5E1F005B820E /* Int.swift in Sources */,
+				320B87E31A2129D000BBAB5C /* TemplateDays.swift in Sources */,
 				32F1991C1A0D5E1F005B820E /* Double.swift in Sources */,
 				324E8A831A0EBFDB0075E544 /* TodoItemCell.swift in Sources */,
 				3255D86F1A094EB000A60DC9 /* List.swift in Sources */,
