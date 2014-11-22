@@ -102,11 +102,15 @@ class TemplateViewController: UITableViewController {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as TodoItemCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as UITableViewCell
             let item = list.items[indexPath.row]
-            cell.titleLabel.text = item.name
-            cell.timeLabel.text = "\(item.minutes) min"
-            cell.pointsLabel.text = "\(item.points) pts"
+            cell.textLabel.text = item.name
+            var detailText = ""
+            if item.minutes > 0 {
+                detailText += "\(item.minutes)min,"
+            }
+            detailText += "\(item.points)pts"
+            cell.detailTextLabel?.text = detailText
             cell.accessoryType = .DisclosureIndicator
             return cell
         }

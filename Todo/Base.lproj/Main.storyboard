@@ -230,44 +230,25 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TodoCell" id="C4P-ii-uBJ" customClass="TodoItemCell" customModule="Todo" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TodoCell" textLabel="yES-nH-r4i" detailTextLabel="sIf-YU-8ML" style="IBUITableViewCellStyleValue1" id="C4P-ii-uBJ">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C4P-ii-uBJ" id="eME-HZ-Lmj">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cG-bI-WDU">
-                                            <rect key="frame" x="15" y="11" width="33" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yES-nH-r4i">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30 min" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w1T-Ny-Yly">
-                                            <rect key="frame" x="348" y="11" width="52" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10 pts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IO8-eR-xeR">
-                                            <rect key="frame" x="515" y="11" width="48" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sIf-YU-8ML">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="w1T-Ny-Yly" secondAttribute="trailing" constant="192" id="1go-BQ-ngp"/>
-                                        <constraint firstAttribute="centerY" secondItem="4cG-bI-WDU" secondAttribute="centerY" id="45c-f6-fX8"/>
-                                        <constraint firstItem="4cG-bI-WDU" firstAttribute="centerY" secondItem="w1T-Ny-Yly" secondAttribute="centerY" id="9YR-rZ-yYw"/>
-                                        <constraint firstItem="4cG-bI-WDU" firstAttribute="centerY" secondItem="IO8-eR-xeR" secondAttribute="centerY" id="GcS-wm-bkc"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="IO8-eR-xeR" secondAttribute="trailing" constant="29" id="l01-I5-Z5E"/>
-                                        <constraint firstItem="4cG-bI-WDU" firstAttribute="leading" secondItem="eME-HZ-Lmj" secondAttribute="leadingMargin" constant="7" id="slm-Og-AFv"/>
-                                    </constraints>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="pointsLabel" destination="IO8-eR-xeR" id="6uE-3G-hDn"/>
-                                    <outlet property="timeLabel" destination="w1T-Ny-Yly" id="359-No-3lH"/>
-                                    <outlet property="titleLabel" destination="4cG-bI-WDU" id="9uZ-AM-54H"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
