@@ -176,8 +176,9 @@ class TemplateViewController: UITableViewController {
         if let item = sender as? TodoItem {
             if let editViewController = segue.destinationViewController as? EditTodoItemViewController {
                 editViewController.item = item
-                editViewController.saveFunction = { name, points, minutes in
+                editViewController.saveFunction = { name, points, minutes, repeats in
                     item.name = name
+                    item.repeats = repeats
                     if let points = points {
                         item.points = points
                     }

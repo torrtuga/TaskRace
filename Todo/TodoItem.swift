@@ -15,6 +15,7 @@ class TodoItem: NSObject, NSCoding {
     var minutes: Int
     var completed: Bool
     var position: Int
+    var repeats: Bool
     
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
@@ -23,6 +24,7 @@ class TodoItem: NSObject, NSCoding {
         self.minutes = 0
         completed = false
         self.position = position
+        repeats = false
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -32,6 +34,7 @@ class TodoItem: NSObject, NSCoding {
         minutes = aDecoder.decodeIntegerForKey("minutes")
         completed = aDecoder.decodeBoolForKey("completed")
         position = aDecoder.decodeIntegerForKey("position")
+        repeats = aDecoder.decodeBoolForKey("repeats")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -41,5 +44,6 @@ class TodoItem: NSObject, NSCoding {
         aCoder.encodeInteger(minutes, forKey: "minutes")
         aCoder.encodeBool(completed, forKey: "completed")
         aCoder.encodeInteger(position, forKey: "position")
+        aCoder.encodeBool(repeats, forKey: "repeats")
     }
 }
