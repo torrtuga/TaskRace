@@ -14,6 +14,7 @@ class Template: NSObject, NSCoding {
     var listID: String?
     var templateDays: TemplateDays
     var position: Int
+    var anytime: Bool
     
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
@@ -21,6 +22,7 @@ class Template: NSObject, NSCoding {
         self.listID = nil
         templateDays = .None
         self.position = position
+        anytime = false
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -29,6 +31,7 @@ class Template: NSObject, NSCoding {
         listID = aDecoder.decodeObjectForKey("listID") as? String
         templateDays = TemplateDays(UInt(aDecoder.decodeIntegerForKey("templateDays")))
         position = aDecoder.decodeIntegerForKey("position")
+        anytime = aDecoder.decodeBoolForKey("anytime")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -37,5 +40,6 @@ class Template: NSObject, NSCoding {
         aCoder.encodeObject(listID, forKey: "listID")
         aCoder.encodeInteger(Int(templateDays.rawValue), forKey: "templateDays")
         aCoder.encodeInteger(position, forKey: "position")
+        aCoder.encodeBool(anytime, forKey: "anytime")
     }
 }

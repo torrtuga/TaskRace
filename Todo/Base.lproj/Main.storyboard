@@ -207,7 +207,7 @@
             </objects>
             <point key="canvasLocation" x="1725" y="0.0"/>
         </scene>
-        <!--Title-->
+        <!--Template-->
         <scene sceneID="1QG-h8-w2G">
             <objects>
                 <tableViewController id="AHO-F2-7eT" customClass="TemplateViewController" customModule="Todo" customModuleProvider="target" sceneMemberID="viewController">
@@ -216,6 +216,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwitchCell" textLabel="jRw-wx-l9k" style="IBUITableViewCellStyleDefault" id="FTJ-cd-fYc">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FTJ-cd-fYc" id="HIg-b7-fZA">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jRw-wx-l9k">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DayCell" textLabel="3v7-N0-wFA" style="IBUITableViewCellStyleDefault" id="aJ7-CS-YKz">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aJ7-CS-YKz" id="AHj-jl-a3O">
@@ -256,7 +270,7 @@
                             <outlet property="delegate" destination="AHO-F2-7eT" id="aSJ-0g-Dsw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="qyg-EZ-Fk4">
+                    <navigationItem key="navigationItem" title="Template" id="qyg-EZ-Fk4">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="B5d-sS-KL9">
                             <connections>
                                 <action selector="addPressed:" destination="AHO-F2-7eT" id="EfU-od-XYr"/>

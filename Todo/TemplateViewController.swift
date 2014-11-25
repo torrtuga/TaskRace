@@ -34,18 +34,18 @@ class TemplateViewController: UITableViewController {
         let item = TodoItem(name: "New Item", position: position)
         list.items.append(item)
         UserDataController.sharedController().addOrUpdateList(list)
-        let indexPath = NSIndexPath(forRow: position, inSection: 1)
+        let indexPath = NSIndexPath(forRow: position, inSection: 2)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
     
     // MARK: - Table View
     
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.section > 0
+        return indexPath.section > 1
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.section > 0
+        return indexPath.section > 1
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
@@ -58,11 +58,13 @@ class TemplateViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            return 1
+        } else if section == 1 {
             return 7
         } else {
             return list.items.count
@@ -71,6 +73,15 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as UITableViewCell
+            cell.textLabel.text = "Anytime"
+            let anytimeSwitch = UISwitch()
+            anytimeSwitch.on = template.anytime
+            anytimeSwitch.addTarget(self, action: "switchValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+            cell.accessoryView = anytimeSwitch
+            return cell
+        }
+        if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) as UITableViewCell
             switch indexPath.row {
             case 0:
@@ -116,8 +127,13 @@ class TemplateViewController: UITableViewController {
         }
     }
     
+    func switchValueChanged(sender: UISwitch) {
+        template.anytime = sender.on
+        UserDataController.sharedController().addOrUpdateTemplate(template)
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 0 {
+        if indexPath.section == 1 {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             let cell = tableView.cellForRowAtIndexPath(indexPath)!
             if cell.accessoryType == .Checkmark {
@@ -128,7 +144,7 @@ class TemplateViewController: UITableViewController {
                 template.templateDays = template.templateDays | TemplateDays(UInt(cell.tag))
             }
             UserDataController.sharedController().addOrUpdateTemplate(template)
-        } else {
+        } else if indexPath.section == 2 {
             let item = list.items[indexPath.row]
             performSegueWithIdentifier("EditItemSegue", sender: item)
         }
@@ -136,6 +152,8 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
+            return nil
+        } else if section == 1 {
             return "Template Days"
         } else {
             return "Items"
