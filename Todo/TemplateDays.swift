@@ -14,6 +14,7 @@ struct TemplateDays: RawOptionSetType, BooleanType {
     init(_ value: UInt) { self.value = value }
     init(rawValue value: UInt) { self.value = value }
     init(nilLiteral: ()) { self.value = 0 }
+    init(dayOfWeek: Int) { self.value = 1 << UInt(dayOfWeek - 1) }
     static var allZeros: TemplateDays { return self(0) }
     static func fromMask(raw: UInt) -> TemplateDays { return self(raw) }
     var rawValue: UInt { return self.value }
@@ -65,13 +66,13 @@ struct TemplateDays: RawOptionSetType, BooleanType {
     }
     
     static var None: TemplateDays { return self(0) }
-    static var Monday: TemplateDays { return TemplateDays(1 << 0) }
-    static var Tuesday: TemplateDays { return TemplateDays(1 << 1) }
-    static var Wednesday: TemplateDays { return TemplateDays(1 << 2) }
-    static var Thursday: TemplateDays { return TemplateDays(1 << 3) }
-    static var Friday: TemplateDays { return TemplateDays(1 << 4) }
-    static var Saturday: TemplateDays { return TemplateDays(1 << 5) }
-    static var Sunday: TemplateDays { return TemplateDays(1 << 6) }
+    static var Sunday: TemplateDays { return TemplateDays(1 << 0) }
+    static var Monday: TemplateDays { return TemplateDays(1 << 1) }
+    static var Tuesday: TemplateDays { return TemplateDays(1 << 2) }
+    static var Wednesday: TemplateDays { return TemplateDays(1 << 3) }
+    static var Thursday: TemplateDays { return TemplateDays(1 << 4) }
+    static var Friday: TemplateDays { return TemplateDays(1 << 5) }
+    static var Saturday: TemplateDays { return TemplateDays(1 << 6) }
 }
 
 func daysStringFromTemplateDays(days: TemplateDays) -> String {

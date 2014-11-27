@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TodoItem: NSObject, NSCoding {
+class TodoItem: NSObject, NSCoding, NSCopying {
     let id: String
     var name: String
     var points: Int
@@ -20,8 +20,8 @@ class TodoItem: NSObject, NSCoding {
     init(name: String, position: Int) {
         id = NSUUID().UUIDString
         self.name = name
-        self.points = 0
-        self.minutes = 0
+        points = 0
+        minutes = 0
         completed = false
         self.position = position
         repeats = false
@@ -45,5 +45,14 @@ class TodoItem: NSObject, NSCoding {
         aCoder.encodeBool(completed, forKey: "completed")
         aCoder.encodeInteger(position, forKey: "position")
         aCoder.encodeBool(repeats, forKey: "repeats")
+    }
+    
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let item = TodoItem(name: name, position: position)
+        item.points = points
+        item.minutes = minutes
+        item.completed = completed
+        item.repeats = repeats
+        return item
     }
 }

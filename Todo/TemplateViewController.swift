@@ -10,7 +10,7 @@ import UIKit
 
 class TemplateViewController: UITableViewController {
     
-    var list: List = List()
+    var list: List!
     var template: Template! {
         didSet {
             if let template = template {
@@ -162,13 +162,10 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // TODO: handle deletion
             var items = list.items
             list.items.removeAtIndex(indexPath.row)
             UserDataController.sharedController().addOrUpdateList(list)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
     

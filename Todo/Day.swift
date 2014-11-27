@@ -11,7 +11,7 @@ import Foundation
 class Day: NSObject, NSCoding {
     let id: String
     let date: Date
-    let listID: String?
+    var listID: String?
     
     init(date: Date) {
         id = NSUUID().UUIDString

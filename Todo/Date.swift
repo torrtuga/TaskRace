@@ -23,6 +23,7 @@ class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     let year: Int
     let month: Int
     let day: Int
+    let dayOfWeek: TemplateDays
     
     var string: String {
         get {
@@ -41,66 +42,33 @@ class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     }
     
     override init() {
-        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay, fromDate: NSDate())
+        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekday, fromDate: NSDate())
         year = components.year
         month = components.month
         day = components.day
+        dayOfWeek = TemplateDays(dayOfWeek: components.weekday)
     }
     
     init(date: NSDate) {
-        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay, fromDate: date)
+        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
         year = components.year
         month = components.month
         day = components.day
-    }
-    
-    init(year: Int, month: Int, day: Int) {
-        self.year = year
-        self.month = month
-        self.day = day
-    }
-    
-    init(_ string: String) {
-        let scanner = NSScanner(string: string)
-        scanner.charactersToBeSkipped = nil
-        
-        var year: Int = 0
-        if !scanner.scanInteger(&year) || year < 0 {
-            assert(false, "Failed to parse year")
-        }
-        self.year = year
-        
-        if !scanner.scanString("-", intoString: nil) {
-            assert(false, "Failed to parse dash")
-        }
-        
-        var month: Int = 0
-        if !scanner.scanInteger(&month) || month < 0 {
-            assert(false, "Failed to parse month")
-        }
-        self.month = month
-        
-        if !scanner.scanString("-", intoString: nil) {
-            assert(false, "Failed to parse dash")
-        }
-        
-        var day: Int = 0
-        if !scanner.scanInteger(&day) || day < 0 {
-            assert(false, "Failed to parse day")
-        }
-        self.day = day
+        dayOfWeek = TemplateDays(dayOfWeek: components.weekday)
     }
     
     required init(coder aDecoder: NSCoder) {
         year = aDecoder.decodeIntegerForKey("year")
         month = aDecoder.decodeIntegerForKey("month")
         day = aDecoder.decodeIntegerForKey("day")
+        dayOfWeek = TemplateDays(UInt(aDecoder.decodeIntegerForKey("dayOfWeek")))
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeInteger(year, forKey: "year")
         aCoder.encodeInteger(month, forKey: "month")
         aCoder.encodeInteger(day, forKey: "day")
+        aCoder.encodeInteger(Int(dayOfWeek.rawValue), forKey: "dayOfWeek")
     }
     
     func dateByAddingDays(days: Int) -> Date {
