@@ -14,11 +14,6 @@ class DaysViewController: UITableViewController {
     
     override func viewDidLoad() {
         days = UserDataController.sharedController().allDays()
-        let today = Date(date: NSDate())
-        if days.indexOf({ day in day.date == today }) == nil {
-            days.append(UserDataController.sharedController().createDayForToday())
-        }
-        tableView.allowsSelectionDuringEditing = true
     }
     
     override func awakeFromNib() {

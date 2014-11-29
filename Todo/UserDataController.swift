@@ -63,11 +63,16 @@ struct UserDataController {
     
     func allDays() -> [Day] {
         var days: [Day] = []
-        self.connection.readWithBlock() { transaction in
+        self.connection.readWriteWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("days") { key, object, _ in
                 if let day = object as? Day {
                     days.append(day)
                 }
+            }
+            
+            let today = Date(date: NSDate())
+            if days.indexOf({ day in day.date == today }) == nil {
+                days.append(UserDataController.sharedController().createDayForToday())
             }
         }
         
@@ -88,6 +93,12 @@ struct UserDataController {
         }
         
         return day
+    }
+    
+    func dayForToday() -> Day {
+        let days = allDays()
+        let today = Date(date: NSDate())
+        return days[days.indexOf({ day in day.date == today })!]
     }
     
     // MARK: - Lists
@@ -131,5 +142,28 @@ struct UserDataController {
         self.connection.readWriteWithBlock() { transaction in
             transaction.setObject(list, forKey: list.id, inCollection: "lists")
         }
+    }
+    
+    func anytimeListsForDate(date: Date) -> [List] {
+        return allTemplates().mapFilter() { template -> List? in
+            if template.anytime && template.templateDays & date.dayOfWeek {
+                if let id = template.listID {
+                    return self.listWithID(id)
+                }
+            }
+            return nil
+        }
+    }
+    
+    func updateAnytimeListsForDate(date: Date) {
+        anytimeListsForDate(date).each() { list in
+            self.addOrUpdateList(list)
+        }
+    }
+    
+    // MARK: - TodoItems
+    
+    func anytimeTodoItemsForDate(date: Date) -> [TodoItem] {
+        return anytimeListsForDate(date).map({ $0.items }).flatten()
     }
 }

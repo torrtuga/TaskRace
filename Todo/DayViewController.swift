@@ -11,6 +11,7 @@ import UIKit
 class DayViewController: UITableViewController {
     
     var list: List = List()
+    var anytimeItems: [TodoItem] = []
     var day: Day! {
         didSet {
             if let day = day {
@@ -22,10 +23,17 @@ class DayViewController: UITableViewController {
                     day.listID = list.id
                     UserDataController.sharedController().addOrUpdateDay(day)
                 }
+                
+                anytimeItems = UserDataController.sharedController().anytimeTodoItemsForDate(day.date)
             }
         }
     }
     
+    override func viewDidLoad() {
+        if day == nil {
+            day = UserDataController.sharedController().dayForToday()
+        }
+    }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
         let position = list.items.count
@@ -61,10 +69,9 @@ class DayViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            println("count: \(list.items.count)")
             return list.items.count
         } else if section == 1 {
-            return 0
+            return anytimeItems.count
         }
         
         return 0
@@ -100,7 +107,7 @@ class DayViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return nil
-        } else if section == 1 {
+        } else if section == 1 && anytimeItems.count > 0 {
             return "Anytime"
         }
         
@@ -113,8 +120,6 @@ class DayViewController: UITableViewController {
             list.items.removeAtIndex(indexPath.row)
             UserDataController.sharedController().addOrUpdateList(list)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
     
