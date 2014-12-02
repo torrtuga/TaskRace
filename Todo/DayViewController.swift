@@ -12,26 +12,33 @@ class DayViewController: UITableViewController {
     
     var list: List = List()
     var anytimeItems: [TodoItem] = []
-    var day: Day! {
-        didSet {
-            if let day = day {
-                navigationItem.title = day.date.string
-                if let listID = day.listID {
-                    list = UserDataController.sharedController().listWithID(listID)
-                } else {
-                    list = UserDataController.sharedController().listForDate(day.date)
-                    day.listID = list.id
-                    UserDataController.sharedController().addOrUpdateDay(day)
-                }
-                
-                anytimeItems = UserDataController.sharedController().anytimeTodoItemsForDate(day.date)
-            }
-        }
-    }
+    var day: Day!
     
     override func viewDidLoad() {
         if day == nil {
             day = UserDataController.sharedController().dayForToday()
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateData()
+    }
+    
+    private func updateData() {
+        if let day = day {
+            navigationItem.title = day.date.string
+            if let listID = day.listID {
+                list = UserDataController.sharedController().listWithID(listID)
+            } else {
+                list = List()
+                day.listID = list.id
+                UserDataController.sharedController().addOrUpdateDay(day)
+            }
+            
+            UserDataController.sharedController().updateListFromTemplates(list: list, forDate: day.date)
+            
+            anytimeItems = UserDataController.sharedController().anytimeTodoItemsForDate(day.date)
         }
     }
     

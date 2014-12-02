@@ -63,17 +63,21 @@ struct UserDataController {
     
     func allDays() -> [Day] {
         var days: [Day] = []
-        self.connection.readWriteWithBlock() { transaction in
+        self.connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("days") { key, object, _ in
                 if let day = object as? Day {
                     days.append(day)
                 }
             }
-            
-            let today = Date(date: NSDate())
-            if days.indexOf({ day in day.date == today }) == nil {
-                days.append(UserDataController.sharedController().createDayForToday())
+        }
+        
+        let today = Date(date: NSDate())
+        if days.indexOf({ day in day.date == today }) == nil {
+            let day = Day(date: today)
+            self.connection.readWriteWithBlock() { transaction in
+                transaction.setObject(day, forKey: day.id, inCollection: "days")
             }
+            days.append(day)
         }
         
         return sorted(days) { $0.date < $1.date }
@@ -83,16 +87,6 @@ struct UserDataController {
         self.connection.readWriteWithBlock() { transaction in
             transaction.setObject(day, forKey: day.id, inCollection: "days")
         }
-    }
-    
-    func createDayForToday() -> Day {
-        let day = Day(date: Date(date: NSDate()))
-        
-        self.connection.readWriteWithBlock() { transaction in
-            transaction.setObject(day, forKey: day.id, inCollection: "days")
-        }
-        
-        return day
     }
     
     func dayForToday() -> Day {
@@ -122,14 +116,19 @@ struct UserDataController {
         return list
     }
     
-    func listForDate(date: Date) -> List {
-        let list = List()
+    func updateListFromTemplates(#list: List, forDate date: Date) -> List {
         let templates = allTemplates()
         for template in templates {
             if !template.anytime && template.templateDays & date.dayOfWeek {
                 if let listID = template.listID {
                     let templateList = listWithID(listID)
-                    list.items += templateList.items.map { $0.copy() as TodoItem }
+                    list.items += templateList.items.mapFilter() { item in
+                        if !list.items.contains(item) {
+                            return item.copy() as? TodoItem
+                        } else {
+                            return nil
+                        }
+                    }
                 }
             }
         }
