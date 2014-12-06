@@ -171,6 +171,17 @@ struct UserDataController {
     
     // MARK: - Store
     
+    func storePoints() -> Int {
+        var points = 0
+        self.connection.readWithBlock() { transaction in
+            if let pts = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
+                points = pts.integerValue
+            }
+        }
+        
+        return points
+    }
+    
     func addPointsToStore(points: Int) -> Void {
         self.connection.readWriteWithBlock() { transaction in
             var currentPoints = 0
@@ -178,6 +189,33 @@ struct UserDataController {
                 currentPoints += storePoints.integerValue
             }
             transaction.setObject(NSNumber(integer: currentPoints + points), forKey: "points", inCollection: "store")
+        }
+    }
+    
+    func storeItems() -> [StoreItem] {
+        var items: [StoreItem] = []
+        self.connection.readWithBlock() { transaction in
+            transaction.enumerateKeysAndObjectsInCollection("store") { key, object, _ in
+                if let item = object as? StoreItem {
+                    items.append(item)
+                }
+            }
+        }
+        
+        return sorted(items) { $0.position < $1.position }
+    }
+    
+    func addOrUpdateStoreItem(item: StoreItem) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            transaction.setObject(item, forKey: item.id, inCollection: "store")
+        }
+    }
+    
+    func updateStoreItems(items: [StoreItem]) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            items.each() { item in
+                transaction.setObject(item, forKey: item.id, inCollection: "store")
+            }
         }
     }
 }

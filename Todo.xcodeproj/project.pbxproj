@@ -25,6 +25,8 @@
 		3255D8731A094EC500A60DC9 /* StoreItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D8721A094EC500A60DC9 /* StoreItem.swift */; };
 		32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32725BB119F9FC68007D79D8 /* UserDataController.swift */; };
 		32B5BD2A1A129A5600CD1AC1 /* EditTodoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */; };
+		32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */; };
+		32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */; };
 		32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */; };
 		32F1991A1A0D5E1F005B820E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1990E1A0D5E1F005B820E /* Array.swift */; };
 		32F1991B1A0D5E1F005B820E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1990F1A0D5E1F005B820E /* Dictionary.swift */; };
@@ -74,6 +76,8 @@
 		32725BB119F9FC68007D79D8 /* UserDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataController.swift; sourceTree = "<group>"; };
 		32725BB319F9FE2F007D79D8 /* Todo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Todo-Bridging-Header.h"; sourceTree = "<group>"; };
 		32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoItemViewController.swift; sourceTree = "<group>"; };
+		32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
+		32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditStoreItemViewController.swift; sourceTree = "<group>"; };
 		32F1990E1A0D5E1F005B820E /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		32F1990F1A0D5E1F005B820E /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		32F199101A0D5E1F005B820E /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 				320B87E21A2129D000BBAB5C /* TemplateDays.swift */,
 				322A5A5E1A26516B00B38949 /* DaysViewController.swift */,
 				322A5A601A265A3800B38949 /* DayViewController.swift */,
+				32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */,
+				32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
@@ -380,9 +386,11 @@
 				322A5A5F1A26516B00B38949 /* DaysViewController.swift in Sources */,
 				32F199231A0D5E1F005B820E /* Sequence.swift in Sources */,
 				32B5BD2A1A129A5600CD1AC1 /* EditTodoItemViewController.swift in Sources */,
+				32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */,
 				322A5A611A265A3800B38949 /* DayViewController.swift in Sources */,
 				32F199221A0D5E1F005B820E /* Range.swift in Sources */,
 				3255D8711A094EBB00A60DC9 /* TodoItem.swift in Sources */,
+				32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */,
 				324E8A811A0EB3F00075E544 /* TemplateViewController.swift in Sources */,
 				3255D86D1A094E9D00A60DC9 /* Template.swift in Sources */,
 				32F1991B1A0D5E1F005B820E /* Dictionary.swift in Sources */,
