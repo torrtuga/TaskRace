@@ -74,7 +74,7 @@ class TemplateViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as UITableViewCell
-            cell.textLabel.text = "Anytime"
+            cell.textLabel?.text = "Anytime"
             let anytimeSwitch = UISwitch()
             anytimeSwitch.on = template.anytime
             anytimeSwitch.addTarget(self, action: "switchValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
@@ -85,28 +85,28 @@ class TemplateViewController: UITableViewController {
             let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) as UITableViewCell
             switch indexPath.row {
             case 0:
-                cell.textLabel.text = TemplateDays.Sunday.stringValue
+                cell.textLabel?.text = TemplateDays.Sunday.stringValue
                 cell.tag = Int(TemplateDays.Sunday.rawValue)
             case 1:
-                cell.textLabel.text = TemplateDays.Monday.stringValue
+                cell.textLabel?.text = TemplateDays.Monday.stringValue
                 cell.tag = Int(TemplateDays.Monday.rawValue)
             case 2:
-                cell.textLabel.text = TemplateDays.Tuesday.stringValue
+                cell.textLabel?.text = TemplateDays.Tuesday.stringValue
                 cell.tag = Int(TemplateDays.Tuesday.rawValue)
             case 3:
-                cell.textLabel.text = TemplateDays.Wednesday.stringValue
+                cell.textLabel?.text = TemplateDays.Wednesday.stringValue
                 cell.tag = Int(TemplateDays.Wednesday.rawValue)
             case 4:
-                cell.textLabel.text = TemplateDays.Thursday.stringValue
+                cell.textLabel?.text = TemplateDays.Thursday.stringValue
                 cell.tag = Int(TemplateDays.Thursday.rawValue)
             case 5:
-                cell.textLabel.text = TemplateDays.Friday.stringValue
+                cell.textLabel?.text = TemplateDays.Friday.stringValue
                 cell.tag = Int(TemplateDays.Friday.rawValue)
             case 6:
-                cell.textLabel.text = TemplateDays.Saturday.stringValue
+                cell.textLabel?.text = TemplateDays.Saturday.stringValue
                 cell.tag = Int(TemplateDays.Saturday.rawValue)
             default:
-                cell.textLabel.text = "Not handled"
+                cell.textLabel?.text = "Not handled"
             }
             if template!.templateDays.rawValue & UInt(cell.tag) != 0 {
                 cell.accessoryType = .Checkmark
@@ -115,7 +115,7 @@ class TemplateViewController: UITableViewController {
         } else {
             let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as UITableViewCell
             let item = list.items[indexPath.row]
-            cell.textLabel.text = item.name
+            cell.textLabel?.text = item.name
             var detailText = ""
             if item.minutes > 0 {
                 detailText += "\(item.minutes)min,"

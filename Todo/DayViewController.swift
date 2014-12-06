@@ -85,29 +85,55 @@ class DayViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let item = list.items[indexPath.row]
+        let item = indexPath.section == 0 ? list.items[indexPath.row] : anytimeItems[indexPath.row]
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        cell.textLabel.text = item.name
+        cell.textLabel?.text = item.name
         var detailText = ""
         if item.minutes > 0 {
             detailText += "\(item.minutes)min,"
         }
         detailText += "\(item.points)pts"
         cell.detailTextLabel?.text = detailText
-        cell.accessoryType = .DisclosureIndicator
+        if item.completed {
+            cell.accessoryType = .Checkmark
+        }
+        
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let cell = tableView.cellForRowAtIndexPath(indexPath)!
-        if cell.accessoryType == .Checkmark {
-            cell.accessoryType = .None
-            // TODO: handle already checked case
-            // Should I ignore it or undo it?
+        let item = indexPath.section == 0 ? list.items[indexPath.row] : anytimeItems[indexPath.row]
+        if item.repeats {
+            let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
+            let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+                let numberTextField = alertController.textFields![0] as UITextField
+                if let numberComplete = numberTextField.text.toInt() {
+                    UserDataController.sharedController().addPointsToStore(numberComplete * item.points)
+                }
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
+            alertController.addTextFieldWithConfigurationHandler() { _ in }
+            alertController.addAction(cancelAction)
+            alertController.addAction(doneAction)
+            presentViewController(alertController, animated: true, completion: nil)
         } else {
-            cell.accessoryType = .Checkmark
-            // TODO: add points to store
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            let cell = tableView.cellForRowAtIndexPath(indexPath)!
+            if item.completed {
+                cell.accessoryType = .None
+                item.completed = false
+                UserDataController.sharedController().addPointsToStore(-item.points)
+            } else {
+                cell.accessoryType = .Checkmark
+                item.completed = true
+                UserDataController.sharedController().addPointsToStore(item.points)
+            }
+        }
+        
+        if indexPath.section == 0 {
+            UserDataController.sharedController().addOrUpdateList(list)
+        } else {
+            UserDataController.sharedController().updateAnytimeListsForDate(day.date)
         }
     }
     

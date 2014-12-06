@@ -122,12 +122,15 @@ struct UserDataController {
             if !template.anytime && template.templateDays & date.dayOfWeek {
                 if let listID = template.listID {
                     let templateList = listWithID(listID)
-                    list.items += templateList.items.mapFilter() { item in
-                        if !list.items.contains(item) {
-                            return item.copy() as? TodoItem
-                        } else {
-                            return nil
+                    templateList.items.each() { (item: TodoItem) -> Void in
+                        var completed = false
+                        if let index = list.items.indexOf(item) {
+                            let existingItem = list.items.removeAtIndex(index)
+                            completed = existingItem.completed
                         }
+                        let newItem = item.copy() as TodoItem
+                        newItem.completed = completed
+                        list.items.append(newItem)
                     }
                 }
             }
@@ -164,5 +167,17 @@ struct UserDataController {
     
     func anytimeTodoItemsForDate(date: Date) -> [TodoItem] {
         return anytimeListsForDate(date).map({ $0.items }).flatten()
+    }
+    
+    // MARK: - Store
+    
+    func addPointsToStore(points: Int) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            var currentPoints = 0
+            if let storePoints = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
+                currentPoints += storePoints.integerValue
+            }
+            transaction.setObject(NSNumber(integer: currentPoints + points), forKey: "points", inCollection: "store")
+        }
     }
 }
