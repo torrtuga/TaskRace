@@ -70,6 +70,8 @@ class StoreViewController: UITableViewController {
         cell.detailTextLabel?.text = "\(item.points)pts"
         if item.purchased {
             cell.accessoryType = .Checkmark
+        } else {
+            cell.accessoryType = .None
         }
         return cell
     }

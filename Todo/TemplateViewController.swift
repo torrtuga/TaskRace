@@ -110,6 +110,8 @@ class TemplateViewController: UITableViewController {
             }
             if template!.templateDays.rawValue & UInt(cell.tag) != 0 {
                 cell.accessoryType = .Checkmark
+            } else {
+                cell.accessoryType = .None
             }
             return cell
         } else {

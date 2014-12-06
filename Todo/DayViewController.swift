@@ -96,6 +96,8 @@ class DayViewController: UITableViewController {
         cell.detailTextLabel?.text = detailText
         if item.completed {
             cell.accessoryType = .Checkmark
+        } else {
+            cell.accessoryType = .None
         }
         
         return cell
