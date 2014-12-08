@@ -37,8 +37,8 @@ class DayViewController: UITableViewController {
             }
             
             UserDataController.sharedController().updateListFromTemplates(list: list, forDate: day.date)
-            
             anytimeItems = UserDataController.sharedController().anytimeTodoItemsForDate(day.date)
+            tableView.reloadData()
         }
     }
     
