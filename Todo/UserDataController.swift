@@ -211,6 +211,12 @@ struct UserDataController {
         }
     }
     
+    func deleteStoreItem(item: StoreItem) -> Void {
+        self.connection.readWriteWithBlock() { transaction in
+            transaction.removeObjectForKey(item.id, inCollection: "store")
+        }
+    }
+    
     func updateStoreItems(items: [StoreItem]) -> Void {
         self.connection.readWriteWithBlock() { transaction in
             items.each() { item in

@@ -124,8 +124,8 @@ class StoreViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            items.removeAtIndex(indexPath.row)
-            UserDataController.sharedController().updateStoreItems(items)
+            let item = items.removeAtIndex(indexPath.row)
+            UserDataController.sharedController().deleteStoreItem(item)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
