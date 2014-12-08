@@ -10,10 +10,19 @@ import UIKit
 
 class DaysViewController: UITableViewController {
     
-    var days: [Day] = []
+    var days: [Day]!
     
     override func viewDidLoad() {
         days = UserDataController.sharedController().allDays()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        if let lastDay = days.last {
+            if lastDay.date < Date(date: NSDate()) {
+                days = UserDataController.sharedController().allDays()
+                tableView.reloadData()
+            }
+        }
     }
     
     override func awakeFromNib() {
