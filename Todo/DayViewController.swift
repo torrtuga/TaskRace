@@ -110,7 +110,12 @@ class DayViewController: UITableViewController {
             let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
                 let numberTextField = alertController.textFields![0] as UITextField
                 if let numberComplete = numberTextField.text.toInt() {
-                    UserDataController.sharedController().addPointsToStore(numberComplete * item.points)
+                    let pointsToAdd = numberComplete * item.points
+                    UserDataController.sharedController().addPointsToStore(pointsToAdd)
+                    let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
+                    let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
+                    successAlert.addAction(cancelAction)
+                    self.presentViewController(successAlert, animated: true, completion: nil)
                 }
             }
             let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
