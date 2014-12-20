@@ -103,6 +103,9 @@ struct UserDataController {
             list = transaction.objectForKey(id, inCollection: "lists") as? List
         }
         if let list = list {
+            list.items = list.items.filter() { item in
+                return !item.completed
+            }
             return list
         } else {
             assert(false, "No list returned for id \(id)")
