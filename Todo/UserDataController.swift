@@ -149,27 +149,15 @@ struct UserDataController {
         }
     }
     
-    func anytimeListsForDate(date: Date) -> [List] {
-        return allTemplates().mapFilter() { template -> List? in
+    func anytimeListsForDate(date: Date) -> [(name: String, list: List)] {
+        return allTemplates().mapFilter() { template -> (String, List)? in
             if template.anytime && template.templateDays & date.dayOfWeek {
                 if let id = template.listID {
-                    return self.listWithID(id)
+                    return (template.name, self.listWithID(id))
                 }
             }
             return nil
         }
-    }
-    
-    func updateAnytimeListsForDate(date: Date) {
-        anytimeListsForDate(date).each() { list in
-            self.addOrUpdateList(list)
-        }
-    }
-    
-    // MARK: - TodoItems
-    
-    func anytimeTodoItemsForDate(date: Date) -> [TodoItem] {
-        return anytimeListsForDate(date).map({ $0.items }).flatten()
     }
     
     // MARK: - Store

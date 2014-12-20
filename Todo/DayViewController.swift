@@ -10,8 +10,8 @@ import UIKit
 
 class DayViewController: UITableViewController {
     
-    var list: List = List()
-    var anytimeItems: [TodoItem] = []
+    var todayList: List = List()
+    var anytimeSections: [(name: String, list: List)] = []
     var day: Day!
     
     override func viewDidLoad() {
@@ -29,24 +29,24 @@ class DayViewController: UITableViewController {
         if let day = day {
             navigationItem.title = day.date.string
             if let listID = day.listID {
-                list = UserDataController.sharedController().listWithID(listID)
+                todayList = UserDataController.sharedController().listWithID(listID)
             } else {
-                list = List()
-                day.listID = list.id
+                todayList = List()
+                day.listID = todayList.id
                 UserDataController.sharedController().addOrUpdateDay(day)
             }
             
-            UserDataController.sharedController().updateListFromTemplates(list: list, forDate: day.date)
-            anytimeItems = UserDataController.sharedController().anytimeTodoItemsForDate(day.date)
+            UserDataController.sharedController().updateListFromTemplates(list: todayList, forDate: day.date)
+            anytimeSections = UserDataController.sharedController().anytimeListsForDate(day.date).filter() { $0.list.items.count > 0 }
             tableView.reloadData()
         }
     }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
-        let position = list.items.count
+        let position = todayList.items.count
         let item = TodoItem(name: "New Item", position: position)
-        list.items.append(item)
-        UserDataController.sharedController().addOrUpdateList(list)
+        todayList.items.append(item)
+        UserDataController.sharedController().addOrUpdateList(todayList)
         let indexPath = NSIndexPath(forRow: position, inSection: 2)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
@@ -62,30 +62,28 @@ class DayViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedItem = list.items.removeAtIndex(sourceIndexPath.row)
-        list.items.insert(movedItem, atIndex: destinationIndexPath.row)
-        list.items.each(){ (i, t) -> Void in
+        let movedItem = todayList.items.removeAtIndex(sourceIndexPath.row)
+        todayList.items.insert(movedItem, atIndex: destinationIndexPath.row)
+        todayList.items.each(){ (i, t) -> Void in
             t.position = i
         }
-        UserDataController.sharedController().addOrUpdateList(list)
+        UserDataController.sharedController().addOrUpdateList(todayList)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
+        return anytimeSections.count + 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return list.items.count
-        } else if section == 1 {
-            return anytimeItems.count
+            return todayList.items.count
+        } else {
+            return anytimeSections[section - 1].list.items.count
         }
-        
-        return 0
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let item = indexPath.section == 0 ? list.items[indexPath.row] : anytimeItems[indexPath.row]
+        let item = itemAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         cell.textLabel?.text = item.name
         var detailText = ""
@@ -104,7 +102,7 @@ class DayViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let item = indexPath.section == 0 ? list.items[indexPath.row] : anytimeItems[indexPath.row]
+        let item = itemAtIndexPath(indexPath)
         if item.repeats {
             let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
             let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
@@ -140,29 +138,31 @@ class DayViewController: UITableViewController {
         }
         
         if indexPath.section == 0 {
-            UserDataController.sharedController().addOrUpdateList(list)
+            UserDataController.sharedController().addOrUpdateList(todayList)
         } else {
-            UserDataController.sharedController().updateAnytimeListsForDate(day.date)
+            UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 1].list)
         }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
-            return nil
-        } else if section == 1 && anytimeItems.count > 0 {
-            return "Anytime"
+            return "Today"
+        } else {
+            return "\(anytimeSections[section - 1].name) - Anytime"
         }
-        
-        return nil
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            var items = list.items
-            list.items.removeAtIndex(indexPath.row)
-            UserDataController.sharedController().addOrUpdateList(list)
+            var items = todayList.items
+            todayList.items.removeAtIndex(indexPath.row)
+            UserDataController.sharedController().addOrUpdateList(todayList)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
+    }
+    
+    private func itemAtIndexPath(indexPath: NSIndexPath) -> TodoItem {
+        return indexPath.section == 0 ? todayList.items[indexPath.row] : anytimeSections[indexPath.section - 1].list.items[indexPath.row];
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -179,7 +179,7 @@ class DayViewController: UITableViewController {
                     if let minutes = minutes {
                         item.minutes = minutes
                     }
-                    UserDataController.sharedController().addOrUpdateList(self.list)
+                    UserDataController.sharedController().addOrUpdateList(self.todayList)
                     self.tableView.reloadData()
                 }
             }
