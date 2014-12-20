@@ -18,6 +18,7 @@ class EditStoreItemViewController: UIViewController {
     
     override func viewDidLoad() {
         nameTextField.text = item.name
+        nameTextField.autocapitalizationType = .Sentences
         pointsTextField.text = "\(item.points)"
         repeatsSwitch.on = item.repeats
     }

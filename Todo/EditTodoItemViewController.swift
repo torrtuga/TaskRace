@@ -19,6 +19,7 @@ class EditTodoItemViewController: UIViewController {
     
     override func viewDidLoad() {
         nameTextField.text = item.name
+        nameTextField.autocapitalizationType = .Sentences
         pointsTextField.text = "\(item.points)"
         minutesTextField.text = "\(item.minutes)"
         repeatsSwitch.on = item.repeats

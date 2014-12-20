@@ -71,6 +71,7 @@ class TemplatesViewController: UITableViewController {
             let alertController = UIAlertController(title: "Edit Title", message: nil, preferredStyle: .Alert)
             alertController.addTextFieldWithConfigurationHandler() { textField in
                 textField.text = template.name
+                textField.autocapitalizationType = .Words
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
