@@ -103,9 +103,6 @@ struct UserDataController {
             list = transaction.objectForKey(id, inCollection: "lists") as? List
         }
         if let list = list {
-            list.items = list.items.filter() { item in
-                return !item.completed
-            }
             return list
         } else {
             assert(false, "No list returned for id \(id)")
@@ -153,7 +150,11 @@ struct UserDataController {
         return allTemplates().mapFilter() { template -> (String, List)? in
             if template.anytime && template.templateDays & date.dayOfWeek {
                 if let id = template.listID {
-                    return (template.name, self.listWithID(id))
+                    let list = self.listWithID(id)
+                    list.items = list.items.filter() { item in
+                        return !item.completed
+                    }
+                    return (template.name, list	)
                 }
             }
             return nil
