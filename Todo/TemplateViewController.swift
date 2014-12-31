@@ -27,7 +27,11 @@ class TemplateViewController: UITableViewController {
             }
         }
     }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.rightBarButtonItems?.append(editButtonItem())
+    }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
         let position = list.items.count

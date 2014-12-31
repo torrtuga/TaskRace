@@ -15,6 +15,7 @@ class DayViewController: UITableViewController {
     var day: Day!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         if day == nil {
             day = UserDataController.sharedController().dayForToday()
         }
