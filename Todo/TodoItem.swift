@@ -59,6 +59,14 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         item.repeats = repeats
         return item
     }
+    
+    func updateFromItem(otherItem: TodoItem) -> Void {
+        name = otherItem.name
+        points = otherItem.points
+        minutes = otherItem.minutes
+        position = otherItem.position
+        repeats = otherItem.repeats
+    }
 }
 
 func ==(left: TodoItem, right: TodoItem) -> Bool {

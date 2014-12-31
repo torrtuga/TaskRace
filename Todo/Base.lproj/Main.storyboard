@@ -83,7 +83,7 @@
         <scene sceneID="lKi-Rq-GZY">
             <objects>
                 <tableViewController id="VOE-MH-AXM" customClass="DayViewController" customModule="Todo" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B3W-c6-Dif">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="B3W-c6-Dif">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -114,6 +114,16 @@
                             <outlet property="delegate" destination="VOE-MH-AXM" id="OT8-aq-TC7"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="23x-eg-8z3">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="nhL-cf-hWE">
+                            <connections>
+                                <action selector="addPressed:" destination="VOE-MH-AXM" id="SYJ-W0-46j"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="OEI-CO-cL7" kind="show" identifier="EditItemSegue" id="Vkb-KH-nk6"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3AK-0k-ArT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -572,5 +582,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ng7-Cq-lT2"/>
+        <segue reference="Vkb-KH-nk6"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -18,6 +18,7 @@ class DayViewController: UITableViewController {
         if day == nil {
             day = UserDataController.sharedController().dayForToday()
         }
+        navigationItem.rightBarButtonItems?.append(editButtonItem())
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -33,10 +34,11 @@ class DayViewController: UITableViewController {
             } else {
                 todayList = List()
                 day.listID = todayList.id
+                UserDataController.sharedController().addOrUpdateList(todayList)
                 UserDataController.sharedController().addOrUpdateDay(day)
             }
             
-            UserDataController.sharedController().updateListFromTemplates(list: todayList, forDate: day.date)
+            UserDataController.sharedController().updateDayListFromTemplates(list: todayList, forDate: day.date)
             anytimeSections = UserDataController.sharedController().anytimeListsForDate(day.date).filter() { $0.list.items.count > 0 }
             tableView.reloadData()
         }
@@ -47,7 +49,7 @@ class DayViewController: UITableViewController {
         let item = TodoItem(name: "New Item", position: position)
         todayList.items.append(item)
         UserDataController.sharedController().addOrUpdateList(todayList)
-        let indexPath = NSIndexPath(forRow: position, inSection: 2)
+        let indexPath = NSIndexPath(forRow: position, inSection: 0)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
     
@@ -103,44 +105,48 @@ class DayViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let item = itemAtIndexPath(indexPath)
-        if item.repeats {
-            let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
-            let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
-                let numberTextField = alertController.textFields![0] as UITextField
-                if let numberComplete = numberTextField.text.toInt() {
-                    let pointsToAdd = numberComplete * item.points
-                    UserDataController.sharedController().addPointsToStore(pointsToAdd)
-                    let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
-                    let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
-                    successAlert.addAction(cancelAction)
-                    self.presentViewController(successAlert, animated: true, completion: nil)
+        if editing {
+            performSegueWithIdentifier("EditItemSegue", sender: item)
+        } else {
+            if item.repeats {
+                let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
+                let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+                    let numberTextField = alertController.textFields![0] as UITextField
+                    if let numberComplete = numberTextField.text.toInt() {
+                        let pointsToAdd = numberComplete * item.points
+                        UserDataController.sharedController().addPointsToStore(pointsToAdd)
+                        let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
+                        let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
+                        successAlert.addAction(cancelAction)
+                        self.presentViewController(successAlert, animated: true, completion: nil)
+                    }
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
+                alertController.addTextFieldWithConfigurationHandler() { textField in
+                    textField.keyboardType = .NumberPad
+                }
+                alertController.addAction(cancelAction)
+                alertController.addAction(doneAction)
+                presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                let cell = tableView.cellForRowAtIndexPath(indexPath)!
+                if item.completed {
+                    cell.accessoryType = .None
+                    item.completed = false
+                    UserDataController.sharedController().addPointsToStore(-item.points)
+                } else {
+                    cell.accessoryType = .Checkmark
+                    item.completed = true
+                    UserDataController.sharedController().addPointsToStore(item.points)
                 }
             }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
-            alertController.addTextFieldWithConfigurationHandler() { textField in
-                textField.keyboardType = .NumberPad
-            }
-            alertController.addAction(cancelAction)
-            alertController.addAction(doneAction)
-            presentViewController(alertController, animated: true, completion: nil)
-        } else {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)!
-            if item.completed {
-                cell.accessoryType = .None
-                item.completed = false
-                UserDataController.sharedController().addPointsToStore(-item.points)
+            
+            if indexPath.section == 0 {
+                UserDataController.sharedController().addOrUpdateList(todayList)
             } else {
-                cell.accessoryType = .Checkmark
-                item.completed = true
-                UserDataController.sharedController().addPointsToStore(item.points)
+                UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 1].list)
             }
-        }
-        
-        if indexPath.section == 0 {
-            UserDataController.sharedController().addOrUpdateList(todayList)
-        } else {
-            UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 1].list)
         }
     }
     

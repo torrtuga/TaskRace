@@ -116,21 +116,20 @@ struct UserDataController {
         return list
     }
     
-    func updateListFromTemplates(#list: List, forDate date: Date) -> List {
+    func updateDayListFromTemplates(#list: List, forDate date: Date) -> List {
         let templates = allTemplates()
         for template in templates {
             if !template.anytime && template.templateDays & date.dayOfWeek {
                 if let listID = template.listID {
                     let templateList = listWithID(listID)
-                    templateList.items.each() { (item: TodoItem) -> Void in
-                        var completed = false
-                        if let index = list.items.indexOf(item) {
-                            let existingItem = list.items.removeAtIndex(index)
-                            completed = existingItem.completed
+                    templateList.items.each() { (templateItem: TodoItem) -> Void in
+                        if let index = list.items.indexOf(templateItem) {
+                            let item = list.items[index]
+                            item.updateFromItem(templateItem)
+                        } else {
+                            let newItem = templateItem.copy() as TodoItem
+                            list.items.append(newItem)
                         }
-                        let newItem = item.copy() as TodoItem
-                        newItem.completed = completed
-                        list.items.append(newItem)
                     }
                 }
             }
