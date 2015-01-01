@@ -173,13 +173,29 @@ struct UserDataController {
         return points
     }
     
-    func addPointsToStore(points: Int) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
-            var currentPoints = 0
-            if let storePoints = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
-                currentPoints += storePoints.integerValue
+    func updateWithCompletedItem(item: AnyObject, numberComplete: Int) -> Void {
+        let pointsToAdd: Int = {
+            switch item {
+            case let storeItem as StoreItem:
+                return numberComplete * -storeItem.points
+            case let todoItem as TodoItem:
+                return numberComplete * todoItem.points
+            default:
+                return 0
             }
-            transaction.setObject(NSNumber(integer: currentPoints + points), forKey: "points", inCollection: "store")
+        }()
+        
+        if pointsToAdd != 0 {
+            self.connection.readWriteWithBlock() { transaction in
+                var currentPoints = 0
+                if let storePoints = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
+                    currentPoints += storePoints.integerValue
+                }
+                transaction.setObject(NSNumber(integer: currentPoints + pointsToAdd), forKey: "points", inCollection: "store")
+                
+                let historyItem = HistoryItem(name: item.name, points: item.points, dateCompleted: NSDate(), numberCompleted: numberComplete)
+                transaction.setObject(historyItem, forKey: historyItem.id, inCollection: "history")
+            }
         }
     }
     
@@ -214,5 +230,20 @@ struct UserDataController {
                 transaction.setObject(item, forKey: item.id, inCollection: "store")
             }
         }
+    }
+    
+    // MARK: - History
+    
+    func historyItems() -> [HistoryItem] {
+        var items: [HistoryItem] = []
+        self.connection.readWithBlock() { transaction in
+            transaction.enumerateKeysAndObjectsInCollection("history") { key, object, _ in
+                if let item = object as? HistoryItem {
+                    items.append(item)
+                }
+            }
+        }
+        
+        return sorted(items) { $0.dateCompleted.timeIntervalSince1970 > $1.dateCompleted.timeIntervalSince1970 }
     }
 }

@@ -115,7 +115,7 @@ class DayViewController: UITableViewController {
                     let numberTextField = alertController.textFields![0] as UITextField
                     if let numberComplete = numberTextField.text.toInt() {
                         let pointsToAdd = numberComplete * item.points
-                        UserDataController.sharedController().addPointsToStore(pointsToAdd)
+                        UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
                         let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
                         let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
                         successAlert.addAction(cancelAction)
@@ -135,11 +135,11 @@ class DayViewController: UITableViewController {
                 if item.completed {
                     cell.accessoryType = .None
                     item.completed = false
-                    UserDataController.sharedController().addPointsToStore(-item.points)
+                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: -1)
                 } else {
                     cell.accessoryType = .Checkmark
                     item.completed = true
-                    UserDataController.sharedController().addPointsToStore(item.points)
+                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: 1)
                 }
             }
             

@@ -86,7 +86,7 @@ class StoreViewController: UITableViewController {
                 let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
                     let numberTextField = alertController.textFields![0] as UITextField
                     if let numberComplete = numberTextField.text.toInt() {
-                        UserDataController.sharedController().addPointsToStore(numberComplete * -item.points)
+                        UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
                         self.updateTitle()
                     }
                 }
@@ -101,11 +101,11 @@ class StoreViewController: UITableViewController {
                 if item.purchased {
                     cell.accessoryType = .None
                     item.purchased = false
-                    UserDataController.sharedController().addPointsToStore(item.points)
+                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: -1)
                 } else {
                     cell.accessoryType = .Checkmark
                     item.purchased = true
-                    UserDataController.sharedController().addPointsToStore(-item.points)
+                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: 1)
                 }
                 updateTitle()
             }
@@ -147,5 +147,4 @@ class StoreViewController: UITableViewController {
             }
         }
     }
-    
 }
