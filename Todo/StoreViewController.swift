@@ -91,7 +91,9 @@ class StoreViewController: UITableViewController {
                     }
                 }
                 let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
-                alertController.addTextFieldWithConfigurationHandler() { _ in }
+                alertController.addTextFieldWithConfigurationHandler() { textField in
+                    textField.keyboardType = .NumberPad
+                }
                 alertController.addAction(cancelAction)
                 alertController.addAction(doneAction)
                 presentViewController(alertController, animated: true, completion: nil)
