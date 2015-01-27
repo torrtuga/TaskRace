@@ -72,6 +72,7 @@ class TemplatesViewController: UITableViewController {
             alertController.addTextFieldWithConfigurationHandler() { textField in
                 textField.text = template.name
                 textField.autocapitalizationType = .Words
+                textField.clearButtonMode = UITextFieldViewMode.WhileEditing
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
