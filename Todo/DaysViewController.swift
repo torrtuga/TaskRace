@@ -13,20 +13,20 @@ class DaysViewController: UITableViewController {
     var days: [Day]!
     
     override func viewDidLoad() {
-        days = UserDataController.sharedController().allDays()
+        updateData()
     }
     
     override func viewWillAppear(animated: Bool) {
-        if let lastDay = days.last {
+        if let lastDay = days.first {
             if lastDay.date < Date(date: NSDate()) {
-                days = UserDataController.sharedController().allDays()
+                updateData()
                 tableView.reloadData()
             }
         }
     }
     
-    override func awakeFromNib() {
-        tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: days.count - 1, inSection: 0), atScrollPosition: UITableViewScrollPosition.Top, animated: false)
+    private func updateData() {
+        days = UserDataController.sharedController().allDays().reverse()
     }
     
     // MARK: - Table View
