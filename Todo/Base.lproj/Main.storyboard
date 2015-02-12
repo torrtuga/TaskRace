@@ -89,7 +89,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="InfoCell" rowHeight="80" id="OAO-gd-ryP">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="InfoCell" rowHeight="80" id="OAO-gd-ryP" customClass="DayInfoCell" customModule="Todo" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="OAO-gd-ryP" id="gxK-OV-20e">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -182,6 +182,11 @@
                                         <constraint firstItem="xil-xX-ZsG" firstAttribute="top" secondItem="gxK-OV-20e" secondAttribute="top" id="vXo-9m-Xvb"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="endTimeLabel" destination="5Jm-gY-I8L" id="qYI-EB-JNj"/>
+                                    <outlet property="pointsLabel" destination="E10-Sg-bMB" id="gum-92-6cV"/>
+                                    <outlet property="totalTimeLabel" destination="4xd-0a-fjU" id="FyK-r2-Zyc"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="qBO-0x-2ge" detailTextLabel="Hud-CD-kQX" style="IBUITableViewCellStyleValue1" id="o8n-Ls-ltT">
                                 <autoresizingMask key="autoresizingMask"/>

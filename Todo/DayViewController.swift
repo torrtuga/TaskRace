@@ -10,6 +10,8 @@ import UIKit
 
 class DayViewController: UITableViewController {
     
+    let timeFormatter = NSDateFormatter()
+    
     var todayList: List = List()
     var anytimeSections: [(name: String, list: List)] = []
     var day: Day!
@@ -20,6 +22,10 @@ class DayViewController: UITableViewController {
             day = UserDataController.sharedController().dayForToday()
         }
         navigationItem.rightBarButtonItems?.append(editButtonItem())
+        
+        timeFormatter.AMSymbol = "am"
+        timeFormatter.PMSymbol = "pm"
+        timeFormatter.dateFormat = "h:mma"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -97,7 +103,22 @@ class DayViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as DayInfoCell
+            let (completedPoints, totalPoints, remainingTime, totalTime) = todayList.items.reduce((0, 0, 0, 0)) { (current: (completedPoints: Int, totalPoints: Int, remainingTime: Int, totalTime: Int), item) in
+                let newCompletedPoints = item.completed ? item.points + current.completedPoints : current.completedPoints
+                let newTotalPoints = current.totalPoints + item.points
+                let newRemainingTime = item.completed ? current.remainingTime : current.remainingTime + item.minutes
+                let newTotalTime = current.totalTime + item.minutes
+                return (newCompletedPoints, newTotalPoints, newRemainingTime, newTotalTime)
+            }
+            cell.pointsLabel.text = "\(completedPoints)/\(totalPoints)"
+            
+            let (totalTimeHours, totalTimeMinutes) = quotientAndRemainder(totalTime, divisor: 60)
+            cell.totalTimeLabel.text = "\(totalTimeHours):\(totalTimeMinutes)"
+            
+            let endTime = NSDate().dateByAddingTimeInterval(NSTimeInterval(remainingTime * 60))
+            cell.endTimeLabel.text = timeFormatter.stringFromDate(endTime)
+            
             return cell
         } else {
             let item = itemAtIndexPath(indexPath)
@@ -163,14 +184,16 @@ class DayViewController: UITableViewController {
             } else {
                 UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 1].list)
             }
+            
+            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
         }
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 1 {
             return "Today"
-        } else if section == 2 {
-            return "\(anytimeSections[section - 1].name) - Anytime"
+        } else if section > 1 {
+            return "\(anytimeSections[section - 2].name) - Anytime"
         }
         
         return nil
@@ -208,6 +231,10 @@ class DayViewController: UITableViewController {
                 }
             }
         }
+    }
+    
+    private func quotientAndRemainder(dividend: Int, divisor: Int) -> (Int, Int) {
+        return (dividend / divisor, dividend % divisor)
     }
     
 }

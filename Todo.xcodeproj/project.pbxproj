@@ -13,6 +13,7 @@
 		320B7BF019F73BBE00E8B10C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */; };
 		320B7BFC19F73BBE00E8B10C /* TodoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B7BFB19F73BBE00E8B10C /* TodoTests.swift */; };
 		320B87E31A2129D000BBAB5C /* TemplateDays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320B87E21A2129D000BBAB5C /* TemplateDays.swift */; };
+		322119B11A8CFA3000C709CA /* DayInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322119B01A8CFA3000C709CA /* DayInfoCell.swift */; };
 		322A5A5F1A26516B00B38949 /* DaysViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A5A5E1A26516B00B38949 /* DaysViewController.swift */; };
 		322A5A611A265A3800B38949 /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 322A5A601A265A3800B38949 /* DayViewController.swift */; };
 		323147531A55901A00F01B85 /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323147521A55901A00F01B85 /* HistoryItem.swift */; };
@@ -65,6 +66,7 @@
 		320B7BFA19F73BBE00E8B10C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320B7BFB19F73BBE00E8B10C /* TodoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTests.swift; sourceTree = "<group>"; };
 		320B87E21A2129D000BBAB5C /* TemplateDays.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateDays.swift; sourceTree = "<group>"; };
+		322119B01A8CFA3000C709CA /* DayInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayInfoCell.swift; sourceTree = "<group>"; };
 		322A5A5E1A26516B00B38949 /* DaysViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaysViewController.swift; sourceTree = "<group>"; };
 		322A5A601A265A3800B38949 /* DayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
 		323147521A55901A00F01B85 /* HistoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				320B87E21A2129D000BBAB5C /* TemplateDays.swift */,
 				322A5A5E1A26516B00B38949 /* DaysViewController.swift */,
 				322A5A601A265A3800B38949 /* DayViewController.swift */,
+				322119B01A8CFA3000C709CA /* DayInfoCell.swift */,
 				32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */,
 				32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */,
 				323147541A5592F200F01B85 /* HistoryViewController.swift */,
@@ -389,6 +392,7 @@
 			files = (
 				323147551A5592F200F01B85 /* HistoryViewController.swift in Sources */,
 				32F199241A0D5E1F005B820E /* String.swift in Sources */,
+				322119B11A8CFA3000C709CA /* DayInfoCell.swift in Sources */,
 				32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */,
 				32F1991A1A0D5E1F005B820E /* Array.swift in Sources */,
 				322A5A5F1A26516B00B38949 /* DaysViewController.swift in Sources */,
