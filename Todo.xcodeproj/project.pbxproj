@@ -256,9 +256,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		320B7BDD19F73BBE00E8B10C /* Todo */ = {
+		320B7BDD19F73BBE00E8B10C /* Task Race */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "Todo" */;
+			buildConfigurationList = 320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "Task Race" */;
 			buildPhases = (
 				E6146E424911B6D875B32D87 /* Check Pods Manifest.lock */,
 				320B7BDA19F73BBE00E8B10C /* Sources */,
@@ -270,7 +270,7 @@
 			);
 			dependencies = (
 			);
-			name = Todo;
+			name = "Task Race";
 			productName = Todo;
 			productReference = 320B7BDE19F73BBE00E8B10C /* Todo.app */;
 			productType = "com.apple.product-type.application";
@@ -326,7 +326,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				320B7BDD19F73BBE00E8B10C /* Todo */,
+				320B7BDD19F73BBE00E8B10C /* Task Race */,
 				320B7BF419F73BBE00E8B10C /* TodoTests */,
 			);
 		};
@@ -437,7 +437,7 @@
 /* Begin PBXTargetDependency section */
 		320B7BF719F73BBE00E8B10C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 320B7BDD19F73BBE00E8B10C /* Todo */;
+			target = 320B7BDD19F73BBE00E8B10C /* Task Race */;
 			targetProxy = 320B7BF619F73BBE00E8B10C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -620,7 +620,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "Todo" */ = {
+		320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "Task Race" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				320B7C0019F73BBE00E8B10C /* Debug */,
