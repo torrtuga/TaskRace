@@ -182,7 +182,7 @@ class DayViewController: UITableViewController {
             if indexPath.section == 1 {
                 UserDataController.sharedController().addOrUpdateList(todayList)
             } else {
-                UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 1].list)
+                UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 2].list)
             }
             
             self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
