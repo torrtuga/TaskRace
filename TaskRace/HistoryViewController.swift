@@ -44,6 +44,7 @@ class HistoryViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title
+        let totalPoints = sections[section].items.map { $0.points }.reduce(0, +)
+        return sections[section].title + " (\(totalPoints) points)"
     }
 }
