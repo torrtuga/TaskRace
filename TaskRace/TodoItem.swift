@@ -16,6 +16,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
     var completed: Bool
     var position: Int
     var repeats: Bool
+    var repeatCount: Int
+    var numberCompleted: Int
     
     private init(id: String, name: String, position: Int) {
         self.id = id
@@ -25,6 +27,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         completed = false
         self.position = position
         repeats = false
+        repeatCount = 0
+        numberCompleted = 0
     }
     
     convenience init(name: String, position: Int) {
@@ -39,6 +43,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         completed = aDecoder.decodeBoolForKey("completed")
         position = aDecoder.decodeIntegerForKey("position")
         repeats = aDecoder.decodeBoolForKey("repeats")
+        repeatCount = aDecoder.decodeIntegerForKey("repeatCount")
+        numberCompleted = aDecoder.decodeIntegerForKey("numberCompleted")
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -49,6 +55,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         aCoder.encodeBool(completed, forKey: "completed")
         aCoder.encodeInteger(position, forKey: "position")
         aCoder.encodeBool(repeats, forKey: "repeats")
+        aCoder.encodeInteger(repeatCount, forKey: "repeatCount")
+        aCoder.encodeInteger(numberCompleted, forKey: "numberCompleted")
     }
     
     func copyWithZone(zone: NSZone) -> AnyObject {
@@ -57,6 +65,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         item.minutes = minutes
         item.completed = completed
         item.repeats = repeats
+        item.repeatCount = repeatCount
+        item.numberCompleted = numberCompleted
         return item
     }
     
@@ -66,6 +76,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         minutes = otherItem.minutes
         position = otherItem.position
         repeats = otherItem.repeats
+        repeatCount = otherItem.repeatCount
+        numberCompleted = otherItem.numberCompleted
     }
 }
 

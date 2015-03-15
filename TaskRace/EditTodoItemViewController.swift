@@ -14,23 +14,41 @@ class EditTodoItemViewController: UIViewController {
     @IBOutlet weak var pointsTextField: UITextField!
     @IBOutlet weak var minutesTextField: UITextField!
     @IBOutlet weak var repeatsSwitch: UISwitch!
-    var item: TodoItem!
-    var saveFunction: (name: String, points: Int?, minutes: Int?, repeats: Bool) -> Void = {_, _, _, _ in println("Save function not implemented") }
+    @IBOutlet weak var repeatCountLabel: UILabel!
+    @IBOutlet weak var repeatHintLabel: UILabel!
+    @IBOutlet weak var repeatCountTextField: UITextField!
+    
+    var item: TodoItem?
+    var saveFunction: (name: String, points: Int?, minutes: Int?, repeats: Bool, repeatCount: Int?) -> Void = {_, _, _, _, _ in println("Save function not implemented") }
     
     override func viewDidLoad() {
-        nameTextField.text = item.name
-        nameTextField.autocapitalizationType = .Sentences
-        pointsTextField.text = "\(item.points)"
-        minutesTextField.text = "\(item.minutes)"
-        repeatsSwitch.on = item.repeats
+        if let item = item {
+            nameTextField.text = item.name
+            nameTextField.autocapitalizationType = .Sentences
+            pointsTextField.text = "\(item.points)"
+            minutesTextField.text = "\(item.minutes)"
+            repeatsSwitch.on = item.repeats
+            repeatCountTextField.text = "\(item.repeatCount)"
+            updateHidden()
+        }
     }
     
     @IBAction func cancelPressed(sender: UIBarButtonItem) {
         navigationController?.popViewControllerAnimated(true)
     }
     
+    @IBAction func repeatsSwitchChanged() {
+        updateHidden()
+    }
+    
     @IBAction func savePressed(sender: UIBarButtonItem) {
-        saveFunction(name: nameTextField.text, points: pointsTextField.text.toInt(), minutes: minutesTextField.text.toInt(), repeats: repeatsSwitch.on)
+        saveFunction(name: nameTextField.text, points: pointsTextField.text.toInt(), minutes: minutesTextField.text.toInt(), repeats: repeatsSwitch.on, repeatCount: repeatCountTextField.text.toInt())
         navigationController?.popViewControllerAnimated(true)
+    }
+    
+    private func updateHidden() {
+        repeatCountLabel.hidden = !repeatsSwitch.on
+        repeatCountTextField.hidden = !repeatsSwitch.on
+        repeatHintLabel.hidden = !repeatsSwitch.on
     }
 }

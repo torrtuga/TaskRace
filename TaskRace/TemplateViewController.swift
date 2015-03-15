@@ -179,7 +179,7 @@ class TemplateViewController: UITableViewController {
         if let item = sender as? TodoItem {
             if let editViewController = segue.destinationViewController as? EditTodoItemViewController {
                 editViewController.item = item
-                editViewController.saveFunction = { name, points, minutes, repeats in
+                editViewController.saveFunction = { name, points, minutes, repeats, repeatCount in
                     item.name = name
                     item.repeats = repeats
                     if let points = points {
@@ -189,6 +189,11 @@ class TemplateViewController: UITableViewController {
                     if let minutes = minutes {
                         item.minutes = minutes
                     }
+                    
+                    if let repeatCount = repeatCount {
+                        item.repeatCount = repeatCount
+                    }
+                    
                     UserDataController.sharedController().addOrUpdateList(self.list)
                     self.tableView.reloadData()
                 }

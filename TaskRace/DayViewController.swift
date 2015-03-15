@@ -123,7 +123,7 @@ class DayViewController: UITableViewController {
         } else {
             let item = itemAtIndexPath(indexPath)
             let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-            cell.textLabel?.text = item.name
+            cell.textLabel?.text = (item.repeats && item.repeatCount > 0 ? "\(item.numberCompleted)/\(item.repeatCount) " : "") + item.name
             var detailText = ""
             if item.minutes > 0 {
                 detailText += "\(item.minutes)min,"
@@ -145,13 +145,27 @@ class DayViewController: UITableViewController {
         if editing {
             performSegueWithIdentifier("EditItemSegue", sender: item)
         } else {
+            let updateFunc: () -> Void = {
+                if indexPath.section == 1 {
+                    UserDataController.sharedController().addOrUpdateList(self.todayList)
+                } else {
+                    UserDataController.sharedController().addOrUpdateList(self.anytimeSections[indexPath.section - 2].list)
+                }
+                
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+            }
             if item.repeats {
                 let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
                 let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
                     let numberTextField = alertController.textFields![0] as UITextField
                     if let numberComplete = numberTextField.text.toInt() {
                         let pointsToAdd = numberComplete * item.points
+                        item.numberCompleted += numberComplete
+                        item.completed = item.repeatCount > 0 && item.numberCompleted >= item.repeatCount
                         UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
+                        updateFunc()
+                        
                         let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
                         let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
                         successAlert.addAction(cancelAction)
@@ -166,26 +180,12 @@ class DayViewController: UITableViewController {
                 alertController.addAction(doneAction)
                 presentViewController(alertController, animated: true, completion: nil)
             } else {
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                let cell = tableView.cellForRowAtIndexPath(indexPath)!
-                if item.completed {
-                    cell.accessoryType = .None
-                    item.completed = false
-                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: -1)
-                } else {
-                    cell.accessoryType = .Checkmark
-                    item.completed = true
-                    UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: 1)
-                }
+                item.completed = !item.completed
+                let numberCompleted = item.completed ? 1 : -1
+                UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberCompleted)
+                
+                updateFunc()
             }
-            
-            if indexPath.section == 1 {
-                UserDataController.sharedController().addOrUpdateList(todayList)
-            } else {
-                UserDataController.sharedController().addOrUpdateList(anytimeSections[indexPath.section - 2].list)
-            }
-            
-            self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
         }
     }
     
@@ -216,7 +216,7 @@ class DayViewController: UITableViewController {
         if let item = sender as? TodoItem {
             if let editViewController = segue.destinationViewController as? EditTodoItemViewController {
                 editViewController.item = item
-                editViewController.saveFunction = { name, points, minutes, repeats in
+                editViewController.saveFunction = { name, points, minutes, repeats, repeatCount in
                     item.name = name
                     item.repeats = repeats
                     if let points = points {
@@ -226,6 +226,11 @@ class DayViewController: UITableViewController {
                     if let minutes = minutes {
                         item.minutes = minutes
                     }
+                    
+                    if let repeatCount = repeatCount {
+                        item.repeatCount = repeatCount
+                    }
+                    
                     UserDataController.sharedController().addOrUpdateList(self.todayList)
                     self.tableView.reloadData()
                 }
