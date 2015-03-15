@@ -105,10 +105,26 @@ class DayViewController: UITableViewController {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as DayInfoCell
             let (completedPoints, totalPoints, remainingTime, totalTime) = todayList.items.reduce((0, 0, 0, 0)) { (current: (completedPoints: Int, totalPoints: Int, remainingTime: Int, totalTime: Int), item) in
-                let newCompletedPoints = item.completed ? item.points + current.completedPoints : current.completedPoints
-                let newTotalPoints = current.totalPoints + item.points
-                let newRemainingTime = item.completed ? current.remainingTime : current.remainingTime + item.minutes
-                let newTotalTime = current.totalTime + item.minutes
+                let newCompletedPoints = current.completedPoints + {
+                    if item.repeats {
+                        return item.points * item.numberCompleted
+                    } else {
+                        return item.completed ? item.points : 0
+                    }
+                }()
+                
+                let newTotalPoints = current.totalPoints + (item.points * (item.repeatCount > 0 ? item.repeatCount : 1))
+                
+                let newRemainingTime = current.remainingTime + {
+                    if item.repeats {
+                        return item.minutes * max(0, item.repeatCount - item.numberCompleted)
+                    } else {
+                        return item.completed ? 0 : item.minutes
+                    }
+                }()
+                
+                let newTotalTime = current.totalTime + (item.minutes * (item.repeatCount > 0 ? item.repeatCount : 1))
+                
                 return (newCompletedPoints, newTotalPoints, newRemainingTime, newTotalTime)
             }
             cell.pointsLabel.text = "\(completedPoints)/\(totalPoints)"
