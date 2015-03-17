@@ -77,7 +77,6 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         position = otherItem.position
         repeats = otherItem.repeats
         repeatCount = otherItem.repeatCount
-        numberCompleted = otherItem.numberCompleted
     }
 }
 
