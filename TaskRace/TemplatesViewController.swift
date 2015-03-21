@@ -10,19 +10,25 @@ import UIKit
 
 class TemplatesViewController: UITableViewController {
     
-    var templates: [Template] = []
+    var sections: [(title: String, templates: [Template])] = []
     
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = editButtonItem()
-        templates = UserDataController.sharedController().allTemplates()
         tableView.allowsSelectionDuringEditing = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
+        updateData()
+    }
+    
+    private func updateData() {
+        let templates = UserDataController.sharedController().allTemplates()
+        sections = [("Regular", templates.filter { !$0.anytime }), ("Anytime", templates.filter { $0.anytime })]
         tableView.reloadData()
     }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
+        var templates = sections[0].templates
         let position = templates.count
         let template = Template(name: "New Template", position: position)
         UserDataController.sharedController().addOrUpdateTemplate(template)
@@ -37,36 +43,48 @@ class TemplatesViewController: UITableViewController {
         return true
     }
     
+    override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+        return sourceIndexPath.section == proposedDestinationIndexPath.section ? proposedDestinationIndexPath : sourceIndexPath
+    }
+    
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
     
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedTemplate = templates.removeAtIndex(sourceIndexPath.row)
-        templates.insert(movedTemplate, atIndex: destinationIndexPath.row)
-        templates.each(){ (i, t) -> Void in
-            t.position = i
+        let movedTemplate = sections[sourceIndexPath.section].templates.removeAtIndex(sourceIndexPath.row)
+        sections[destinationIndexPath.section].templates.insert(movedTemplate, atIndex: destinationIndexPath.row)
+        for section in sections {
+            section.templates.each { i, t in
+                t.position = i
+            }
+            
+            UserDataController.sharedController().updateTemplates(section.templates)
         }
-        UserDataController.sharedController().updateTemplates(templates)
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return sections.count
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return templates.count
+        return sections[section].templates.count
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].templates.count > 0 ? sections[section].title : nil
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let templates = sections[indexPath.section].templates
         cell.textLabel?.text = templates[indexPath.row].name
         cell.detailTextLabel?.text = daysStringFromTemplateDays(templates[indexPath.row].templateDays)
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let template = templates[indexPath.row]
+        let template = sections[indexPath.section].templates[indexPath.row]
         if editing {
             let alertController = UIAlertController(title: "Edit Title", message: nil, preferredStyle: .Alert)
             alertController.addTextFieldWithConfigurationHandler() { textField in
@@ -89,12 +107,10 @@ class TemplatesViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // TODO: handle deletion
+            var templates = sections[indexPath.section].templates
             UserDataController.sharedController().removeTemplate(templates[indexPath.row])
             templates.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
         }
     }
     
