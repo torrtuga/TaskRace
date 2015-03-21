@@ -38,7 +38,7 @@ class HistoryViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         let item = sections[indexPath.section].items[indexPath.row]
-        cell.textLabel?.text = "\(item.name) (\(item.numberCompleted))"
+        cell.textLabel?.text = item.name + (item.numberCompleted > 1 ? " (\(item.numberCompleted))" : "")
         cell.detailTextLabel?.text = "\(item.points)pts"
         return cell
     }

@@ -193,7 +193,7 @@ struct UserDataController {
                 }
                 transaction.setObject(NSNumber(integer: currentPoints + pointsToAdd), forKey: "points", inCollection: "store")
                 
-                let historyItem = HistoryItem(name: item.name, points: item.points, dateCompleted: NSDate(), numberCompleted: numberComplete)
+                let historyItem = HistoryItem(name: item.name, points: pointsToAdd, dateCompleted: NSDate(), numberCompleted: numberComplete)
                 transaction.setObject(historyItem, forKey: historyItem.id, inCollection: "history")
             }
         }
