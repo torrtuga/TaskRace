@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Template: NSObject, NSCoding {
+class Template: NSObject, NSCoding, Equatable {
     let id: String
     var name: String
     var listID: String?
@@ -42,4 +42,8 @@ class Template: NSObject, NSCoding {
         aCoder.encodeInteger(position, forKey: "position")
         aCoder.encodeBool(anytime, forKey: "anytime")
     }
+}
+
+func ==(lhs: Template, rhs: Template) -> Bool {
+    return lhs.id == rhs.id
 }

@@ -19,6 +19,7 @@
 		323147531A55901A00F01B85 /* HistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323147521A55901A00F01B85 /* HistoryItem.swift */; };
 		323147551A5592F200F01B85 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323147541A5592F200F01B85 /* HistoryViewController.swift */; };
 		323385BE19FC4EFF0043159E /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323385BD19FC4EFF0043159E /* Date.swift */; };
+		323E8E111AC4532E0034317E /* ProfilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 323E8E101AC4532E0034317E /* ProfilesViewController.swift */; };
 		324E8A811A0EB3F00075E544 /* TemplateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E8A801A0EB3F00075E544 /* TemplateViewController.swift */; };
 		324E8A831A0EBFDB0075E544 /* TodoItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */; };
 		3255D86B1A094E9100A60DC9 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D86A1A094E9100A60DC9 /* Day.swift */; };
@@ -72,6 +73,7 @@
 		323147521A55901A00F01B85 /* HistoryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryItem.swift; sourceTree = "<group>"; };
 		323147541A5592F200F01B85 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		323385BD19FC4EFF0043159E /* Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		323E8E101AC4532E0034317E /* ProfilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilesViewController.swift; sourceTree = "<group>"; };
 		324E8A801A0EB3F00075E544 /* TemplateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateViewController.swift; sourceTree = "<group>"; };
 		324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoItemCell.swift; sourceTree = "<group>"; };
 		3255D86A1A094E9100A60DC9 /* Day.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */,
 				32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */,
 				323147541A5592F200F01B85 /* HistoryViewController.swift */,
+				323E8E101AC4532E0034317E /* ProfilesViewController.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
@@ -412,6 +415,7 @@
 				32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */,
 				323385BE19FC4EFF0043159E /* Date.swift in Sources */,
 				3255D86B1A094E9100A60DC9 /* Day.swift in Sources */,
+				323E8E111AC4532E0034317E /* ProfilesViewController.swift in Sources */,
 				32F199211A0D5E1F005B820E /* NSArray.swift in Sources */,
 				32F1991D1A0D5E1F005B820E /* ExSwift.swift in Sources */,
 				320B7BE419F73BBE00E8B10C /* AppDelegate.swift in Sources */,

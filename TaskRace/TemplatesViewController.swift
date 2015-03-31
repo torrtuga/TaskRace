@@ -19,12 +19,12 @@ class TemplatesViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         updateData()
+        tableView.reloadData()
     }
     
     private func updateData() {
         let templates = UserDataController.sharedController().allTemplates()
         sections = [("Regular", templates.filter { !$0.anytime }), ("Anytime", templates.filter { $0.anytime })]
-        tableView.reloadData()
     }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
@@ -32,7 +32,7 @@ class TemplatesViewController: UITableViewController {
         let position = templates.count
         let template = Template(name: "New Template", position: position)
         UserDataController.sharedController().addOrUpdateTemplate(template)
-        templates.append(template)
+        updateData()
         let indexPath = NSIndexPath(forRow: position, inSection: 0)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
     }
@@ -97,6 +97,7 @@ class TemplatesViewController: UITableViewController {
                 let textField = alertController.textFields!.first as UITextField
                 template.name = textField.text
                 UserDataController.sharedController().addOrUpdateTemplate(template)
+                self.updateData()
                 self.tableView.reloadData()
             }))
             self .presentViewController(alertController, animated: true, completion: nil)
@@ -109,7 +110,7 @@ class TemplatesViewController: UITableViewController {
         if editingStyle == .Delete {
             var templates = sections[indexPath.section].templates
             UserDataController.sharedController().removeTemplate(templates[indexPath.row])
-            templates.removeAtIndex(indexPath.row)
+            updateData()
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }

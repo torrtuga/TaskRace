@@ -14,13 +14,10 @@ class DayViewController: UITableViewController {
     
     var todayList: List = List()
     var anytimeSections: [(name: String, list: List)] = []
-    var day: Day!
+    var day: Day?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if day == nil {
-            day = UserDataController.sharedController().dayForToday()
-        }
         navigationItem.rightBarButtonItems?.append(editButtonItem())
         
         timeFormatter.AMSymbol = "am"
@@ -34,6 +31,7 @@ class DayViewController: UITableViewController {
     }
     
     private func updateData() {
+        day = UserDataController.sharedController().dayForToday()
         if let day = day {
             navigationItem.title = day.date.string
             if let listID = day.listID {

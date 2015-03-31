@@ -53,7 +53,7 @@ class DaysViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destination = segue.destinationViewController as? DayViewController {
-            destination.day = sender as Day
+            destination.day = sender as? Day
         }
     }
     

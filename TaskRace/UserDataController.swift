@@ -9,19 +9,47 @@
 import Foundation
 
 struct UserDataController {
-    private static let sharedInstance = UserDataController()
+    private static var sharedInstance = UserDataController()
     let database: YapDatabase
     let connection: YapDatabaseConnection
+    static var currentProfile: String {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey("current_profile") ?? "Default"
+        }
+        set {
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "current_profile")
+            sharedInstance = UserDataController()
+        }
+    }
     
     static func sharedController() -> UserDataController {
         return UserDataController.sharedInstance
     }
     
     private init() {
-        let dbPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent("data")
-        NSFileManager.defaultManager().createDirectoryAtPath(dbPath, withIntermediateDirectories: true, attributes: nil, error: nil)
-        database = YapDatabase(path: dbPath)
+        database = YapDatabase(path: UserDataController.databasePath())
         connection = database.newConnection()
+    }
+    
+    private static func databasePath() -> String {
+        let dbPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent(currentProfile + "Data")
+        let oldPath = dbPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent("data")
+        
+        NSFileManager.defaultManager().createDirectoryAtPath(dbPath.stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil, error: nil)
+        
+        return dbPath
+    }
+    
+    // MARK: - Profiles
+    
+    static func allProfiles() -> [String] {
+        return NSUserDefaults.standardUserDefaults().arrayForKey("profiles") as? [String] ?? []
+    }
+    
+    static func addProfile(profile: String) {
+        var profiles = allProfiles()
+        profiles.append(profile)
+        NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
     }
     
     // MARK: - Templates
@@ -37,6 +65,17 @@ struct UserDataController {
         }
         
         return sorted(templates) { $0.position < $1.position }
+    }
+    
+    func containsTemplate(template: Template) -> Bool {
+        var hasTemplate = false
+        self.connection.readWithBlock { transaction in
+            if let template = transaction.objectForKey(template.id, inCollection: "templates") as? Template {
+                hasTemplate = true
+            }
+        }
+        
+        return hasTemplate
     }
     
     func addOrUpdateTemplate(template: Template) -> Void {

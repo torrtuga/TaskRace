@@ -14,12 +14,12 @@ class StoreViewController: UITableViewController {
     
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = editButtonItem()
-        items = UserDataController.sharedController().storeItems()
         tableView.allowsSelectionDuringEditing = true
     }
     
     override func viewWillAppear(animated: Bool) {
         updateTitle()
+        items = UserDataController.sharedController().storeItems()
     }
     
     func updateTitle() {

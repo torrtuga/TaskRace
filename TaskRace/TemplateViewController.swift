@@ -33,6 +33,12 @@ class TemplateViewController: UITableViewController {
         navigationItem.rightBarButtonItems?.append(editButtonItem())
     }
     
+    override func viewWillAppear(animated: Bool) {
+        if !UserDataController.sharedController().containsTemplate(template) {
+            navigationController?.popToRootViewControllerAnimated(false)
+        }
+    }
+    
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
         let position = list.items.count
         let item = TodoItem(name: "New Item", position: position)
