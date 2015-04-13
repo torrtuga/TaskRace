@@ -1,21 +1,24 @@
 PODS:
   - CocoaLumberjack (1.9.2):
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
   - CocoaLumberjack/Extensions (1.9.2):
     - CocoaLumberjack/Core
+  - RSDayFlow (0.8.0)
   - YapDatabase (2.5.3):
-    - YapDatabase/standard
+    - YapDatabase/standard (= 2.5.3)
   - YapDatabase/common (2.5.3):
     - CocoaLumberjack (~> 1)
   - YapDatabase/standard (2.5.3):
     - YapDatabase/common
 
 DEPENDENCIES:
+  - RSDayFlow
   - YapDatabase
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
-  YapDatabase: 096e860167b04e629b88bea33dfb7a4153279bb0
+  CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
+  RSDayFlow: fb48480094f00d28fc90947051190f55478263c4
+  YapDatabase: 2e1ad4bb8f54cfa8ec3e0e2c1a558ed7670e7f61
 
-COCOAPODS: 0.34.4
+COCOAPODS: 0.36.3

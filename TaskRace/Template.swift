@@ -26,8 +26,8 @@ class Template: NSObject, NSCoding, Equatable {
     }
     
     required init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as String
-        name = aDecoder.decodeObjectForKey("name") as String
+        id = aDecoder.decodeObjectForKey("id") as! String
+        name = aDecoder.decodeObjectForKey("name") as! String
         listID = aDecoder.decodeObjectForKey("listID") as? String
         templateDays = TemplateDays(UInt(aDecoder.decodeIntegerForKey("templateDays")))
         position = aDecoder.decodeIntegerForKey("position")

@@ -64,7 +64,7 @@ class StoreViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         let item = items[indexPath.row]
         cell.textLabel?.text = item.name
         cell.detailTextLabel?.text = "\(item.points)pts"
@@ -84,7 +84,7 @@ class StoreViewController: UITableViewController {
             if item.repeats {
                 let alertController = UIAlertController(title: "Amount to Buy", message: "How many of the specified item would you like to purchase?", preferredStyle: UIAlertControllerStyle.Alert)
                 let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
-                    let numberTextField = alertController.textFields![0] as UITextField
+                    let numberTextField = alertController.textFields![0] as! UITextField
                     if let numberComplete = numberTextField.text.toInt() {
                         UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
                         self.updateTitle()

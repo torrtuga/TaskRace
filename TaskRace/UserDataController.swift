@@ -166,7 +166,7 @@ struct UserDataController {
                             let item = list.items[index]
                             item.updateFromItem(templateItem)
                         } else {
-                            let newItem = templateItem.copy() as TodoItem
+                            let newItem = templateItem.copy() as! TodoItem
                             list.items.append(newItem)
                         }
                     }

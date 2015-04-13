@@ -36,8 +36,8 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
     }
     
     required init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as String
-        name = aDecoder.decodeObjectForKey("name") as String
+        id = aDecoder.decodeObjectForKey("id") as! String
+        name = aDecoder.decodeObjectForKey("name") as! String
         points = aDecoder.decodeIntegerForKey("points")
         minutes = aDecoder.decodeIntegerForKey("minutes")
         completed = aDecoder.decodeBoolForKey("completed")

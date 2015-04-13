@@ -25,7 +25,7 @@ class SettingsViewController: UITableViewController {
         }
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
-            let textField = alertController.textFields!.first as UITextField
+            let textField = alertController.textFields!.first as! UITextField
             let profile = textField.text
             
             let position = self.profiles.count
@@ -48,7 +48,7 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         let profile = profiles[indexPath.row]
         cell.textLabel?.text = profile
         if UserDataController.currentProfile == profile {

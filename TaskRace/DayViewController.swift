@@ -101,7 +101,7 @@ class DayViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as DayInfoCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as! DayInfoCell
             let (completedPoints, totalPoints, remainingTime, totalTime) = todayList.items.reduce((0, 0, 0, 0)) { (current: (completedPoints: Int, totalPoints: Int, remainingTime: Int, totalTime: Int), item) in
                 let newCompletedPoints = current.completedPoints + {
                     if item.repeats {
@@ -136,7 +136,7 @@ class DayViewController: UITableViewController {
             return cell
         } else {
             let item = itemAtIndexPath(indexPath)
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
             cell.textLabel?.text = (item.repeats && item.repeatCount > 0 ? "\(item.numberCompleted)/\(item.repeatCount) " : "") + item.name
             var detailText = ""
             if item.minutes > 0 {
@@ -172,7 +172,7 @@ class DayViewController: UITableViewController {
             if item.repeats {
                 let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
                 let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
-                    let numberTextField = alertController.textFields![0] as UITextField
+                    let numberTextField = alertController.textFields![0] as! UITextField
                     if let numberComplete = numberTextField.text.toInt() {
                         let pointsToAdd = numberComplete * item.points
                         item.numberCompleted += numberComplete

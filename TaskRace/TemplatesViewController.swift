@@ -76,7 +76,7 @@ class TemplatesViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         let templates = sections[indexPath.section].templates
         cell.textLabel?.text = templates[indexPath.row].name
         cell.detailTextLabel?.text = daysStringFromTemplateDays(templates[indexPath.row].templateDays)
@@ -94,7 +94,7 @@ class TemplatesViewController: UITableViewController {
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
-                let textField = alertController.textFields!.first as UITextField
+                let textField = alertController.textFields!.first as! UITextField
                 template.name = textField.text
                 UserDataController.sharedController().addOrUpdateTemplate(template)
                 self.updateData()
@@ -117,7 +117,7 @@ class TemplatesViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let destination = segue.destinationViewController as? TemplateViewController {
-            destination.template = sender as Template
+            destination.template = sender as! Template
         }
     }
     

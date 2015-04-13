@@ -28,10 +28,10 @@ class HistoryItem: NSObject, NSCoding {
     }
     
     required init(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as String
-        name = aDecoder.decodeObjectForKey("name") as String
+        id = aDecoder.decodeObjectForKey("id") as! String
+        name = aDecoder.decodeObjectForKey("name") as! String
         points = aDecoder.decodeIntegerForKey("points")
-        dateCompleted = aDecoder.decodeObjectForKey("dateCompleted") as NSDate
+        dateCompleted = aDecoder.decodeObjectForKey("dateCompleted") as! NSDate
         numberCompleted = aDecoder.decodeIntegerForKey("numberCompleted")
     }
     

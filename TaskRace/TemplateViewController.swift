@@ -83,7 +83,7 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! UITableViewCell
             cell.textLabel?.text = "Anytime"
             let anytimeSwitch = UISwitch()
             anytimeSwitch.on = template.anytime
@@ -92,7 +92,7 @@ class TemplateViewController: UITableViewController {
             return cell
         }
         if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) as! UITableViewCell
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = TemplateDays.Sunday.stringValue
@@ -125,7 +125,7 @@ class TemplateViewController: UITableViewController {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as! UITableViewCell
             let item = list.items[indexPath.row]
             cell.textLabel?.text = item.name
             var detailText = ""
