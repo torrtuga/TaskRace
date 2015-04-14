@@ -11,18 +11,18 @@ import Foundation
 class Day: NSObject, NSCoding {
     let id: String
     let date: Date
-    var listID: String?
+    var listID: String
     
-    init(date: Date) {
+    init(date: Date, listID: String) {
         id = NSUUID().UUIDString
         self.date = date
-        listID = nil
+        self.listID = listID
     }
     
     required init(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         date = aDecoder.decodeObjectForKey("date") as! Date
-        listID = aDecoder.decodeObjectForKey("listID") as? String
+        listID = aDecoder.decodeObjectForKey("listID") as! String
     }
     
     func encodeWithCoder(aCoder: NSCoder) {

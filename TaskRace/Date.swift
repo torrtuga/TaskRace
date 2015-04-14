@@ -17,7 +17,7 @@ func < (left: Date, right: Date) -> Bool {
 }
 
 // The Gregorian calendar should always be available; if not, the app is hosed anyway
-private let calendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)!
+private let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
 
 class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     let year: Int

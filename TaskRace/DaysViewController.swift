@@ -8,46 +8,23 @@
 
 import UIKit
 
-class DaysViewController: UITableViewController {
-    
-    var days: [Day]!
+class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
     
     override func viewDidLoad() {
-        updateData()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        if let lastDay = days.first {
-            if lastDay.date < Date(date: NSDate()) {
-                updateData()
-                tableView.reloadData()
-            }
+        if let dayView = view as? RSDFDatePickerView {
+            dayView.delegate = self
+            pushDayForDate(NSDate())
+        } else {
+            assert(false)
         }
     }
     
-    private func updateData() {
-        days = UserDataController.sharedController().allDays().reverse()
+    func datePickerView(view: RSDFDatePickerView!, didSelectDate date: NSDate!) {
+        pushDayForDate(date)
     }
     
-    // MARK: - Table View
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return days.count
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
-        cell.textLabel?.text = days[indexPath.row].date.string
-        cell.accessoryType = .DisclosureIndicator
-        return cell
-    }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let day = days[indexPath.row]
+    private func pushDayForDate(date: NSDate) {
+        let day = UserDataController.sharedController().dayForDate(Date(date: date))
         performSegueWithIdentifier("DaySegue", sender: day)
     }
     

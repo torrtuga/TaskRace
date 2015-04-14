@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="49e-Tb-3d3">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -16,7 +16,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="bUB-UN-4Ry" kind="relationship" relationship="viewControllers" id="fIx-dS-nnU"/>
+                        <segue destination="lfc-e3-cHW" kind="relationship" relationship="viewControllers" id="Omq-Gx-ndc"/>
                         <segue destination="iO7-qK-oqj" kind="relationship" relationship="viewControllers" id="5NJ-g7-q3j"/>
                         <segue destination="5OE-b2-v5n" kind="relationship" relationship="viewControllers" id="ZcZ-9u-4fd"/>
                         <segue destination="bwe-5h-RXr" kind="relationship" relationship="viewControllers" id="gae-M2-JjT"/>
@@ -25,61 +25,46 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-48" y="0.0"/>
+            <point key="canvasLocation" x="-48" y="-46"/>
         </scene>
-        <!--Days-->
-        <scene sceneID="lzM-Bt-Aye">
-            <objects>
-                <tableViewController clearsSelectionOnViewWillAppear="NO" id="IUR-T3-jgF" customClass="DaysViewController" customModule="TaskRace" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="IsP-yj-DfR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="9Ly-fS-sDf" style="IBUITableViewCellStyleDefault" id="5cH-r4-qBb">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5cH-r4-qBb" id="bMP-iu-ivZ">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Ly-fS-sDf">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="IUR-T3-jgF" id="bVE-BN-8y4"/>
-                            <outlet property="delegate" destination="IUR-T3-jgF" id="x59-1L-k2y"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Days" id="EJA-cK-V3i"/>
-                    <connections>
-                        <segue destination="VOE-MH-AXM" kind="showDetail" identifier="DaySegue" id="ng7-Cq-lT2"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="i9h-ru-dPn" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2645" y="-1855"/>
-        </scene>
-        <!--Navigation Controller-->
+        <!--Todo-->
         <scene sceneID="Ynx-fA-XdN">
             <objects>
                 <navigationController id="lfc-e3-cHW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Todo" id="oX4-Sq-zzl"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1pI-BV-RpN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="IUR-T3-jgF" kind="relationship" relationship="rootViewController" id="d6G-AA-dbo"/>
+                        <segue destination="Vqa-6N-xfM" kind="relationship" relationship="rootViewController" id="mWs-Wx-f4r"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r9k-vL-Dle" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1825" y="-1855"/>
+            <point key="canvasLocation" x="1089" y="-1313"/>
+        </scene>
+        <!--Days View Controller-->
+        <scene sceneID="oLV-iI-hbr">
+            <objects>
+                <viewController id="Vqa-6N-xfM" customClass="DaysViewController" customModule="TaskRace" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nPQ-un-waC"/>
+                        <viewControllerLayoutGuide type="bottom" id="OLV-Ct-FHe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="C2N-gZ-zdB" customClass="RSDFDatePickerView">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="w6e-HA-TRk"/>
+                    <connections>
+                        <segue destination="VOE-MH-AXM" kind="show" identifier="DaySegue" id="rha-75-Nbc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FY7-2e-msp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1901" y="-1313"/>
         </scene>
         <!--Day View Controller-->
         <scene sceneID="lKi-Rq-GZY">
@@ -228,21 +213,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3AK-0k-ArT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1825" y="-1120"/>
-        </scene>
-        <!--Todo-->
-        <scene sceneID="ING-Ls-6Fk">
-            <objects>
-                <splitViewController id="bUB-UN-4Ry" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Todo" id="KXr-39-iLH"/>
-                    <connections>
-                        <segue destination="lfc-e3-cHW" kind="relationship" relationship="masterViewController" id="kPt-dl-Jqz"/>
-                        <segue destination="VOE-MH-AXM" kind="relationship" relationship="detailViewController" id="UGF-F2-OD9"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="m7J-ZC-n7q" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1005" y="-1525"/>
+            <point key="canvasLocation" x="2645" y="-1313"/>
         </scene>
         <!--Store-->
         <scene sceneID="xhn-C9-QV7">
@@ -835,7 +806,6 @@
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="UGF-F2-OD9"/>
-        <segue reference="F4m-OK-PKm"/>
+        <segue reference="Vkb-KH-nk6"/>
     </inferredMetricsTieBreakers>
 </document>

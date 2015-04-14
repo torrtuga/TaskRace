@@ -31,21 +31,15 @@ class DayViewController: UITableViewController {
     }
     
     private func updateData() {
-        day = UserDataController.sharedController().dayForToday()
         if let day = day {
             navigationItem.title = day.date.string
-            if let listID = day.listID {
-                todayList = UserDataController.sharedController().listWithID(listID)
-            } else {
-                todayList = List()
-                day.listID = todayList.id
-                UserDataController.sharedController().addOrUpdateList(todayList)
-                UserDataController.sharedController().addOrUpdateDay(day)
-            }
+            todayList = UserDataController.sharedController().listWithID(day.listID)
             
             UserDataController.sharedController().updateDayListFromTemplates(list: todayList, forDate: day.date)
             anytimeSections = UserDataController.sharedController().anytimeListsForDate(day.date).filter() { $0.list.items.count > 0 }
             tableView.reloadData()
+        } else {
+            day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
         }
     }
     

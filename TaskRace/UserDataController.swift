@@ -100,7 +100,7 @@ struct UserDataController {
     
     // MARK: - Days
     
-    func allDays() -> [Day] {
+    func dayForDate(date: Date) -> Day {
         var days: [Day] = []
         self.connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("days") { key, object, _ in
@@ -110,28 +110,23 @@ struct UserDataController {
             }
         }
         
-        let today = Date(date: NSDate())
-        if days.indexOf({ day in day.date == today }) == nil {
-            let day = Day(date: today)
-            self.connection.readWriteWithBlock() { transaction in
-                transaction.setObject(day, forKey: day.id, inCollection: "days")
-            }
-            days.append(day)
+        let day: Day
+        if let existingDay = days.takeFirst({ $0.date == date }) {
+            day = existingDay
+        } else {
+            let list = List()
+            addOrUpdateList(list)
+            day = Day(date: date, listID: list.id)
+            addOrUpdateDay(day)
         }
         
-        return sorted(days) { $0.date < $1.date }
+        return day
     }
     
-    func addOrUpdateDay(day: Day) -> Void {
+    private func addOrUpdateDay(day: Day) -> Void {
         self.connection.readWriteWithBlock() { transaction in
             transaction.setObject(day, forKey: day.id, inCollection: "days")
         }
-    }
-    
-    func dayForToday() -> Day {
-        let days = allDays()
-        let today = Date(date: NSDate())
-        return days[days.indexOf({ day in day.date == today })!]
     }
     
     // MARK: - Lists
