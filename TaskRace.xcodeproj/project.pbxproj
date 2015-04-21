@@ -31,6 +31,7 @@
 		32B5BD2A1A129A5600CD1AC1 /* EditTodoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */; };
 		32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */; };
 		32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */; };
+		32C8038B1AE6C99000C0858D /* OrderItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */; };
 		32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */; };
 		32F1991A1A0D5E1F005B820E /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1990E1A0D5E1F005B820E /* Array.swift */; };
 		32F1991B1A0D5E1F005B820E /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F1990F1A0D5E1F005B820E /* Dictionary.swift */; };
@@ -86,6 +87,7 @@
 		32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoItemViewController.swift; sourceTree = "<group>"; };
 		32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
 		32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditStoreItemViewController.swift; sourceTree = "<group>"; };
+		32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderItemsViewController.swift; sourceTree = "<group>"; };
 		32F1990E1A0D5E1F005B820E /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		32F1990F1A0D5E1F005B820E /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		32F199101A0D5E1F005B820E /* Double.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				320B7BE319F73BBE00E8B10C /* AppDelegate.swift */,
 				32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */,
 				324E8A801A0EB3F00075E544 /* TemplateViewController.swift */,
+				32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */,
 				324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */,
 				32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */,
 				320B87E21A2129D000BBAB5C /* TemplateDays.swift */,
@@ -417,6 +420,7 @@
 				3255D86B1A094E9100A60DC9 /* Day.swift in Sources */,
 				323E8E111AC4532E0034317E /* ProfilesViewController.swift in Sources */,
 				32F199211A0D5E1F005B820E /* NSArray.swift in Sources */,
+				32C8038B1AE6C99000C0858D /* OrderItemsViewController.swift in Sources */,
 				32F1991D1A0D5E1F005B820E /* ExSwift.swift in Sources */,
 				320B7BE419F73BBE00E8B10C /* AppDelegate.swift in Sources */,
 				32F1991E1A0D5E1F005B820E /* Float.swift in Sources */,

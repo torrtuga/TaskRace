@@ -61,8 +61,14 @@ class TemplateViewController: UITableViewController {
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         let movedItem = list.items.removeAtIndex(sourceIndexPath.row)
         list.items.insert(movedItem, atIndex: destinationIndexPath.row)
-        list.items.each(){ (i, t) -> Void in
-            t.position = i
+        
+        // Update position
+        if destinationIndexPath.row > 0 {
+            movedItem.position = list.items[destinationIndexPath.row - 1].position
+        } else if destinationIndexPath.row >= list.items.count {
+            movedItem.position = list.items[destinationIndexPath.row + 1].position
+        } else {
+            movedItem.position = 10000000
         }
         UserDataController.sharedController().addOrUpdateList(list)
     }

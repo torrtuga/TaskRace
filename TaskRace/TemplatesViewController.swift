@@ -10,10 +10,12 @@ import UIKit
 
 class TemplatesViewController: UITableViewController {
     
+    var orderItemsButton: UIBarButtonItem!
     var sections: [(title: String, templates: [Template])] = []
     
     override func viewDidLoad() {
         navigationItem.leftBarButtonItem = editButtonItem()
+        orderItemsButton = UIBarButtonItem(title: "Order Items", style: .Plain, target: self, action: "orderItems")
         tableView.allowsSelectionDuringEditing = true
     }
     
@@ -38,6 +40,15 @@ class TemplatesViewController: UITableViewController {
     }
     
     // MARK: - Table View
+    
+    override func setEditing(editing: Bool, animated: Bool) {
+        if editing {
+            navigationItem.rightBarButtonItems?.append(orderItemsButton)
+        } else {
+            navigationItem.rightBarButtonItems?.remove(orderItemsButton)
+        }
+        super.setEditing(editing, animated: animated)
+    }
     
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
@@ -119,6 +130,12 @@ class TemplatesViewController: UITableViewController {
         if let destination = segue.destinationViewController as? TemplateViewController {
             destination.template = sender as! Template
         }
+    }
+    
+    // MARK: - Private Functions
+    
+    func orderItems() {
+        performSegueWithIdentifier("OrderItems", sender: nil)
     }
     
 }

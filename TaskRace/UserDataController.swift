@@ -52,6 +52,17 @@ struct UserDataController {
         NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
     }
     
+    // MARK: - Settings
+    
+    func useGlobalOrdering() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey("useGlobalOrdering")
+    }
+    
+    func setUseGlobalOrdering(useGlobal: Bool) {
+        NSUserDefaults.standardUserDefaults().setBool(useGlobal, forKey: "useGlobalOrdering")
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
     // MARK: - Templates
     
     func allTemplates() -> [Template] {
@@ -65,6 +76,18 @@ struct UserDataController {
         }
         
         return sorted(templates) { $0.position < $1.position }
+    }
+    
+    func regularTemplateLists() -> [List] {
+        return allTemplates().mapFilter { template in
+            if !template.anytime {
+                if let listID = template.listID {
+                    return self.listWithID(listID)
+                }
+            }
+            
+            return nil
+        }
     }
     
     func containsTemplate(template: Template) -> Bool {
@@ -167,6 +190,10 @@ struct UserDataController {
                     }
                 }
             }
+        }
+        
+        if useGlobalOrdering() {
+            list.items.sort { $0.position <= $1.position }
         }
         
         addOrUpdateList(list)
