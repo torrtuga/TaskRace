@@ -11,6 +11,7 @@ import UIKit
 class DayViewController: UITableViewController {
     
     let timeFormatter = NSDateFormatter()
+    let dayFormatter = NSDateFormatter()
     
     var todayList: List = List()
     var anytimeSections: [(name: String, list: List)] = []
@@ -23,6 +24,8 @@ class DayViewController: UITableViewController {
         timeFormatter.AMSymbol = "am"
         timeFormatter.PMSymbol = "pm"
         timeFormatter.dateFormat = "h:mma"
+        
+        dayFormatter.dateFormat = "EEE, MMM d"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -32,7 +35,7 @@ class DayViewController: UITableViewController {
     
     private func updateData() {
         if let day = day {
-            navigationItem.title = day.date.string
+            navigationItem.title = dayFormatter.stringFromDate(day.date.date)
             todayList = UserDataController.sharedController().listWithID(day.listID)
             
             UserDataController.sharedController().updateDayListFromTemplates(list: todayList, forDate: day.date)

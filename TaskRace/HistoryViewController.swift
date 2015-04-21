@@ -12,14 +12,19 @@ import UIKit
 
 class HistoryViewController: UITableViewController {
     
+    let dayFormatter = NSDateFormatter()
     var sections: [(title: String, items: [HistoryItem])] = []
+    
+    override func viewDidLoad() {
+        dayFormatter.dateFormat = "EEE, MMM d"
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         sections = UserDataController.sharedController().historyItems().partitionBy({
             Date(date: $0.dateCompleted)
         }).map() { dayArray in
-            (Date(date: dayArray[0].dateCompleted).string, dayArray)
+            (self.dayFormatter.stringFromDate(dayArray[0].dateCompleted), dayArray)
         }
         
         tableView.reloadData()
