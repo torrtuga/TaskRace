@@ -122,7 +122,7 @@ class DayViewController: UITableViewController {
             cell.pointsLabel.text = "\(completedPoints)/\(totalPoints)"
             
             let (totalTimeHours, totalTimeMinutes) = quotientAndRemainder(totalTime, divisor: 60)
-            cell.totalTimeLabel.text = "\(totalTimeHours):\(totalTimeMinutes)"
+            cell.totalTimeLabel.text = String(format: "%d:%02d", totalTimeHours, totalTimeMinutes)
             
             let endTime = NSDate().dateByAddingTimeInterval(NSTimeInterval(remainingTime * 60))
             cell.endTimeLabel.text = timeFormatter.stringFromDate(endTime)
