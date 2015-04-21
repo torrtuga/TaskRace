@@ -57,7 +57,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="w6e-HA-TRk"/>
+                    <navigationItem key="navigationItem" title="Days" id="w6e-HA-TRk"/>
                     <connections>
                         <segue destination="VOE-MH-AXM" kind="show" identifier="DaySegue" id="rha-75-Nbc"/>
                     </connections>
