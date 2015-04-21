@@ -13,17 +13,16 @@ class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
     override func viewDidLoad() {
         if let dayView = view as? RSDFDatePickerView {
             dayView.delegate = self
-            pushDayForDate(NSDate())
+            if let dayViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DayViewController") as? DayViewController {
+                dayViewController.day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
+                navigationController?.pushViewController(dayViewController, animated: false)
+            }
         } else {
             assert(false)
         }
     }
     
     func datePickerView(view: RSDFDatePickerView!, didSelectDate date: NSDate!) {
-        pushDayForDate(date)
-    }
-    
-    private func pushDayForDate(date: NSDate) {
         let day = UserDataController.sharedController().dayForDate(Date(date: date))
         performSegueWithIdentifier("DaySegue", sender: day)
     }
