@@ -9,9 +9,11 @@
 import UIKit
 
 class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
+    var dayView: RSDFDatePickerView?
     
     override func viewDidLoad() {
         if let dayView = view as? RSDFDatePickerView {
+            self.dayView = dayView
             dayView.delegate = self
             if let dayViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DayViewController") as? DayViewController {
                 dayViewController.day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
@@ -25,6 +27,10 @@ class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
     func datePickerView(view: RSDFDatePickerView!, didSelectDate date: NSDate!) {
         let day = UserDataController.sharedController().dayForDate(Date(date: date))
         performSegueWithIdentifier("DaySegue", sender: day)
+    }
+    
+    @IBAction func todayButtonPressed(sender: UIBarButtonItem) {
+        self.dayView?.scrollToToday(true)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
