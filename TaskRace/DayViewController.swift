@@ -16,6 +16,7 @@ class DayViewController: UITableViewController {
     var todayList: List = List()
     var anytimeSections: [(name: String, list: List)] = []
     var day: Day?
+    var isNewDay = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,11 +27,18 @@ class DayViewController: UITableViewController {
         timeFormatter.dateFormat = "h:mma"
         
         dayFormatter.dateFormat = "EEE, MMM d"
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "significantTimeChange:", name: UIApplicationSignificantTimeChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     private func updateData() {
@@ -251,6 +259,18 @@ class DayViewController: UITableViewController {
     
     private func quotientAndRemainder(dividend: Int, divisor: Int) -> (Int, Int) {
         return (dividend / divisor, dividend % divisor)
+    }
+    
+    func significantTimeChange(_: NSNotification) {
+        isNewDay = true
+    }
+    
+    func applicationDidBecomeActive(_: NSNotification) {
+        if isNewDay {
+            isNewDay = false
+            day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
+            updateData()
+        }
     }
     
 }
