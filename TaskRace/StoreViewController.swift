@@ -77,9 +77,16 @@ class StoreViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let item = items[indexPath.row]
         if editing {
-            performSegueWithIdentifier("EditItemSegue", sender: item)
+            if !item.purchased {
+               performSegueWithIdentifier("EditItemSegue", sender: item)
+            } else {
+                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a purchased item.", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         } else {
             if item.repeats {
                 let alertController = UIAlertController(title: "Amount to Buy", message: "How many of the specified item would you like to purchase?", preferredStyle: UIAlertControllerStyle.Alert)
