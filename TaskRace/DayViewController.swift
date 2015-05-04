@@ -162,7 +162,13 @@ class DayViewController: UITableViewController {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let item = itemAtIndexPath(indexPath)
         if editing {
-            performSegueWithIdentifier("EditItemSegue", sender: item)
+            if !item.completed {
+                performSegueWithIdentifier("EditItemSegue", sender: item)
+            } else {
+                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a completed item.", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                presentViewController(alertController, animated: true, completion: nil)
+            }
         } else {
             let updateFunc: () -> Void = {
                 if indexPath.section == 1 {
