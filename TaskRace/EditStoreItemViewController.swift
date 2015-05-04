@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditStoreItemViewController: UIViewController {
+class EditStoreItemViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var pointsTextField: UITextField!
@@ -30,5 +30,12 @@ class EditStoreItemViewController: UIViewController {
     @IBAction func savePressed(sender: UIBarButtonItem) {
         saveFunction(name: nameTextField.text, points: pointsTextField.text.toInt(), repeats: repeatsSwitch.on)
         navigationController?.popViewControllerAnimated(true)
+    }
+    
+    // MARK: - UITextFieldDelegate Methods
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        return text.toInt() != nil
     }
 }

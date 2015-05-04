@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditTodoItemViewController: UIViewController {
+class EditTodoItemViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var pointsTextField: UITextField!
@@ -50,5 +50,12 @@ class EditTodoItemViewController: UIViewController {
         repeatCountLabel.hidden = !repeatsSwitch.on
         repeatCountTextField.hidden = !repeatsSwitch.on
         repeatHintLabel.hidden = !repeatsSwitch.on
+    }
+    
+    // MARK: - UITextFieldDelegate Methods
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        return text.toInt() != nil
     }
 }
