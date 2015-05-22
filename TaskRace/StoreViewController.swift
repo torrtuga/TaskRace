@@ -20,6 +20,7 @@ class StoreViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         updateTitle()
         items = UserDataController.sharedController().storeItems()
+        tableView.reloadData()
     }
     
     func updateTitle() {

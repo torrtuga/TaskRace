@@ -30,6 +30,7 @@ class DayViewController: UITableViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "significantTimeChange:", name: UIApplicationSignificantTimeChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileChanged:", name: ProfileChangedNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -277,6 +278,11 @@ class DayViewController: UITableViewController {
             day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
             updateData()
         }
+    }
+    
+    func profileChanged(_: NSNotification) {
+        day = nil
+        updateData()
     }
     
 }

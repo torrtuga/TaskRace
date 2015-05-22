@@ -8,6 +8,8 @@
 
 import Foundation
 
+let ProfileChangedNotification = "ProfileChangedNotification"
+
 struct UserDataController {
     private static var sharedInstance = UserDataController()
     let database: YapDatabase
@@ -19,6 +21,7 @@ struct UserDataController {
         set {
             NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "current_profile")
             sharedInstance = UserDataController()
+            NSNotificationCenter.defaultCenter().postNotificationName(ProfileChangedNotification, object: nil)
         }
     }
     
@@ -67,7 +70,7 @@ struct UserDataController {
     
     func allTemplates() -> [Template] {
         var templates: [Template] = []
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("templates") { key, object, _ in
                 if let template = object as? Template {
                     templates.append(template)
@@ -92,7 +95,7 @@ struct UserDataController {
     
     func containsTemplate(template: Template) -> Bool {
         var hasTemplate = false
-        self.connection.readWithBlock { transaction in
+        connection.readWithBlock { transaction in
             if let template = transaction.objectForKey(template.id, inCollection: "templates") as? Template {
                 hasTemplate = true
             }
@@ -102,13 +105,13 @@ struct UserDataController {
     }
     
     func addOrUpdateTemplate(template: Template) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.setObject(template, forKey: template.id, inCollection: "templates")
         }
     }
     
     func updateTemplates(templates: [Template]) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             for template in templates {
                 transaction.setObject(template, forKey: template.id, inCollection: "templates")
             }
@@ -116,7 +119,7 @@ struct UserDataController {
     }
     
     func removeTemplate(template: Template) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.removeObjectForKey(template.id, inCollection: "templates")
         }
     }
@@ -125,7 +128,7 @@ struct UserDataController {
     
     func dayForDate(date: Date) -> Day {
         var days: [Day] = []
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("days") { key, object, _ in
                 if let day = object as? Day {
                     days.append(day)
@@ -147,7 +150,7 @@ struct UserDataController {
     }
     
     private func addOrUpdateDay(day: Day) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.setObject(day, forKey: day.id, inCollection: "days")
         }
     }
@@ -156,7 +159,7 @@ struct UserDataController {
     
     func listWithID(id: String) -> List {
         var list: List? = nil
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             list = transaction.objectForKey(id, inCollection: "lists") as? List
         }
         if let list = list {
@@ -201,7 +204,7 @@ struct UserDataController {
     }
     
     func addOrUpdateList(list: List) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.setObject(list, forKey: list.id, inCollection: "lists")
         }
     }
@@ -225,7 +228,7 @@ struct UserDataController {
     
     func storePoints() -> Int {
         var points = 0
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             if let pts = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
                 points = pts.integerValue
             }
@@ -247,7 +250,7 @@ struct UserDataController {
         }()
         
         if pointsToAdd != 0 {
-            self.connection.readWriteWithBlock() { transaction in
+            connection.readWriteWithBlock() { transaction in
                 var currentPoints = 0
                 if let storePoints = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
                     currentPoints += storePoints.integerValue
@@ -262,7 +265,7 @@ struct UserDataController {
     
     func storeItems() -> [StoreItem] {
         var items: [StoreItem] = []
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("store") { key, object, _ in
                 if let item = object as? StoreItem {
                     items.append(item)
@@ -274,19 +277,19 @@ struct UserDataController {
     }
     
     func addOrUpdateStoreItem(item: StoreItem) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.setObject(item, forKey: item.id, inCollection: "store")
         }
     }
     
     func deleteStoreItem(item: StoreItem) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             transaction.removeObjectForKey(item.id, inCollection: "store")
         }
     }
     
     func updateStoreItems(items: [StoreItem]) -> Void {
-        self.connection.readWriteWithBlock() { transaction in
+        connection.readWriteWithBlock() { transaction in
             items.each() { item in
                 transaction.setObject(item, forKey: item.id, inCollection: "store")
             }
@@ -297,7 +300,7 @@ struct UserDataController {
     
     func historyItems() -> [HistoryItem] {
         var items: [HistoryItem] = []
-        self.connection.readWithBlock() { transaction in
+        connection.readWithBlock() { transaction in
             transaction.enumerateKeysAndObjectsInCollection("history") { key, object, _ in
                 if let item = object as? HistoryItem {
                     items.append(item)
