@@ -38,11 +38,13 @@ struct UserDataController {
     }
     
     private static func databasePath() -> String {
-        let dbPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent(currentProfile + "Data")
-        
+        let dbPath = databasePathForProfile(currentProfile)
         NSFileManager.defaultManager().createDirectoryAtPath(dbPath.stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil, error: nil)
-        
         return dbPath
+    }
+    
+    private static func databasePathForProfile(profile: String) -> String {
+        return NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent(profile + "Data")
     }
     
     // MARK: - Profiles
@@ -55,6 +57,39 @@ struct UserDataController {
         var profiles = allProfiles()
         profiles.append(profile)
         NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+    }
+    
+    static func renameProfile(currentName: String, toProfile newName: String) {
+        var profiles = allProfiles()
+        if let index = profiles.indexOf(currentName) {
+            profiles[index] = newName
+            let directory = databasePathForProfile(currentName).stringByDeletingLastPathComponent
+            for filename in NSFileManager.defaultManager().contentsOfDirectoryAtPath(directory, error: nil) as! [String] {
+                if filename.hasPrefix(currentName) {
+                    var error: NSError?
+                    let success = NSFileManager.defaultManager().moveItemAtPath(directory.stringByAppendingPathComponent(filename), toPath: directory.stringByAppendingPathComponent(filename.stringByReplacingOccurrencesOfString(currentName, withString: newName)), error: &error)
+                    if !success {
+                        println(error)
+                    }
+                }
+            }
+            NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+            
+            if currentName == currentProfile {
+                currentProfile = newName
+            }
+        }
+    }
+    
+    static func removeProfile(profile: String) {
+        var profiles = allProfiles()
+        if profiles.count > 0 {
+            profiles.remove(profile)
+            NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+            if profile == currentProfile {
+                currentProfile = profiles.count > 0 ? profiles[0] : "Default"
+            }
+        }
     }
     
     // MARK: - Settings

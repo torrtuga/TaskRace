@@ -13,6 +13,13 @@ class SettingsViewController: UITableViewController {
     var profiles: [String] = []
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        profiles = ["Default"] + UserDataController.allProfiles()
+        navigationItem.rightBarButtonItems?.append(editButtonItem())
+        tableView.allowsSelectionDuringEditing = true
+    }
+    
+    private func updateData() {
         profiles = ["Default"] + UserDataController.allProfiles()
     }
     
@@ -53,6 +60,19 @@ class SettingsViewController: UITableViewController {
         return profiles.count
     }
     
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return indexPath.row > 0
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete && profiles.count > 1 {
+            let profile = profiles[indexPath.row]
+            profiles.remove(profile)
+            UserDataController.removeProfile(profile)
+            tableView.reloadData()
+        }
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         let profile = profiles[indexPath.row]
@@ -66,8 +86,28 @@ class SettingsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        UserDataController.currentProfile = profiles[indexPath.row]
-        tableView.reloadData()
+        let profile = profiles[indexPath.row]
+        if editing && indexPath.row > 0 {
+            let alertController = UIAlertController(title: "Edit Name", message: nil, preferredStyle: .Alert)
+            alertController.addTextFieldWithConfigurationHandler() { textField in
+                textField.text = profile
+                textField.autocapitalizationType = .Words
+                textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+            }
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
+                let textField = alertController.textFields!.first as! UITextField
+                let newName = textField.text
+                UserDataController.renameProfile(profile, toProfile: newName)
+                self.updateData()
+                self.editing = false
+                self.tableView.reloadData()
+            }))
+            self .presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            UserDataController.currentProfile = profiles[indexPath.row]
+            tableView.reloadData()
+        }
     }
 
 }
