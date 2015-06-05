@@ -28,11 +28,17 @@ class SettingsViewController: UITableViewController {
             let textField = alertController.textFields!.first as! UITextField
             let profile = textField.text
             
-            let position = self.profiles.count
-            self.profiles.append(profile)
-            UserDataController.addProfile(profile)
-            let indexPath = NSIndexPath(forRow: position, inSection: 0)
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            if self.profiles.map({ $0.lowercaseString }).contains(profile.lowercaseString) {
+                let alertController = UIAlertController(title: "Cannot Add Profile", message: "That name is already taken. Please choose a unique name for a new profile.", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                let position = self.profiles.count
+                self.profiles.append(profile)
+                UserDataController.addProfile(profile)
+                let indexPath = NSIndexPath(forRow: position, inSection: 0)
+                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            }
         }))
         self .presentViewController(alertController, animated: true, completion: nil)
     }
