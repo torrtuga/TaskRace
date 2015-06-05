@@ -19,9 +19,12 @@ struct UserDataController {
             return NSUserDefaults.standardUserDefaults().stringForKey("current_profile") ?? "Default"
         }
         set {
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "current_profile")
-            sharedInstance = UserDataController()
-            NSNotificationCenter.defaultCenter().postNotificationName(ProfileChangedNotification, object: nil)
+            let currentProfile = NSUserDefaults.standardUserDefaults().stringForKey("current_profile") ?? ""
+            if newValue != currentProfile {
+                NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "current_profile")
+                sharedInstance = UserDataController()
+                NSNotificationCenter.defaultCenter().postNotificationName(ProfileChangedNotification, object: nil)
+            }
         }
     }
     
@@ -36,7 +39,6 @@ struct UserDataController {
     
     private static func databasePath() -> String {
         let dbPath = NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent(currentProfile + "Data")
-        let oldPath = dbPath.stringByDeletingLastPathComponent.stringByAppendingPathComponent("data")
         
         NSFileManager.defaultManager().createDirectoryAtPath(dbPath.stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil, error: nil)
         
