@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Template: NSObject, NSCoding, Equatable {
+class Template: NSObject, NSCoding {
     let id: String
     var name: String
     var listID: String?
@@ -25,7 +25,7 @@ class Template: NSObject, NSCoding, Equatable {
         anytime = false
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         name = aDecoder.decodeObjectForKey("name") as! String
         listID = aDecoder.decodeObjectForKey("listID") as? String

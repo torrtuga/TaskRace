@@ -39,12 +39,15 @@ struct UserDataController {
     
     private static func databasePath() -> String {
         let dbPath = databasePathForProfile(currentProfile)
-        NSFileManager.defaultManager().createDirectoryAtPath(dbPath.stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil, error: nil)
+        do {
+            try NSFileManager.defaultManager().createDirectoryAtPath((dbPath as NSString).stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil)
+        } catch _ {
+        }
         return dbPath
     }
     
     private static func databasePathForProfile(profile: String) -> String {
-        return NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last!.stringByAppendingPathComponent(profile + "Data")
+        return (NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as NSString).stringByAppendingPathComponent(profile + "Data")
     }
     
     // MARK: - Profiles
@@ -63,13 +66,14 @@ struct UserDataController {
         var profiles = allProfiles()
         if let index = profiles.indexOf(currentName) {
             profiles[index] = newName
-            let directory = databasePathForProfile(currentName).stringByDeletingLastPathComponent
-            for filename in NSFileManager.defaultManager().contentsOfDirectoryAtPath(directory, error: nil) as! [String] {
+            let directory = (databasePathForProfile(currentName) as NSString).stringByDeletingLastPathComponent
+            for filename in try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(directory) {
                 if filename.hasPrefix(currentName) {
-                    var error: NSError?
-                    let success = NSFileManager.defaultManager().moveItemAtPath(directory.stringByAppendingPathComponent(filename), toPath: directory.stringByAppendingPathComponent(filename.stringByReplacingOccurrencesOfString(currentName, withString: newName)), error: &error)
-                    if !success {
-                        println(error)
+                    do {
+                        try NSFileManager.defaultManager().moveItemAtPath((directory as NSString).stringByAppendingPathComponent(filename), toPath: (directory as NSString).stringByAppendingPathComponent(filename.stringByReplacingOccurrencesOfString(currentName, withString: newName)))
+                    }
+                    catch let error {
+                        print(error)
                     }
                 }
             }
@@ -84,7 +88,7 @@ struct UserDataController {
     static func removeProfile(profile: String) {
         var profiles = allProfiles()
         if profiles.count > 0 {
-            profiles.remove(profile)
+            profiles.removeAtIndex(profiles.indexOf(profile)!)
             NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
             if profile == currentProfile {
                 currentProfile = profiles.count > 0 ? profiles[0] : "Default"
@@ -115,11 +119,11 @@ struct UserDataController {
             }
         }
         
-        return sorted(templates) { $0.position < $1.position }
+        return templates.sort { $0.position < $1.position }
     }
     
     func regularTemplateLists() -> [List] {
-        return allTemplates().mapFilter { template in
+        return allTemplates().flatMap { template in
             if !template.anytime {
                 if let listID = template.listID {
                     return self.listWithID(listID)
@@ -133,7 +137,7 @@ struct UserDataController {
     func containsTemplate(template: Template) -> Bool {
         var hasTemplate = false
         connection.readWithBlock { transaction in
-            if let template = transaction.objectForKey(template.id, inCollection: "templates") as? Template {
+            if (transaction.objectForKey(template.id, inCollection: "templates") as? Template) != nil {
                 hasTemplate = true
             }
         }
@@ -174,7 +178,7 @@ struct UserDataController {
         }
         
         let day: Day
-        if let existingDay = days.takeFirst({ $0.date == date }) {
+        if let existingDay = days.filter({ $0.date == date }).first {
             day = existingDay
         } else {
             let list = List()
@@ -213,13 +217,13 @@ struct UserDataController {
         return list
     }
     
-    func updateDayListFromTemplates(#list: List, forDate date: Date) -> List {
+    func updateDayListFromTemplates(list list: List, forDate date: Date) -> List {
         let templates = allTemplates()
         for template in templates {
-            if !template.anytime && template.templateDays & date.dayOfWeek {
+            if !template.anytime && template.templateDays.intersect(date.dayOfWeek) {
                 if let listID = template.listID {
                     let templateList = listWithID(listID)
-                    templateList.items.each() { (templateItem: TodoItem) -> Void in
+                    for templateItem in templateList.items {
                         if let index = list.items.indexOf(templateItem) {
                             let item = list.items[index]
                             item.updateFromItem(templateItem)
@@ -233,7 +237,7 @@ struct UserDataController {
         }
         
         if useGlobalOrdering() {
-            list.items.sort { $0.position <= $1.position }
+            list.items.sortInPlace { $0.position <= $1.position }
         }
         
         addOrUpdateList(list)
@@ -247,8 +251,8 @@ struct UserDataController {
     }
     
     func anytimeListsForDate(date: Date) -> [(name: String, list: List)] {
-        return allTemplates().mapFilter() { template -> (String, List)? in
-            if template.anytime && template.templateDays & date.dayOfWeek {
+        return allTemplates().flatMap { template -> (String, List)? in
+            if template.anytime && template.templateDays.intersect(date.dayOfWeek) {
                 if let id = template.listID {
                     let list = self.listWithID(id)
                     list.items = list.items.filter() { item in
@@ -310,7 +314,7 @@ struct UserDataController {
             }
         }
         
-        return sorted(items) { $0.position < $1.position }
+        return items.sort { $0.position < $1.position }
     }
     
     func addOrUpdateStoreItem(item: StoreItem) -> Void {
@@ -327,7 +331,7 @@ struct UserDataController {
     
     func updateStoreItems(items: [StoreItem]) -> Void {
         connection.readWriteWithBlock() { transaction in
-            items.each() { item in
+            for item in items {
                 transaction.setObject(item, forKey: item.id, inCollection: "store")
             }
         }
@@ -345,6 +349,6 @@ struct UserDataController {
             }
         }
         
-        return sorted(items) { $0.dateCompleted.timeIntervalSince1970 > $1.dateCompleted.timeIntervalSince1970 }
+        return items.sort { $0.dateCompleted.timeIntervalSince1970 > $1.dateCompleted.timeIntervalSince1970 }
     }
 }

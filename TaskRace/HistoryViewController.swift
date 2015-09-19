@@ -21,11 +21,7 @@ class HistoryViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        sections = UserDataController.sharedController().historyItems().partitionBy({
-            Date(date: $0.dateCompleted)
-        }).map() { dayArray in
-            (self.dayFormatter.stringFromDate(dayArray[0].dateCompleted), dayArray)
-        }
+        sections = UserDataController.sharedController().historyItems().sectionBy{ self.dayFormatter.stringFromDate($0.dateCompleted) }
         
         tableView.reloadData()
     }
@@ -41,7 +37,7 @@ class HistoryViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         let item = sections[indexPath.section].items[indexPath.row]
         cell.textLabel?.text = item.name + (item.numberCompleted > 1 ? " (\(item.numberCompleted))" : "")
         cell.detailTextLabel?.text = "\(item.points)pts"

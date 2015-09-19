@@ -19,7 +19,7 @@ func < (left: Date, right: Date) -> Bool {
 // The Gregorian calendar should always be available; if not, the app is hosed anyway
 private let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!
 
-class Date: NSObject, Comparable, DebugPrintable, NSCoding {
+class Date: NSObject, Comparable, CustomDebugStringConvertible, NSCoding {
     let year: Int
     let month: Int
     let day: Int
@@ -42,7 +42,7 @@ class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     }
     
     override init() {
-        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekday, fromDate: NSDate())
+        let components = calendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Weekday], fromDate: NSDate())
         year = components.year
         month = components.month
         day = components.day
@@ -50,14 +50,14 @@ class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     }
     
     init(date: NSDate) {
-        let components = calendar.components(NSCalendarUnit.CalendarUnitYear | NSCalendarUnit.CalendarUnitMonth | NSCalendarUnit.CalendarUnitDay | NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
+        let components = calendar.components([NSCalendarUnit.Year, NSCalendarUnit.Month, NSCalendarUnit.Day, NSCalendarUnit.Weekday], fromDate: date)
         year = components.year
         month = components.month
         day = components.day
         dayOfWeek = TemplateDays(dayOfWeek: components.weekday)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         year = aDecoder.decodeIntegerForKey("year")
         month = aDecoder.decodeIntegerForKey("month")
         day = aDecoder.decodeIntegerForKey("day")
@@ -74,11 +74,11 @@ class Date: NSObject, Comparable, DebugPrintable, NSCoding {
     func dateByAddingDays(days: Int) -> Date {
         let components = NSDateComponents()
         components.day = days
-        return Date(date: calendar.dateByAddingComponents(components, toDate: date, options: NSCalendarOptions(0))!)
+        return Date(date: calendar.dateByAddingComponents(components, toDate: date, options: NSCalendarOptions(rawValue: 0))!)
     }
     
     func numberOfDaysUntilDate(toDate: Date) -> Int {
-        return calendar.components(NSCalendarUnit.CalendarUnitDay, fromDate: date, toDate: toDate.date, options: NSCalendarOptions(0)).day
+        return calendar.components(NSCalendarUnit.Day, fromDate: date, toDate: toDate.date, options: NSCalendarOptions(rawValue: 0)).day
     }
     
     // MARK: - DebugPrintable

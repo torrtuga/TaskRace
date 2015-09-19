@@ -17,7 +17,7 @@ class List: NSObject, NSCoding {
         items = []
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         items = aDecoder.decodeObjectForKey("items") as! [TodoItem]
     }

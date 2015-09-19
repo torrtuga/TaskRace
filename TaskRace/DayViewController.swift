@@ -77,7 +77,7 @@ class DayViewController: UITableViewController {
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         let movedItem = todayList.items.removeAtIndex(sourceIndexPath.row)
         todayList.items.insert(movedItem, atIndex: destinationIndexPath.row)
-        todayList.items.each(){ (i, t) -> Void in
+        for (i, t) in todayList.items.enumerate() {
             t.position = i
         }
         UserDataController.sharedController().addOrUpdateList(todayList)
@@ -142,7 +142,7 @@ class DayViewController: UITableViewController {
             return cell
         } else {
             let item = itemAtIndexPath(indexPath)
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
             cell.textLabel?.text = (item.repeats && item.repeatCount > 0 ? "\(item.numberCompleted)/\(item.repeatCount) " : "") + item.name
             var detailText = ""
             if item.minutes > 0 {
@@ -184,8 +184,8 @@ class DayViewController: UITableViewController {
             if item.repeats {
                 let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
                 let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
-                    let numberTextField = alertController.textFields![0] as! UITextField
-                    if let numberComplete = numberTextField.text.toInt() {
+                    let numberTextField = alertController.textFields![0] 
+                    if let numberComplete = Int(numberTextField.text!) {
                         let pointsToAdd = numberComplete * item.points
                         item.numberCompleted += numberComplete
                         item.completed = item.repeatCount > 0 && item.numberCompleted >= item.repeatCount

@@ -18,7 +18,7 @@ class OrderItemsViewController: UITableViewController {
         super.viewDidLoad()
         items = UserDataController.sharedController().regularTemplateLists().flatMap({ $0.items })
         if UserDataController.sharedController().useGlobalOrdering() {
-            items.sort { $0.position <= $1.position }
+            items.sortInPlace { $0.position <= $1.position }
         }
         setEditing(true, animated: false)
     }
@@ -56,7 +56,7 @@ class OrderItemsViewController: UITableViewController {
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         let movedItem = items.removeAtIndex(sourceIndexPath.row)
         items.insert(movedItem, atIndex: destinationIndexPath.row)
-        items.each(){ (i, t) -> Void in
+        for (i, t) in items.enumerate() {
             // Space them out so adding to templates doesn't result in ambiguous positions
             t.position = i * 100
         }
@@ -71,7 +71,7 @@ class OrderItemsViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
             let item = items[indexPath.row]
             cell.textLabel?.text = item.name
             var detailText = ""

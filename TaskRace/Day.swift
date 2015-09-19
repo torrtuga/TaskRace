@@ -19,7 +19,7 @@ class Day: NSObject, NSCoding {
         self.listID = listID
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         date = aDecoder.decodeObjectForKey("date") as! Date
         listID = aDecoder.decodeObjectForKey("listID") as! String

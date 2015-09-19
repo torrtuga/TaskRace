@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct TemplateDays: RawOptionSetType, BooleanType {
+struct TemplateDays: OptionSetType, BooleanType {
     typealias RawValue = UInt
     private var value: UInt = 0
     init(_ value: UInt) { self.value = value }
     init(rawValue value: UInt) { self.value = value }
     init(nilLiteral: ()) { self.value = 0 }
     init(dayOfWeek: Int) { self.value = 1 << UInt(dayOfWeek - 1) }
-    static var allZeros: TemplateDays { return self(0) }
-    static func fromMask(raw: UInt) -> TemplateDays { return self(raw) }
+    static var allZeros: TemplateDays { return self.init(0) }
+    static func fromMask(raw: UInt) -> TemplateDays { return self.init(raw) }
     var rawValue: UInt { return self.value }
     var boolValue: Bool { return value > 0 }
     var stringValue: String {
@@ -65,7 +65,7 @@ struct TemplateDays: RawOptionSetType, BooleanType {
         }
     }
     
-    static var None: TemplateDays { return self(0) }
+    static var None: TemplateDays { return self.init(0) }
     static var Sunday: TemplateDays { return TemplateDays(1 << 0) }
     static var Monday: TemplateDays { return TemplateDays(1 << 1) }
     static var Tuesday: TemplateDays { return TemplateDays(1 << 2) }
@@ -78,13 +78,13 @@ struct TemplateDays: RawOptionSetType, BooleanType {
 func daysStringFromTemplateDays(days: TemplateDays) -> String {
     var val = ""
     var found = 0
-    if days & TemplateDays.Sunday {
+    if days.intersect(TemplateDays.Sunday) {
         val += "Su"
         found += 1
     }
-    if days & TemplateDays.Monday {
+    if days.intersect(TemplateDays.Monday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "Mo"
@@ -93,9 +93,9 @@ func daysStringFromTemplateDays(days: TemplateDays) -> String {
     } else {
         found = 0
     }
-    if days & TemplateDays.Tuesday {
+    if days.intersect(TemplateDays.Tuesday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "Tu"
@@ -107,9 +107,9 @@ func daysStringFromTemplateDays(days: TemplateDays) -> String {
         }
         found = 0
     }
-    if days & TemplateDays.Wednesday {
+    if days.intersect(TemplateDays.Wednesday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "We"
@@ -121,9 +121,9 @@ func daysStringFromTemplateDays(days: TemplateDays) -> String {
         }
         found = 0
     }
-    if days & TemplateDays.Thursday {
+    if days.intersect(TemplateDays.Thursday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "Th"
@@ -135,9 +135,9 @@ func daysStringFromTemplateDays(days: TemplateDays) -> String {
         }
         found = 0
     }
-    if days & TemplateDays.Friday {
+    if days.intersect(TemplateDays.Friday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "Fr"
@@ -149,9 +149,9 @@ func daysStringFromTemplateDays(days: TemplateDays) -> String {
         }
         found = 0
     }
-    if days & TemplateDays.Saturday {
+    if days.intersect(TemplateDays.Saturday) {
         if found == 0 {
-            if val.length > 0 {
+            if !val.isEmpty {
                 val += ","
             }
             val += "Sa"

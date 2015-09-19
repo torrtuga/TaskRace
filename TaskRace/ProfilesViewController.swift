@@ -32,8 +32,8 @@ class SettingsViewController: UITableViewController {
         }
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
         alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
-            let textField = alertController.textFields!.first as! UITextField
-            let profile = textField.text
+            let textField = alertController.textFields!.first!
+            let profile = textField.text!
             
             if self.profiles.map({ $0.lowercaseString }).contains(profile.lowercaseString) {
                 let alertController = UIAlertController(title: "Cannot Add Profile", message: "That name is already taken. Please choose a unique name for a new profile.", preferredStyle: .Alert)
@@ -67,14 +67,14 @@ class SettingsViewController: UITableViewController {
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete && profiles.count > 1 {
             let profile = profiles[indexPath.row]
-            profiles.remove(profile)
+            profiles.removeAtIndex(profiles.indexOf(profile)!)
             UserDataController.removeProfile(profile)
             tableView.reloadData()
         }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         let profile = profiles[indexPath.row]
         cell.textLabel?.text = profile
         if UserDataController.currentProfile == profile {
@@ -96,8 +96,8 @@ class SettingsViewController: UITableViewController {
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
-                let textField = alertController.textFields!.first as! UITextField
-                let newName = textField.text
+                let textField = alertController.textFields!.first!
+                let newName = textField.text!
                 UserDataController.renameProfile(profile, toProfile: newName)
                 self.updateData()
                 self.editing = false

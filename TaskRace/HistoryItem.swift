@@ -23,11 +23,19 @@ class HistoryItem: NSObject, NSCoding {
         self.numberCompleted = numberCompleted
     }
     
+    override func isEqual(object: AnyObject?) -> Bool {
+        if let other = object as? HistoryItem {
+            return id == other.id
+        }
+        
+        return false
+    }
+    
     convenience init(name: String, points: Int, dateCompleted: NSDate, numberCompleted: Int) {
         self.init(id: NSUUID().UUIDString, name: name, points: points, dateCompleted: dateCompleted, numberCompleted: numberCompleted)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         name = aDecoder.decodeObjectForKey("name") as! String
         points = aDecoder.decodeIntegerForKey("points")

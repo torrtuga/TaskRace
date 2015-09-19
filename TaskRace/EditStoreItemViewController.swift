@@ -14,7 +14,7 @@ class EditStoreItemViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var pointsTextField: UITextField!
     @IBOutlet weak var repeatsSwitch: UISwitch!
     var item: StoreItem!
-    var saveFunction: (name: String, points: Int?, repeats: Bool) -> Void = {_, _, _ in println("Save function not implemented") }
+    var saveFunction: (name: String, points: Int?, repeats: Bool) -> Void = {_, _, _ in print("Save function not implemented") }
     
     override func viewDidLoad() {
         nameTextField.text = item.name
@@ -28,14 +28,14 @@ class EditStoreItemViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func savePressed(sender: UIBarButtonItem) {
-        saveFunction(name: nameTextField.text, points: pointsTextField.text.toInt(), repeats: repeatsSwitch.on)
+        saveFunction(name: nameTextField.text!, points: Int(pointsTextField.text!), repeats: repeatsSwitch.on)
         navigationController?.popViewControllerAnimated(true)
     }
     
     // MARK: - UITextFieldDelegate Methods
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        return text.toInt() != nil
+        let text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        return Int(text) != nil
     }
 }

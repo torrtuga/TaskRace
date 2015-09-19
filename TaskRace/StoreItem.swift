@@ -25,7 +25,7 @@ class StoreItem: NSObject, NSCoding {
         repeats = false
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         name = aDecoder.decodeObjectForKey("name") as! String
         points = aDecoder.decodeIntegerForKey("points")

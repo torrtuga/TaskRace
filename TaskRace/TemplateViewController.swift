@@ -89,7 +89,7 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) 
             cell.textLabel?.text = "Anytime"
             let anytimeSwitch = UISwitch()
             anytimeSwitch.on = template.anytime
@@ -98,7 +98,7 @@ class TemplateViewController: UITableViewController {
             return cell
         }
         if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) 
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = TemplateDays.Sunday.stringValue
@@ -131,7 +131,7 @@ class TemplateViewController: UITableViewController {
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) as! UITableViewCell
+            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) 
             let item = list.items[indexPath.row]
             cell.textLabel?.text = item.name
             var detailText = ""
@@ -156,10 +156,10 @@ class TemplateViewController: UITableViewController {
             let cell = tableView.cellForRowAtIndexPath(indexPath)!
             if cell.accessoryType == .Checkmark {
                 cell.accessoryType = .None
-                template.templateDays = template.templateDays ^ TemplateDays(UInt(cell.tag))
+                template.templateDays = template.templateDays.exclusiveOr(TemplateDays(UInt(cell.tag)))
             } else {
                 cell.accessoryType = .Checkmark
-                template.templateDays = template.templateDays | TemplateDays(UInt(cell.tag))
+                template.templateDays = template.templateDays.union(TemplateDays(UInt(cell.tag)))
             }
             UserDataController.sharedController().addOrUpdateTemplate(template)
         } else if indexPath.section == 2 {
@@ -180,7 +180,6 @@ class TemplateViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            var items = list.items
             list.items.removeAtIndex(indexPath.row)
             UserDataController.sharedController().addOrUpdateList(list)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)

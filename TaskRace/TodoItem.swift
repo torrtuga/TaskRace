@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
+class TodoItem: NSObject, NSCoding, NSCopying {
     let id: String
     var name: String
     var points: Int
@@ -35,7 +35,15 @@ class TodoItem: NSObject, NSCoding, NSCopying, Equatable {
         self.init(id: NSUUID().UUIDString, name: name, position: position)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    override func isEqual(object: AnyObject?) -> Bool {
+        if let other = object as? TodoItem {
+            return self.id == other.id
+        }
+        
+        return false
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         id = aDecoder.decodeObjectForKey("id") as! String
         name = aDecoder.decodeObjectForKey("name") as! String
         points = aDecoder.decodeIntegerForKey("points")

@@ -30,7 +30,7 @@ class TemplatesViewController: UITableViewController {
     }
     
     @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
-        var templates = sections[0].templates
+        let templates = sections[0].templates
         let position = templates.count
         let template = Template(name: "New Template", position: position)
         UserDataController.sharedController().addOrUpdateTemplate(template)
@@ -44,8 +44,8 @@ class TemplatesViewController: UITableViewController {
     override func setEditing(editing: Bool, animated: Bool) {
         if editing {
             navigationItem.rightBarButtonItems?.append(orderItemsButton)
-        } else {
-            navigationItem.rightBarButtonItems?.remove(orderItemsButton)
+        } else if let index = navigationItem.rightBarButtonItems?.indexOf(orderItemsButton) {
+            navigationItem.rightBarButtonItems?.removeAtIndex(index)
         }
         super.setEditing(editing, animated: animated)
     }
@@ -66,7 +66,7 @@ class TemplatesViewController: UITableViewController {
         let movedTemplate = sections[sourceIndexPath.section].templates.removeAtIndex(sourceIndexPath.row)
         sections[destinationIndexPath.section].templates.insert(movedTemplate, atIndex: destinationIndexPath.row)
         for section in sections {
-            section.templates.each { i, t in
+            for (i, t) in section.templates.enumerate() {
                 t.position = i
             }
             
@@ -87,7 +87,7 @@ class TemplatesViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         let templates = sections[indexPath.section].templates
         cell.textLabel?.text = templates[indexPath.row].name
         cell.detailTextLabel?.text = daysStringFromTemplateDays(templates[indexPath.row].templateDays)
@@ -105,8 +105,8 @@ class TemplatesViewController: UITableViewController {
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
-                let textField = alertController.textFields!.first as! UITextField
-                template.name = textField.text
+                let textField = alertController.textFields!.first!
+                template.name = textField.text!
                 UserDataController.sharedController().addOrUpdateTemplate(template)
                 self.updateData()
                 self.tableView.reloadData()

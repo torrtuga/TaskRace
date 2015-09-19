@@ -19,7 +19,7 @@ class EditTodoItemViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var repeatCountTextField: UITextField!
     
     var item: TodoItem?
-    var saveFunction: (name: String, points: Int?, minutes: Int?, repeats: Bool, repeatCount: Int?) -> Void = {_, _, _, _, _ in println("Save function not implemented") }
+    var saveFunction: (name: String, points: Int?, minutes: Int?, repeats: Bool, repeatCount: Int?) -> Void = {_, _, _, _, _ in print("Save function not implemented") }
     
     override func viewDidLoad() {
         if let item = item {
@@ -42,7 +42,7 @@ class EditTodoItemViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func savePressed(sender: UIBarButtonItem) {
-        saveFunction(name: nameTextField.text, points: pointsTextField.text.toInt(), minutes: minutesTextField.text.toInt(), repeats: repeatsSwitch.on, repeatCount: repeatCountTextField.text.toInt())
+        saveFunction(name: nameTextField.text!, points: Int(pointsTextField.text!), minutes: Int(minutesTextField.text!), repeats: repeatsSwitch.on, repeatCount: Int(repeatCountTextField.text!))
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -55,7 +55,7 @@ class EditTodoItemViewController: UIViewController, UITextFieldDelegate {
     // MARK: - UITextFieldDelegate Methods
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        return text.toInt() != nil
+        let text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        return Int(text) != nil
     }
 }
