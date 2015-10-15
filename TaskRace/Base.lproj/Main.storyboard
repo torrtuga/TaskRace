@@ -929,11 +929,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="history" width="36" height="36"/>
-        <image name="profiles" width="36" height="36"/>
-        <image name="store" width="36" height="36"/>
-        <image name="template" width="36" height="36"/>
-        <image name="todo" width="36" height="36"/>
+        <image name="history" width="32" height="28"/>
+        <image name="profiles" width="24" height="28"/>
+        <image name="store" width="32" height="31"/>
+        <image name="template" width="32" height="32"/>
+        <image name="todo" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="F4m-OK-PKm"/>
