@@ -161,6 +161,8 @@ class DayViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        guard indexPath.section > 0 else { return }
+        
         let item = itemAtIndexPath(indexPath)
         if editing {
             if !item.completed {
@@ -227,7 +229,6 @@ class DayViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            var items = todayList.items
             todayList.items.removeAtIndex(indexPath.row)
             UserDataController.sharedController().addOrUpdateList(todayList)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
