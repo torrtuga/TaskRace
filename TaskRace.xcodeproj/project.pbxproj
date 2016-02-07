@@ -28,12 +28,13 @@
 		3255D8711A094EBB00A60DC9 /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D8701A094EBB00A60DC9 /* TodoItem.swift */; };
 		3255D8731A094EC500A60DC9 /* StoreItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3255D8721A094EC500A60DC9 /* StoreItem.swift */; };
 		32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32725BB119F9FC68007D79D8 /* UserDataController.swift */; };
-		32B5BD2A1A129A5600CD1AC1 /* EditTodoItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */; };
+		32B5BD2A1A129A5600CD1AC1 /* EditTodoItemTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B5BD291A129A5600CD1AC1 /* EditTodoItemTableViewController.swift */; };
 		32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */; };
 		32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */; };
 		32C8038B1AE6C99000C0858D /* OrderItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */; };
-		32D7D2D71BAD9A670001E92D /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */; settings = {ASSET_TAGS = (); }; };
+		32D7D2D71BAD9A670001E92D /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */; };
 		32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */; };
+		32FB3A3E1C53E8EE00CEAA78 /* EditItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */; };
 		5F6135677EE16F8A8ED35F1B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA5EBC08937AD721E11C64C /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -74,12 +75,13 @@
 		3255D8721A094EC500A60DC9 /* StoreItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItem.swift; sourceTree = "<group>"; };
 		32725BB119F9FC68007D79D8 /* UserDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataController.swift; sourceTree = "<group>"; };
 		32725BB319F9FE2F007D79D8 /* TaskRace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaskRace-Bridging-Header.h"; sourceTree = "<group>"; };
-		32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoItemViewController.swift; sourceTree = "<group>"; };
+		32B5BD291A129A5600CD1AC1 /* EditTodoItemTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoItemTableViewController.swift; sourceTree = "<group>"; };
 		32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
 		32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditStoreItemViewController.swift; sourceTree = "<group>"; };
 		32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderItemsViewController.swift; sourceTree = "<group>"; };
 		32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplatesViewController.swift; sourceTree = "<group>"; };
+		32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditItem.storyboard; sourceTree = "<group>"; };
 		4906D3BCC1D5FD4AA8611638 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7FA5EBC08937AD721E11C64C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		90694EACA3D33C762846310D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -133,7 +135,7 @@
 				324E8A801A0EB3F00075E544 /* TemplateViewController.swift */,
 				32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */,
 				324E8A821A0EBFDB0075E544 /* TodoItemCell.swift */,
-				32B5BD291A129A5600CD1AC1 /* EditTodoItemViewController.swift */,
+				32B5BD291A129A5600CD1AC1 /* EditTodoItemTableViewController.swift */,
 				320B87E21A2129D000BBAB5C /* TemplateDays.swift */,
 				322A5A5E1A26516B00B38949 /* DaysViewController.swift */,
 				322A5A601A265A3800B38949 /* DayViewController.swift */,
@@ -144,6 +146,7 @@
 				323E8E101AC4532E0034317E /* ProfilesViewController.swift */,
 				32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
+				32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
 				320B7BE119F73BBE00E8B10C /* Supporting Files */,
@@ -299,6 +302,7 @@
 				320B7BEB19F73BBE00E8B10C /* Main.storyboard in Resources */,
 				320B7BF019F73BBE00E8B10C /* LaunchScreen.xib in Resources */,
 				320B7BED19F73BBE00E8B10C /* Images.xcassets in Resources */,
+				32FB3A3E1C53E8EE00CEAA78 /* EditItem.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,7 +357,7 @@
 				322119B11A8CFA3000C709CA /* DayInfoCell.swift in Sources */,
 				32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */,
 				322A5A5F1A26516B00B38949 /* DaysViewController.swift in Sources */,
-				32B5BD2A1A129A5600CD1AC1 /* EditTodoItemViewController.swift in Sources */,
+				32B5BD2A1A129A5600CD1AC1 /* EditTodoItemTableViewController.swift in Sources */,
 				32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */,
 				322A5A611A265A3800B38949 /* DayViewController.swift in Sources */,
 				323147531A55901A00F01B85 /* HistoryItem.swift in Sources */,
@@ -504,6 +508,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TaskRace/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.owlmentor.taskrace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -522,6 +527,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = TaskRace/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.owlmentor.taskrace;
 				PRODUCT_NAME = "$(TARGET_NAME)";

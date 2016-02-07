@@ -18,6 +18,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
     var repeats: Bool
     var repeatCount: Int
     var numberCompleted: Int
+    var dueDate: Date?
     
     private init(id: String, name: String, position: Int) {
         self.id = id
@@ -29,6 +30,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         repeats = false
         repeatCount = 0
         numberCompleted = 0
+        dueDate = nil
     }
     
     convenience init(name: String, position: Int) {
@@ -53,6 +55,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         repeats = aDecoder.decodeBoolForKey("repeats")
         repeatCount = aDecoder.decodeIntegerForKey("repeatCount")
         numberCompleted = aDecoder.decodeIntegerForKey("numberCompleted")
+        dueDate = aDecoder.decodeObjectForKey("dueDate") as? Date
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -65,6 +68,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         aCoder.encodeBool(repeats, forKey: "repeats")
         aCoder.encodeInteger(repeatCount, forKey: "repeatCount")
         aCoder.encodeInteger(numberCompleted, forKey: "numberCompleted")
+        aCoder.encodeObject(dueDate, forKey: "dueDate")
     }
     
     func copyWithZone(zone: NSZone) -> AnyObject {
@@ -75,6 +79,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         item.repeats = repeats
         item.repeatCount = repeatCount
         item.numberCompleted = numberCompleted
+        item.dueDate = dueDate
         return item
     }
     
@@ -85,6 +90,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         position = otherItem.position
         repeats = otherItem.repeats
         repeatCount = otherItem.repeatCount
+        dueDate = otherItem.dueDate
     }
 }
 

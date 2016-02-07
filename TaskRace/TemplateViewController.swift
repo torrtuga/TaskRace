@@ -163,6 +163,11 @@ class TemplateViewController: UITableViewController {
             }
             UserDataController.sharedController().addOrUpdateTemplate(template)
         } else if indexPath.section == 2 {
+            print(template)
+            print(list)
+            for item in self.list.items {
+                print("\(item.name), \(item.dueDate)")
+            }
             let item = list.items[indexPath.row]
             performSegueWithIdentifier("EditItemSegue", sender: item)
         }
@@ -188,23 +193,10 @@ class TemplateViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let item = sender as? TodoItem {
-            if let editViewController = segue.destinationViewController as? EditTodoItemViewController {
+            if let editViewController = segue.destinationViewController as? EditTodoItemTableViewController {
                 editViewController.item = item
-                editViewController.saveFunction = { name, points, minutes, repeats, repeatCount in
-                    item.name = name
-                    item.repeats = repeats
-                    if let points = points {
-                        item.points = points
-                    }
-                    
-                    if let minutes = minutes {
-                        item.minutes = minutes
-                    }
-                    
-                    if let repeatCount = repeatCount {
-                        item.repeatCount = repeatCount
-                    }
-                    
+                editViewController.anytime = template.anytime
+                editViewController.saveFunction = {
                     UserDataController.sharedController().addOrUpdateList(self.list)
                     self.tableView.reloadData()
                 }

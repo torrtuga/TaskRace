@@ -265,6 +265,20 @@ struct UserDataController {
         }
     }
     
+    func pastDueItems() -> [(item: TodoItem, listID: String)] {
+        return allTemplates().flatMap { template -> [(item: TodoItem, listID: String)] in
+            guard template.anytime, let id = template.listID else { return [] }
+            let list = self.listWithID(id)
+            let today = Date(date: NSDate())
+            return list.items.filter {
+                if let dueDate = $0.dueDate {
+                    return !$0.completed && dueDate <= today
+                }
+                return false
+                }.sort { $0.dueDate! > $1.dueDate! }.map { ($0, id) }
+        }
+    }
+    
     // MARK: - Store
     
     func storePoints() -> Int {
