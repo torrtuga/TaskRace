@@ -1,0 +1,6 @@
+framework module Pods_TaskRace {
+  umbrella header "Pods-TaskRace-umbrella.h"
+
+  export *
+  module * { export * }
+}

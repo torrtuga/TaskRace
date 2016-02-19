@@ -6,9 +6,8 @@
 //  Copyright (c) 2015 Mine. All rights reserved.
 //
 
-import Foundation
-
 import UIKit
+import Swiftification
 
 class HistoryViewController: UITableViewController {
     

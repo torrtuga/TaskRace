@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import YapDatabase
 
 let ProfileChangedNotification = "ProfileChangedNotification"
 

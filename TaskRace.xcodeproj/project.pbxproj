@@ -32,10 +32,9 @@
 		32B7CBB01A3363A00030AD13 /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */; };
 		32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */; };
 		32C8038B1AE6C99000C0858D /* OrderItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */; };
-		32D7D2D71BAD9A670001E92D /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */; };
 		32F1990B1A0D59BF005B820E /* TemplatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */; };
 		32FB3A3E1C53E8EE00CEAA78 /* EditItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */; };
-		5F6135677EE16F8A8ED35F1B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA5EBC08937AD721E11C64C /* libPods.a */; };
+		93C7BCA872539D398C52AA82 /* Pods_TaskRace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AED810A94E4D7437E23FB5D /* Pods_TaskRace.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2AED810A94E4D7437E23FB5D /* Pods_TaskRace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaskRace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		320B7BDE19F73BBE00E8B10C /* TaskRace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskRace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		320B7BE219F73BBE00E8B10C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		320B7BE319F73BBE00E8B10C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,17 +74,14 @@
 		3255D8701A094EBB00A60DC9 /* TodoItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		3255D8721A094EC500A60DC9 /* StoreItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreItem.swift; sourceTree = "<group>"; };
 		32725BB119F9FC68007D79D8 /* UserDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDataController.swift; sourceTree = "<group>"; };
-		32725BB319F9FE2F007D79D8 /* TaskRace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TaskRace-Bridging-Header.h"; sourceTree = "<group>"; };
 		32B5BD291A129A5600CD1AC1 /* EditTodoItemTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoItemTableViewController.swift; sourceTree = "<group>"; };
 		32B7CBAF1A3363A00030AD13 /* StoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreViewController.swift; sourceTree = "<group>"; };
 		32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditStoreItemViewController.swift; sourceTree = "<group>"; };
 		32C8038A1AE6C99000C0858D /* OrderItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderItemsViewController.swift; sourceTree = "<group>"; };
-		32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		32F9490C1A0C0A7C00B25B95 /* TemplatesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplatesViewController.swift; sourceTree = "<group>"; };
 		32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditItem.storyboard; sourceTree = "<group>"; };
-		4906D3BCC1D5FD4AA8611638 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		7FA5EBC08937AD721E11C64C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		90694EACA3D33C762846310D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		ACDBA11C55831296E6A3AFBA /* Pods-TaskRace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskRace.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TaskRace/Pods-TaskRace.debug.xcconfig"; sourceTree = "<group>"; };
+		CE637BB6269815ED919E8C7D /* Pods-TaskRace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaskRace.release.xcconfig"; path = "Pods/Target Support Files/Pods-TaskRace/Pods-TaskRace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5F6135677EE16F8A8ED35F1B /* libPods.a in Frameworks */,
+				93C7BCA872539D398C52AA82 /* Pods_TaskRace.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,14 +103,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CFB4A16FF78FAD3E77E0EF6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ACDBA11C55831296E6A3AFBA /* Pods-TaskRace.debug.xcconfig */,
+				CE637BB6269815ED919E8C7D /* Pods-TaskRace.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		2D5399BBF8A6C827DE289366 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2AED810A94E4D7437E23FB5D /* Pods_TaskRace.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		320B7BD519F73BBE00E8B10C = {
 			isa = PBXGroup;
 			children = (
 				320B7BE019F73BBE00E8B10C /* TaskRace */,
 				320B7BF819F73BBE00E8B10C /* TodoTests */,
 				320B7BDF19F73BBE00E8B10C /* Products */,
-				DB2ADEBCE789CE59EF2D580D /* Pods */,
-				E58A5F20E9D080019EF55B77 /* Frameworks */,
+				0CFB4A16FF78FAD3E77E0EF6 /* Pods */,
+				2D5399BBF8A6C827DE289366 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -144,13 +158,11 @@
 				32B7CBB11A3366920030AD13 /* EditStoreItemViewController.swift */,
 				323147541A5592F200F01B85 /* HistoryViewController.swift */,
 				323E8E101AC4532E0034317E /* ProfilesViewController.swift */,
-				32D7D2D61BAD9A670001E92D /* ArrayHelpers.swift */,
 				320B7BE919F73BBE00E8B10C /* Main.storyboard */,
 				32FB3A3D1C53E8EE00CEAA78 /* EditItem.storyboard */,
 				320B7BEC19F73BBE00E8B10C /* Images.xcassets */,
 				320B7BEE19F73BBE00E8B10C /* LaunchScreen.xib */,
 				320B7BE119F73BBE00E8B10C /* Supporting Files */,
-				32725BB319F9FE2F007D79D8 /* TaskRace-Bridging-Header.h */,
 			);
 			path = TaskRace;
 			sourceTree = "<group>";
@@ -196,23 +208,6 @@
 			name = "User Data";
 			sourceTree = "<group>";
 		};
-		DB2ADEBCE789CE59EF2D580D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				90694EACA3D33C762846310D /* Pods.debug.xcconfig */,
-				4906D3BCC1D5FD4AA8611638 /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		E58A5F20E9D080019EF55B77 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				7FA5EBC08937AD721E11C64C /* libPods.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -220,11 +215,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "TaskRace" */;
 			buildPhases = (
-				E6146E424911B6D875B32D87 /* Check Pods Manifest.lock */,
+				09164ABDA98C7B73C453A3D5 /* Check Pods Manifest.lock */,
 				320B7BDA19F73BBE00E8B10C /* Sources */,
 				320B7BDB19F73BBE00E8B10C /* Frameworks */,
 				320B7BDC19F73BBE00E8B10C /* Resources */,
-				923617BD3DE78F682E9CA14B /* Copy Pods Resources */,
+				79786C312180F42894428325 /* Embed Pods Frameworks */,
+				E8E48B7027F1627D2E5063B1 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -316,22 +312,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		923617BD3DE78F682E9CA14B /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E6146E424911B6D875B32D87 /* Check Pods Manifest.lock */ = {
+		09164ABDA98C7B73C453A3D5 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -344,6 +325,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		79786C312180F42894428325 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaskRace/Pods-TaskRace-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8E48B7027F1627D2E5063B1 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaskRace/Pods-TaskRace-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -364,7 +375,6 @@
 				3255D8711A094EBB00A60DC9 /* TodoItem.swift in Sources */,
 				32B7CBB21A3366920030AD13 /* EditStoreItemViewController.swift in Sources */,
 				324E8A811A0EB3F00075E544 /* TemplateViewController.swift in Sources */,
-				32D7D2D71BAD9A670001E92D /* ArrayHelpers.swift in Sources */,
 				3255D86D1A094E9D00A60DC9 /* Template.swift in Sources */,
 				32725BB219F9FC68007D79D8 /* UserDataController.swift in Sources */,
 				323385BE19FC4EFF0043159E /* Date.swift in Sources */,
@@ -501,7 +511,7 @@
 		};
 		320B7C0019F73BBE00E8B10C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90694EACA3D33C762846310D /* Pods.debug.xcconfig */;
+			baseConfigurationReference = ACDBA11C55831296E6A3AFBA /* Pods-TaskRace.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -513,14 +523,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.owlmentor.taskrace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TaskRace/TaskRace-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		320B7C0119F73BBE00E8B10C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4906D3BCC1D5FD4AA8611638 /* Pods.release.xcconfig */;
+			baseConfigurationReference = CE637BB6269815ED919E8C7D /* Pods-TaskRace.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -532,7 +541,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.owlmentor.taskrace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "TaskRace/TaskRace-Bridging-Header.h";
 			};
 			name = Release;
 		};
