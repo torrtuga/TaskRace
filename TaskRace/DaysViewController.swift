@@ -16,8 +16,8 @@ class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
         if let dayView = view as? RSDFDatePickerView {
             self.dayView = dayView
             dayView.delegate = self
-            if let dayViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("DayViewController") as? DayViewController {
-                dayViewController.day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
+            if let dayViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DayViewController") as? DayViewController {
+                dayViewController.day = UserDataController.sharedController().dayForDate(Date(date: Foundation.Date()))
                 navigationController?.pushViewController(dayViewController, animated: false)
             }
         } else {
@@ -25,17 +25,17 @@ class DaysViewController: UIViewController, RSDFDatePickerViewDelegate {
         }
     }
     
-    func datePickerView(view: RSDFDatePickerView!, didSelectDate date: NSDate!) {
+    func datePickerView(_ view: RSDFDatePickerView!, didSelect date: Foundation.Date!) {
         let day = UserDataController.sharedController().dayForDate(Date(date: date))
-        performSegueWithIdentifier("DaySegue", sender: day)
+        performSegue(withIdentifier: "DaySegue", sender: day)
     }
     
-    @IBAction func todayButtonPressed(sender: UIBarButtonItem) {
-        self.dayView?.scrollToToday(true)
+    @IBAction func todayButtonPressed(_ sender: UIBarButtonItem) {
+        self.dayView?.scroll(toToday: true)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destination = segue.destinationViewController as? DayViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? DayViewController {
             destination.day = sender as? Day
         }
     }

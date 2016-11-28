@@ -17,7 +17,7 @@ class StoreItem: NSObject, NSCoding {
     var repeats: Bool
     
     init(name: String, position: Int) {
-        id = NSUUID().UUIDString
+        id = UUID().uuidString
         self.name = name
         points = 0
         purchased = false
@@ -26,20 +26,20 @@ class StoreItem: NSObject, NSCoding {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as! String
-        name = aDecoder.decodeObjectForKey("name") as! String
-        points = aDecoder.decodeIntegerForKey("points")
-        purchased = aDecoder.decodeBoolForKey("purchased")
-        position = aDecoder.decodeIntegerForKey("position")
-        repeats = aDecoder.decodeBoolForKey("repeats")
+        id = aDecoder.decodeObject(forKey: "id") as! String
+        name = aDecoder.decodeObject(forKey: "name") as! String
+        points = aDecoder.decodeInteger(forKey: "points")
+        purchased = aDecoder.decodeBool(forKey: "purchased")
+        position = aDecoder.decodeInteger(forKey: "position")
+        repeats = aDecoder.decodeBool(forKey: "repeats")
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeInteger(points, forKey: "points")
-        aCoder.encodeBool(purchased, forKey: "purchased")
-        aCoder.encodeInteger(position, forKey: "position")
-        aCoder.encodeBool(repeats, forKey: "repeats")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(points, forKey: "points")
+        aCoder.encode(purchased, forKey: "purchased")
+        aCoder.encode(position, forKey: "position")
+        aCoder.encode(repeats, forKey: "repeats")
     }
 }

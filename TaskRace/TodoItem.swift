@@ -20,7 +20,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
     var numberCompleted: Int
     var dueDate: Date?
     
-    private init(id: String, name: String, position: Int) {
+    fileprivate init(id: String, name: String, position: Int) {
         self.id = id
         self.name = name
         points = 0
@@ -34,10 +34,10 @@ class TodoItem: NSObject, NSCoding, NSCopying {
     }
     
     convenience init(name: String, position: Int) {
-        self.init(id: NSUUID().UUIDString, name: name, position: position)
+        self.init(id: UUID().uuidString, name: name, position: position)
     }
     
-    override func isEqual(object: AnyObject?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         if let other = object as? TodoItem {
             return self.id == other.id
         }
@@ -46,32 +46,32 @@ class TodoItem: NSObject, NSCoding, NSCopying {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as! String
-        name = aDecoder.decodeObjectForKey("name") as! String
-        points = aDecoder.decodeIntegerForKey("points")
-        minutes = aDecoder.decodeIntegerForKey("minutes")
-        completed = aDecoder.decodeBoolForKey("completed")
-        position = aDecoder.decodeIntegerForKey("position")
-        repeats = aDecoder.decodeBoolForKey("repeats")
-        repeatCount = aDecoder.decodeIntegerForKey("repeatCount")
-        numberCompleted = aDecoder.decodeIntegerForKey("numberCompleted")
-        dueDate = aDecoder.decodeObjectForKey("dueDate") as? Date
+        id = aDecoder.decodeObject(forKey: "id") as! String
+        name = aDecoder.decodeObject(forKey: "name") as! String
+        points = aDecoder.decodeInteger(forKey: "points")
+        minutes = aDecoder.decodeInteger(forKey: "minutes")
+        completed = aDecoder.decodeBool(forKey: "completed")
+        position = aDecoder.decodeInteger(forKey: "position")
+        repeats = aDecoder.decodeBool(forKey: "repeats")
+        repeatCount = aDecoder.decodeInteger(forKey: "repeatCount")
+        numberCompleted = aDecoder.decodeInteger(forKey: "numberCompleted")
+        dueDate = aDecoder.decodeObject(forKey: "dueDate") as? Date
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(name, forKey: "name")
-        aCoder.encodeInteger(points, forKey: "points")
-        aCoder.encodeInteger(minutes, forKey: "minutes")
-        aCoder.encodeBool(completed, forKey: "completed")
-        aCoder.encodeInteger(position, forKey: "position")
-        aCoder.encodeBool(repeats, forKey: "repeats")
-        aCoder.encodeInteger(repeatCount, forKey: "repeatCount")
-        aCoder.encodeInteger(numberCompleted, forKey: "numberCompleted")
-        aCoder.encodeObject(dueDate, forKey: "dueDate")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(name, forKey: "name")
+        aCoder.encode(points, forKey: "points")
+        aCoder.encode(minutes, forKey: "minutes")
+        aCoder.encode(completed, forKey: "completed")
+        aCoder.encode(position, forKey: "position")
+        aCoder.encode(repeats, forKey: "repeats")
+        aCoder.encode(repeatCount, forKey: "repeatCount")
+        aCoder.encode(numberCompleted, forKey: "numberCompleted")
+        aCoder.encode(dueDate, forKey: "dueDate")
     }
     
-    func copyWithZone(zone: NSZone) -> AnyObject {
+    func copy(with zone: NSZone?) -> Any {
         let item = TodoItem(id: id, name: name, position: position)
         item.points = points
         item.minutes = minutes
@@ -83,7 +83,7 @@ class TodoItem: NSObject, NSCoding, NSCopying {
         return item
     }
     
-    func updateFromItem(otherItem: TodoItem) -> Void {
+    func updateFromItem(_ otherItem: TodoItem) -> Void {
         name = otherItem.name
         points = otherItem.points
         minutes = otherItem.minutes

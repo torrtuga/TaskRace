@@ -11,40 +11,40 @@ import Swiftification
 
 class HistoryViewController: UITableViewController {
     
-    let dayFormatter = NSDateFormatter()
+    let dayFormatter = DateFormatter()
     var sections: [(title: String, items: [HistoryItem])] = []
     
     override func viewDidLoad() {
         dayFormatter.dateFormat = "EEE, MMM d"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        sections = UserDataController.sharedController().historyItems().sectionBy{ self.dayFormatter.stringFromDate($0.dateCompleted) }
+        sections = UserDataController.sharedController().historyItems().sectionBy{ self.dayFormatter.string(from: $0.dateCompleted) }
         
         tableView.reloadData()
     }
     
     // MARK: - Table View
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].items.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         let item = sections[indexPath.section].items[indexPath.row]
         cell.textLabel?.text = item.name + (item.numberCompleted > 1 ? " (\(item.numberCompleted))" : "")
         cell.detailTextLabel?.text = "\(item.points)pts"
         return cell
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let totalPoints = sections[section].items.map { $0.points }.reduce(0, combine: +)
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let totalPoints = sections[section].items.map { $0.points }.reduce(0, +)
         return sections[section].title + " (\(totalPoints) points)"
     }
 }

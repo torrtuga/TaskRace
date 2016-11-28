@@ -13,11 +13,11 @@ class StoreViewController: UITableViewController {
     var items: [StoreItem]!
     
     override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = editButtonItem()
+        navigationItem.leftBarButtonItem = editButtonItem
         tableView.allowsSelectionDuringEditing = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         updateTitle()
         items = UserDataController.sharedController().storeItems()
         tableView.reloadData()
@@ -28,92 +28,92 @@ class StoreViewController: UITableViewController {
         navigationItem.title = "\(storePoints) Points"
     }
     
-    @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
+    @IBAction func addPressed(_ sender: UIBarButtonItem) -> Void {
         let position = items.count
         let item = StoreItem(name: "New Item", position: position)
         items.append(item)
         UserDataController.sharedController().addOrUpdateStoreItem(item)
-        let indexPath = NSIndexPath(forRow: position, inSection: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        let indexPath = IndexPath(row: position, section: 0)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - Table View
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedItem = items.removeAtIndex(sourceIndexPath.row)
-        items.insert(movedItem, atIndex: destinationIndexPath.row)
-        for (i, t) in items.enumerate() {
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedItem = items.remove(at: sourceIndexPath.row)
+        items.insert(movedItem, at: destinationIndexPath.row)
+        for (i, t) in items.enumerated() {
             t.position = i
         }
         UserDataController.sharedController().updateStoreItems(items)
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         let item = items[indexPath.row]
         cell.textLabel?.text = item.name
         cell.detailTextLabel?.text = "\(item.points)pts"
         if item.purchased {
-            cell.accessoryType = .Checkmark
+            cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let item = items[indexPath.row]
-        if editing {
+        if isEditing {
             if !item.purchased {
-               performSegueWithIdentifier("EditItemSegue", sender: item)
+               performSegue(withIdentifier: "EditItemSegue", sender: item)
             } else {
-                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a purchased item.", preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-                presentViewController(alertController, animated: true, completion: nil)
+                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a purchased item.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                present(alertController, animated: true, completion: nil)
             }
         } else {
             if item.repeats {
-                let alertController = UIAlertController(title: "Amount to Buy", message: "How many of the specified item would you like to purchase?", preferredStyle: UIAlertControllerStyle.Alert)
-                let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+                let alertController = UIAlertController(title: "Amount to Buy", message: "How many of the specified item would you like to purchase?", preferredStyle: UIAlertControllerStyle.alert)
+                let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
                     let numberTextField = alertController.textFields![0] 
                     if let numberComplete = Int(numberTextField.text!) {
                         UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
                         self.updateTitle()
                     }
                 }
-                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
-                alertController.addTextFieldWithConfigurationHandler() { textField in
-                    textField.keyboardType = .NumberPad
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+                alertController.addTextField() { textField in
+                    textField.keyboardType = .numberPad
                 }
                 alertController.addAction(cancelAction)
                 alertController.addAction(doneAction)
-                presentViewController(alertController, animated: true, completion: nil)
+                present(alertController, animated: true, completion: nil)
             } else {
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
-                let cell = tableView.cellForRowAtIndexPath(indexPath)!
+                tableView.deselectRow(at: indexPath, animated: true)
+                let cell = tableView.cellForRow(at: indexPath)!
                 if item.purchased {
-                    cell.accessoryType = .None
+                    cell.accessoryType = .none
                     item.purchased = false
                     UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: -1)
                 } else {
-                    cell.accessoryType = .Checkmark
+                    cell.accessoryType = .checkmark
                     item.purchased = true
                     UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: 1)
                 }
@@ -122,7 +122,7 @@ class StoreViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return nil
         } else if section == 1 {
@@ -132,17 +132,17 @@ class StoreViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            let item = items.removeAtIndex(indexPath.row)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let item = items.remove(at: indexPath.row)
             UserDataController.sharedController().deleteStoreItem(item)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let item = sender as? StoreItem {
-            if let editViewController = segue.destinationViewController as? EditStoreItemViewController {
+            if let editViewController = segue.destination as? EditStoreItemViewController {
                 editViewController.item = item
                 editViewController.saveFunction = { name, points, repeats in
                     item.name = name
@@ -152,7 +152,7 @@ class StoreViewController: UITableViewController {
                     }
                     
                     UserDataController.sharedController().addOrUpdateStoreItem(item)
-                    self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow:item.position, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+                    self.tableView.reloadRows(at: [IndexPath(row:item.position, section: 0)], with: UITableViewRowAnimation.automatic)
                 }
             }
         }

@@ -9,10 +9,10 @@
 import UIKit
 
 enum EditTodoItemSection: Int {
-    case Info
-    case Repeat
-    case Due
-    case Count
+    case info
+    case `repeat`
+    case due
+    case count
 }
 
 class EditTodoItemTableViewController: UITableViewController {
@@ -35,36 +35,36 @@ class EditTodoItemTableViewController: UITableViewController {
         
         if let item = item {
             nameTextField.text = item.name
-            nameTextField.autocapitalizationType = .Sentences
+            nameTextField.autocapitalizationType = .sentences
             pointsTextField.text = "\(item.points)"
             minutesTextField.text = "\(item.minutes)"
-            repeatsSwitch.on = item.repeats
+            repeatsSwitch.isOn = item.repeats
             repeatCountTextField.text = "\(item.repeatCount)"
-            dueSwitch.on = item.dueDate != nil
+            dueSwitch.isOn = item.dueDate != nil
             if let dueDate = item.dueDate {
-                datePicker.date = dueDate.date
+                datePicker.date = dueDate.date as Date
             }
             tableView.reloadData()
         }
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         if anytime {
-            return repeatsSwitch.on ? EditTodoItemSection.Count.rawValue - 1 : EditTodoItemSection.Count.rawValue
+            return repeatsSwitch.isOn ? EditTodoItemSection.count.rawValue - 1 : EditTodoItemSection.count.rawValue
         } else {
-            return EditTodoItemSection.Count.rawValue - 1
+            return EditTodoItemSection.count.rawValue - 1
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch EditTodoItemSection(rawValue: section) ?? .Count {
-        case .Info:
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch EditTodoItemSection(rawValue: section) ?? .count {
+        case .info:
             return 3
-        case .Repeat:
-            return repeatsSwitch.on ? 2 : 1
-        case .Due:
-            return dueSwitch.on ? 2 : 1
-        case .Count:
+        case .repeat:
+            return repeatsSwitch.isOn ? 2 : 1
+        case .due:
+            return dueSwitch.isOn ? 2 : 1
+        case .count:
             return 0
         }
     }
@@ -77,24 +77,24 @@ class EditTodoItemTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    @IBAction func cancelPressed(sender: UIBarButtonItem) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func savePressed(sender: UIBarButtonItem) {
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
         item?.name = nameTextField.text ?? "Untitled"
-        item?.repeats = repeatsSwitch.on
+        item?.repeats = repeatsSwitch.isOn
         item?.points = Int(pointsTextField.text ?? "0") ?? 0
         item?.minutes = Int(minutesTextField.text ?? "0") ?? 0
         item?.repeatCount = Int(repeatCountTextField.text ?? "0") ?? 0
-        if dueSwitch.on {
+        if dueSwitch.isOn {
             item?.dueDate = Date(date: datePicker.date)
         } else {
             item?.dueDate = nil
         }
         
         saveFunction()
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
 
 }

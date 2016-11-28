@@ -14,59 +14,59 @@ class TemplatesViewController: UITableViewController {
     var sections: [(title: String, templates: [Template])] = []
     
     override func viewDidLoad() {
-        navigationItem.leftBarButtonItem = editButtonItem()
-        orderItemsButton = UIBarButtonItem(title: "Order Items", style: .Plain, target: self, action: "orderItems")
+        navigationItem.leftBarButtonItem = editButtonItem
+        orderItemsButton = UIBarButtonItem(title: "Order Items", style: .plain, target: self, action: #selector(TemplatesViewController.orderItems))
         tableView.allowsSelectionDuringEditing = true
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         updateData()
         tableView.reloadData()
     }
     
-    private func updateData() {
+    fileprivate func updateData() {
         let templates = UserDataController.sharedController().allTemplates()
         sections = [("Regular", templates.filter { !$0.anytime }), ("Anytime", templates.filter { $0.anytime })]
     }
     
-    @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
+    @IBAction func addPressed(_ sender: UIBarButtonItem) -> Void {
         let templates = sections[0].templates
         let position = templates.count
         let template = Template(name: "New Template", position: position)
         UserDataController.sharedController().addOrUpdateTemplate(template)
         updateData()
-        let indexPath = NSIndexPath(forRow: position, inSection: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        let indexPath = IndexPath(row: position, section: 0)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - Table View
     
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         if editing {
             navigationItem.rightBarButtonItems?.append(orderItemsButton)
-        } else if let index = navigationItem.rightBarButtonItems?.indexOf(orderItemsButton) {
-            navigationItem.rightBarButtonItems?.removeAtIndex(index)
+        } else if let index = navigationItem.rightBarButtonItems?.index(of: orderItemsButton) {
+            navigationItem.rightBarButtonItems?.remove(at: index)
         }
         super.setEditing(editing, animated: animated)
     }
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         return sourceIndexPath.section == proposedDestinationIndexPath.section ? proposedDestinationIndexPath : sourceIndexPath
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedTemplate = sections[sourceIndexPath.section].templates.removeAtIndex(sourceIndexPath.row)
-        sections[destinationIndexPath.section].templates.insert(movedTemplate, atIndex: destinationIndexPath.row)
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedTemplate = sections[sourceIndexPath.section].templates.remove(at: sourceIndexPath.row)
+        sections[destinationIndexPath.section].templates.insert(movedTemplate, at: destinationIndexPath.row)
         for section in sections {
-            for (i, t) in section.templates.enumerate() {
+            for (i, t) in section.templates.enumerated() {
                 t.position = i
             }
             
@@ -74,60 +74,60 @@ class TemplatesViewController: UITableViewController {
         }
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].templates.count
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].templates.count > 0 ? sections[section].title : nil
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         let templates = sections[indexPath.section].templates
         cell.textLabel?.text = templates[indexPath.row].name
         cell.detailTextLabel?.text = daysStringFromTemplateDays(templates[indexPath.row].templateDays)
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let template = sections[indexPath.section].templates[indexPath.row]
-        if editing {
-            let alertController = UIAlertController(title: "Edit Title", message: nil, preferredStyle: .Alert)
-            alertController.addTextFieldWithConfigurationHandler() { textField in
+        if isEditing {
+            let alertController = UIAlertController(title: "Edit Title", message: nil, preferredStyle: .alert)
+            alertController.addTextField() { textField in
                 textField.text = template.name
-                textField.autocapitalizationType = .Words
-                textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+                textField.autocapitalizationType = .words
+                textField.clearButtonMode = UITextFieldViewMode.whileEditing
             }
-            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Save", style: .default, handler: { (_) -> Void in
                 let textField = alertController.textFields!.first!
                 template.name = textField.text!
                 UserDataController.sharedController().addOrUpdateTemplate(template)
                 self.updateData()
                 self.tableView.reloadData()
             }))
-            self .presentViewController(alertController, animated: true, completion: nil)
+            self .present(alertController, animated: true, completion: nil)
         } else {
-            performSegueWithIdentifier("TemplateDetailSegue", sender: template)
+            performSegue(withIdentifier: "TemplateDetailSegue", sender: template)
         }
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             var templates = sections[indexPath.section].templates
             UserDataController.sharedController().removeTemplate(templates[indexPath.row])
             updateData()
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let destination = segue.destinationViewController as? TemplateViewController {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? TemplateViewController {
             destination.template = sender as! Template
         }
     }
@@ -135,7 +135,7 @@ class TemplatesViewController: UITableViewController {
     // MARK: - Private Functions
     
     func orderItems() {
-        performSegueWithIdentifier("OrderItems", sender: nil)
+        performSegue(withIdentifier: "OrderItems", sender: nil)
     }
     
 }

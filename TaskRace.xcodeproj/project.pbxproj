@@ -215,12 +215,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 320B7BFF19F73BBE00E8B10C /* Build configuration list for PBXNativeTarget "TaskRace" */;
 			buildPhases = (
-				09164ABDA98C7B73C453A3D5 /* Check Pods Manifest.lock */,
+				09164ABDA98C7B73C453A3D5 /* [CP] Check Pods Manifest.lock */,
 				320B7BDA19F73BBE00E8B10C /* Sources */,
 				320B7BDB19F73BBE00E8B10C /* Frameworks */,
 				320B7BDC19F73BBE00E8B10C /* Resources */,
-				79786C312180F42894428325 /* Embed Pods Frameworks */,
-				E8E48B7027F1627D2E5063B1 /* Copy Pods Resources */,
+				79786C312180F42894428325 /* [CP] Embed Pods Frameworks */,
+				E8E48B7027F1627D2E5063B1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -263,10 +263,12 @@
 					320B7BDD19F73BBE00E8B10C = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = RL83P3L6E2;
+						LastSwiftMigration = 0810;
 					};
 					320B7BF419F73BBE00E8B10C = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = RL83P3L6E2;
+						LastSwiftMigration = 0810;
 						TestTargetID = 320B7BDD19F73BBE00E8B10C;
 					};
 				};
@@ -312,29 +314,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		09164ABDA98C7B73C453A3D5 /* Check Pods Manifest.lock */ = {
+		09164ABDA98C7B73C453A3D5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		79786C312180F42894428325 /* Embed Pods Frameworks */ = {
+		79786C312180F42894428325 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,14 +344,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaskRace/Pods-TaskRace-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E8E48B7027F1627D2E5063B1 /* Copy Pods Resources */ = {
+		E8E48B7027F1627D2E5063B1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -524,6 +526,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -541,6 +544,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.owlmentor.taskrace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -560,6 +564,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Mine.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = TaskRaceTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskRace.app/TaskRace";
 			};
 			name = Debug;
@@ -576,6 +581,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Mine.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = TaskRaceTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TaskRace.app/TaskRace";
 			};
 			name = Release;

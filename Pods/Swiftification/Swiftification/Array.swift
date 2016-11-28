@@ -23,7 +23,6 @@
 import Foundation
 
 public extension Array {
-    
     /// Access element at `index`. Reading returns the element or `nil` if `index` is out of bounds. Writing only sets if `index` is in bounds.
     subscript(safe index: Int) -> Element? {
         get {
@@ -36,8 +35,8 @@ public extension Array {
     }
     
     /// Returns the first occurence of item, if found
-    func find(condition: (Element) -> Bool) -> Element? {
-        if let index = indexOf({ condition($0) }) {
+    func find(where condition: (Element) -> Bool) -> Element? {
+        if let index = index(where: { condition($0) }) {
             return self[index]
         }
 
@@ -50,8 +49,10 @@ public extension Array {
     }
     
     /// Randomly rearranges the elements of self using the Fisher-Yates shuffle
-    mutating func shuffleInPlace() {
-        for var index = count - 1; index >= 1; index-- {
+    mutating func shuffle() {
+        guard count > 1 else { return }
+        
+        for index in (1..<count).reversed() {
             let newIndex = Int.random(0...index)
             if index != newIndex {
                 swap(&self[index], &self[newIndex])
@@ -60,16 +61,15 @@ public extension Array {
     }
     
     /// Returns a randomly arranged array using the Fisher-Yates shuffle
-    @warn_unused_result(mutable_variant="shuffleInPlace")
-    func shuffle() -> [Element] {
+    func shuffled() -> [Element] {
         var tempArray = self
-        tempArray.shuffleInPlace()
+        tempArray.shuffle()
         
         return tempArray
     }
     
     /// Groups the array into a dictionary by key specified in closure
-    func groupBy<U>(groupClosure: (Element) -> U) -> [U: Array] {
+    func grouped<U>(by groupClosure: (Element) -> U) -> [U: Array] {
         var grouped = [U: Array]()
         for element in self {
             let key = groupClosure(element)
@@ -79,50 +79,98 @@ public extension Array {
         return grouped
     }
     
-    /// Sections the ordered array by the string specified in the closure, preserving the order of the original array.
-    func sectionBy(@noescape sectionFunction: (Element) -> String) -> [(title: String, items: [Element])] {
-        var lastTitle = ""
+    /// Splits the array each time the closure returns a new value.
+    func partitioned<T: Equatable>(by closure: (Element) -> T) -> [[Element]] {
+        var partitions = [[Element]]()
+        var lastValue: T?
+        for element in self {
+            let value = closure(element)
+            if value == lastValue {
+                partitions[partitions.count - 1].append(element)
+            } else {
+                partitions.append([element])
+                lastValue = value
+            }
+        }
+        
+        return partitions
+    }
+    
+    /// Sections the ordered array by the element specified in the closure, preserving the order of the original array.
+    func sectioned<T: Equatable>(by sectionFunction: (Element) -> T) -> [(header: T, items: [Element])] {
+        var previousSectionHeader: T? = nil
         var currentGroup = [Element]()
-        var allGroups = [(title: String, items: [Element])]()
+        var allGroups = [(header: T, items: [Element])]()
         
         for item in self {
-            let title = sectionFunction(item)
-            if title == lastTitle {
+            let sectionHeader = sectionFunction(item)
+            if sectionHeader == previousSectionHeader {
+                currentGroup.append(item)
+            } else {
+                if let previousSectionHeader = previousSectionHeader, !currentGroup.isEmpty {
+                    allGroups.append((header: previousSectionHeader, items: currentGroup))
+                }
+                previousSectionHeader = sectionHeader
+                currentGroup = [item]
+            }
+        }
+        
+        if let previousSectionHeader = previousSectionHeader, !currentGroup.isEmpty {
+            allGroups.append((header: previousSectionHeader, items: currentGroup))
+        }
+        
+        return allGroups
+    }
+    
+    /// Sections the ordered array by the element specified in the closure, preserving the order of the original array.
+    func sectioned<T: Equatable>(by sectionFunction: (Element) -> T?) -> [(header: T?, items: [Element])] {
+        var previousSectionHeader: T? = nil
+        var currentGroup = [Element]()
+        var allGroups = [(header: T?, items: [Element])]()
+        
+        for item in self {
+            let sectionHeader = sectionFunction(item)
+            if sectionHeader == previousSectionHeader {
                 currentGroup.append(item)
             } else {
                 if !currentGroup.isEmpty {
-                    allGroups.append((title: lastTitle, items: currentGroup))
+                    allGroups.append((header: previousSectionHeader, items: currentGroup))
                 }
-                lastTitle = title
+                previousSectionHeader = sectionHeader
                 currentGroup = [item]
             }
         }
         
         if !currentGroup.isEmpty {
-            allGroups.append((title: lastTitle, items: currentGroup))
+            allGroups.append((header: previousSectionHeader, items: currentGroup))
         }
         
         return allGroups
     }
         
     /// Returns an array containing the the last numberOfElements elements of self.
-    @warn_unused_result
-    func tail(numberOfElements: Int) -> Array {
-        return Array(self[max(count - numberOfElements, 0)..<count])
+    func tail(_ numberOfElements: Int) -> Array {
+        return Array(self[Swift.max(count - numberOfElements, 0)..<count])
     }
     
     /// Returns the first element of self and removes it from the array. Returns `nil` if array is empty.
     mutating func shift() -> Element? {
         if !isEmpty {
-            return removeAtIndex(0)
+            return remove(at: 0)
         }
         return nil
     }
     
     /// Returns an array containing the first n elements of self.
-    @warn_unused_result
-    func take(numberOfElements: Int) -> Array {
-        return Array(self[0..<max(min(numberOfElements, count), 0)])
+    func take(_ numberOfElements: Int) -> Array {
+        return Array(self[0..<Swift.max(Swift.min(numberOfElements, count), 0)])
     }
-
+    
+    /// Returns an array containing the remaining elements of self after skipping the first n.
+    func skip(_ numberOfElements: Int) -> Array {
+        if count > numberOfElements {
+            return Array(self[numberOfElements..<count])
+        }
+        return []
+    }
 }

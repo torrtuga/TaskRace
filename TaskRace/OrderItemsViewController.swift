@@ -18,60 +18,60 @@ class OrderItemsViewController: UITableViewController {
         super.viewDidLoad()
         items = UserDataController.sharedController().regularTemplateLists().flatMap({ $0.items })
         if UserDataController.sharedController().useGlobalOrdering() {
-            items.sortInPlace { $0.position <= $1.position }
+            items.sort { $0.position <= $1.position }
         }
         setEditing(true, animated: false)
     }
     
-    @IBAction func savePressed(sender: UIBarButtonItem) -> Void {
+    @IBAction func savePressed(_ sender: UIBarButtonItem) -> Void {
         for list in UserDataController.sharedController().regularTemplateLists() {
             UserDataController.sharedController().addOrUpdateList(list)
         }
         UserDataController.sharedController().setUseGlobalOrdering(true)
-        navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func cancelPressed(sender: UIBarButtonItem) -> Void {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) -> Void {
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Table View
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return .None
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return .none
     }
     
-    override func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedItem = items.removeAtIndex(sourceIndexPath.row)
-        items.insert(movedItem, atIndex: destinationIndexPath.row)
-        for (i, t) in items.enumerate() {
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedItem = items.remove(at: sourceIndexPath.row)
+        items.insert(movedItem, at: destinationIndexPath.row)
+        for (i, t) in items.enumerated() {
             // Space them out so adding to templates doesn't result in ambiguous positions
             t.position = i * 100
         }
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
             let item = items[indexPath.row]
             cell.textLabel?.text = item.name
             var detailText = ""
@@ -83,7 +83,7 @@ class OrderItemsViewController: UITableViewController {
             return cell
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return nil
         } else if section == 1 {

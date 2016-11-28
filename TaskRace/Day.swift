@@ -14,20 +14,20 @@ class Day: NSObject, NSCoding {
     var listID: String
     
     init(date: Date, listID: String) {
-        id = NSUUID().UUIDString
+        id = UUID().uuidString
         self.date = date
         self.listID = listID
     }
     
     required init?(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as! String
-        date = aDecoder.decodeObjectForKey("date") as! Date
-        listID = aDecoder.decodeObjectForKey("listID") as! String
+        id = aDecoder.decodeObject(forKey: "id") as! String
+        date = aDecoder.decodeObject(forKey: "date") as! Date
+        listID = aDecoder.decodeObject(forKey: "listID") as! String
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(date, forKey: "date")
-        aCoder.encodeObject(listID, forKey: "listID")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(date, forKey: "date")
+        aCoder.encode(listID, forKey: "listID")
     }
 }

@@ -15,95 +15,95 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         profiles = ["Default"] + UserDataController.allProfiles()
-        navigationItem.rightBarButtonItems?.append(editButtonItem())
+        navigationItem.rightBarButtonItems?.append(editButtonItem)
         tableView.allowsSelectionDuringEditing = true
     }
     
-    private func updateData() {
+    fileprivate func updateData() {
         profiles = ["Default"] + UserDataController.allProfiles()
     }
     
-    @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
-        let alertController = UIAlertController(title: "Profile Name", message: nil, preferredStyle: .Alert)
-        alertController.addTextFieldWithConfigurationHandler() { textField in
+    @IBAction func addPressed(_ sender: UIBarButtonItem) -> Void {
+        let alertController = UIAlertController(title: "Profile Name", message: nil, preferredStyle: .alert)
+        alertController.addTextField() { textField in
             textField.text = "New Profile"
-            textField.autocapitalizationType = .Words
-            textField.clearButtonMode = UITextFieldViewMode.Always
+            textField.autocapitalizationType = .words
+            textField.clearButtonMode = UITextFieldViewMode.always
         }
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Save", style: .default, handler: { (_) -> Void in
             let textField = alertController.textFields!.first!
             let profile = textField.text!
             
-            if self.profiles.map({ $0.lowercaseString }).contains(profile.lowercaseString) {
-                let alertController = UIAlertController(title: "Cannot Add Profile", message: "That name is already taken. Please choose a unique name for a new profile.", preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-                self.presentViewController(alertController, animated: true, completion: nil)
+            if self.profiles.map({ $0.lowercased() }).contains(profile.lowercased()) {
+                let alertController = UIAlertController(title: "Cannot Add Profile", message: "That name is already taken. Please choose a unique name for a new profile.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             } else {
                 let position = self.profiles.count
                 self.profiles.append(profile)
                 UserDataController.addProfile(profile)
-                let indexPath = NSIndexPath(forRow: position, inSection: 0)
-                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                let indexPath = IndexPath(row: position, section: 0)
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         }))
-        self .presentViewController(alertController, animated: true, completion: nil)
+        self .present(alertController, animated: true, completion: nil)
     }
     
     // MARK: - Table View
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return profiles.count
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.row > 0
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete && profiles.count > 1 {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete && profiles.count > 1 {
             let profile = profiles[indexPath.row]
-            profiles.removeAtIndex(profiles.indexOf(profile)!)
+            profiles.remove(at: profiles.index(of: profile)!)
             UserDataController.removeProfile(profile)
             tableView.reloadData()
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
         let profile = profiles[indexPath.row]
         cell.textLabel?.text = profile
         if UserDataController.currentProfile == profile {
-            cell.accessoryType = .Checkmark
+            cell.accessoryType = .checkmark
         } else {
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let profile = profiles[indexPath.row]
-        if editing && indexPath.row > 0 {
-            let alertController = UIAlertController(title: "Edit Name", message: nil, preferredStyle: .Alert)
-            alertController.addTextFieldWithConfigurationHandler() { textField in
+        if isEditing && indexPath.row > 0 {
+            let alertController = UIAlertController(title: "Edit Name", message: nil, preferredStyle: .alert)
+            alertController.addTextField() { textField in
                 textField.text = profile
-                textField.autocapitalizationType = .Words
-                textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+                textField.autocapitalizationType = .words
+                textField.clearButtonMode = UITextFieldViewMode.whileEditing
             }
-            alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-            alertController.addAction(UIAlertAction(title: "Save", style: .Default, handler: { (_) -> Void in
+            alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Save", style: .default, handler: { (_) -> Void in
                 let textField = alertController.textFields!.first!
                 let newName = textField.text!
                 UserDataController.renameProfile(profile, toProfile: newName)
                 self.updateData()
-                self.editing = false
+                self.isEditing = false
                 self.tableView.reloadData()
             }))
-            self .presentViewController(alertController, animated: true, completion: nil)
+            self .present(alertController, animated: true, completion: nil)
         } else {
             UserDataController.currentProfile = profiles[indexPath.row]
             tableView.reloadData()

@@ -9,16 +9,16 @@
 import UIKit
 
 enum DayViewControllerRegularSection: Int {
-    case Info
-    case PastDue
-    case Today
-    case Count
+    case info
+    case pastDue
+    case today
+    case count
 }
 
 class DayViewController: UITableViewController {
     
-    let timeFormatter = NSDateFormatter()
-    let dayFormatter = NSDateFormatter()
+    let timeFormatter = DateFormatter()
+    let dayFormatter = DateFormatter()
     
     var todayList = List()
     var pastDueItems = [(item: TodoItem, listID: String)]()
@@ -28,91 +28,91 @@ class DayViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItems?.append(editButtonItem())
+        navigationItem.rightBarButtonItems?.append(editButtonItem)
         
-        timeFormatter.AMSymbol = "am"
-        timeFormatter.PMSymbol = "pm"
+        timeFormatter.amSymbol = "am"
+        timeFormatter.pmSymbol = "pm"
         timeFormatter.dateFormat = "h:mma"
         
         dayFormatter.dateFormat = "EEE, MMM d"
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "significantTimeChange:", name: UIApplicationSignificantTimeChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "profileChanged:", name: ProfileChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DayViewController.significantTimeChange(_:)), name: NSNotification.Name.UIApplicationSignificantTimeChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(UIApplicationDelegate.applicationDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DayViewController.profileChanged(_:)), name: NSNotification.Name(rawValue: ProfileChangedNotification), object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateData()
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    private func updateData() {
+    fileprivate func updateData() {
         if let day = day {
-            navigationItem.title = dayFormatter.stringFromDate(day.date.date)
+            navigationItem.title = dayFormatter.string(from: day.date.date as Date)
             todayList = UserDataController.sharedController().listWithID(day.listID)
             UserDataController.sharedController().updateDayListFromTemplates(list: todayList, forDate: day.date)
             pastDueItems = UserDataController.sharedController().pastDueItems()
             anytimeSections = UserDataController.sharedController().anytimeListsForDate(day.date).filter() { $0.list.items.count > 0 }
             tableView.reloadData()
         } else {
-            day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
+            day = UserDataController.sharedController().dayForDate(Date(date: Foundation.Date()))
         }
     }
     
-    @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
+    @IBAction func addPressed(_ sender: UIBarButtonItem) -> Void {
         let position = (todayList.items.last?.position ?? (todayList.items.count - 1)) + 1
         let item = TodoItem(name: "New Item", position: position)
         todayList.items.append(item)
         UserDataController.sharedController().addOrUpdateList(todayList)
-        let indexPath = NSIndexPath(forRow: position, inSection: DayViewControllerRegularSection.Today.rawValue)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        let indexPath = IndexPath(row: position, section: DayViewControllerRegularSection.today.rawValue)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - Table View
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.section == DayViewControllerRegularSection.Today.rawValue
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == DayViewControllerRegularSection.today.rawValue
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return indexPath.section == DayViewControllerRegularSection.Today.rawValue
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == DayViewControllerRegularSection.today.rawValue
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedItem = todayList.items.removeAtIndex(sourceIndexPath.row)
-        todayList.items.insert(movedItem, atIndex: destinationIndexPath.row)
-        for (i, t) in todayList.items.enumerate() {
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedItem = todayList.items.remove(at: sourceIndexPath.row)
+        todayList.items.insert(movedItem, at: destinationIndexPath.row)
+        for (i, t) in todayList.items.enumerated() {
             t.position = i
         }
         UserDataController.sharedController().addOrUpdateList(todayList)
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return DayViewControllerRegularSection.Count.rawValue + anytimeSections.count
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return DayViewControllerRegularSection.count.rawValue + anytimeSections.count
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section < DayViewControllerRegularSection.Count.rawValue {
-            switch DayViewControllerRegularSection(rawValue: section) ?? .Count {
-            case .Info:
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section < DayViewControllerRegularSection.count.rawValue {
+            switch DayViewControllerRegularSection(rawValue: section) ?? .count {
+            case .info:
                 return 1
-            case .PastDue:
+            case .pastDue:
                 return pastDueItems.count
-            case .Today:
+            case .today:
                 return todayList.items.count
-            case .Count:
+            case .count:
                 return 0
             }
         } else {
-            return anytimeSections[section - DayViewControllerRegularSection.Count.rawValue].list.items.count
+            return anytimeSections[section - DayViewControllerRegularSection.count.rawValue].list.items.count
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
             return 80
         } else {
@@ -120,9 +120,9 @@ class DayViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("InfoCell") as! DayInfoCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "InfoCell") as! DayInfoCell
             let (completedPoints, totalPoints, remainingTime, totalTime) = todayList.items.reduce((0, 0, 0, 0)) { (current: (completedPoints: Int, totalPoints: Int, remainingTime: Int, totalTime: Int), item) in
                 let newCompletedPoints = current.completedPoints + {
                     if item.repeats {
@@ -151,13 +151,13 @@ class DayViewController: UITableViewController {
             let (totalTimeHours, totalTimeMinutes) = quotientAndRemainder(totalTime, divisor: 60)
             cell.totalTimeLabel.text = String(format: "%d:%02d", totalTimeHours, totalTimeMinutes)
             
-            let endTime = NSDate().dateByAddingTimeInterval(NSTimeInterval(remainingTime * 60))
-            cell.endTimeLabel.text = timeFormatter.stringFromDate(endTime)
+            let endTime = Foundation.Date().addingTimeInterval(TimeInterval(remainingTime * 60))
+            cell.endTimeLabel.text = timeFormatter.string(from: endTime)
             
             return cell
         } else {
             guard let item = itemAtIndexPath(indexPath) else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) 
             cell.textLabel?.text = (item.repeats && item.repeatCount > 0 ? "\(item.numberCompleted)/\(item.repeatCount) " : "") + item.name
             var detailText = ""
             if item.minutes > 0 {
@@ -166,25 +166,25 @@ class DayViewController: UITableViewController {
             detailText += "\(item.points)pts"
             cell.detailTextLabel?.text = detailText
             if item.completed {
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
             } else {
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
             
             return cell
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let item = itemAtIndexPath(indexPath) else { return }
         
-        if editing {
+        if isEditing {
             if !item.completed {
-                performSegueWithIdentifier("EditItemSegue", sender: item)
+                performSegue(withIdentifier: "EditItemSegue", sender: item)
             } else {
-                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a completed item.", preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
-                presentViewController(alertController, animated: true, completion: nil)
+                let alertController = UIAlertController(title: "Cannot Edit", message: "You cannot edit a completed item.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                present(alertController, animated: true, completion: nil)
             }
         } else {
             let updateFunc: () -> Void = {
@@ -192,12 +192,12 @@ class DayViewController: UITableViewController {
                     UserDataController.sharedController().addOrUpdateList(list)
                 }
                 
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                self.tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: UITableViewRowAnimation.None)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                self.tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: UITableViewRowAnimation.none)
             }
             if item.repeats {
-                let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.Alert)
-                let doneAction = UIAlertAction(title: "Done", style: .Default) { _ in
+                let alertController = UIAlertController(title: "Completed", message: "How many of the specified task were completed?", preferredStyle: UIAlertControllerStyle.alert)
+                let doneAction = UIAlertAction(title: "Done", style: .default) { _ in
                     let numberTextField = alertController.textFields![0] 
                     if let numberComplete = Int(numberTextField.text!) {
                         let pointsToAdd = numberComplete * item.points
@@ -206,19 +206,19 @@ class DayViewController: UITableViewController {
                         UserDataController.sharedController().updateWithCompletedItem(item, numberComplete: numberComplete)
                         updateFunc()
                         
-                        let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.Alert)
-                        let cancelAction = UIAlertAction(title: "OK", style: .Cancel) { _ in }
+                        let successAlert = UIAlertController(title: "Success", message: "Successfully added \(pointsToAdd) points to store.", preferredStyle: UIAlertControllerStyle.alert)
+                        let cancelAction = UIAlertAction(title: "OK", style: .cancel) { _ in }
                         successAlert.addAction(cancelAction)
-                        self.presentViewController(successAlert, animated: true, completion: nil)
+                        self.present(successAlert, animated: true, completion: nil)
                     }
                 }
-                let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel) { _ in }
-                alertController.addTextFieldWithConfigurationHandler() { textField in
-                    textField.keyboardType = .NumberPad
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+                alertController.addTextField() { textField in
+                    textField.keyboardType = .numberPad
                 }
                 alertController.addAction(cancelAction)
                 alertController.addAction(doneAction)
-                presentViewController(alertController, animated: true, completion: nil)
+                present(alertController, animated: true, completion: nil)
             } else {
                 item.completed = !item.completed
                 let numberCompleted = item.completed ? 1 : -1
@@ -229,16 +229,16 @@ class DayViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section < DayViewControllerRegularSection.Count.rawValue {
-            switch DayViewControllerRegularSection(rawValue: section) ?? .Count {
-            case .Info:
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section < DayViewControllerRegularSection.count.rawValue {
+            switch DayViewControllerRegularSection(rawValue: section) ?? .count {
+            case .info:
                 return nil
-            case .PastDue:
+            case .pastDue:
                 return pastDueItems.isEmpty ? nil : "Past Due"
-            case .Today:
+            case .today:
                 return "Today"
-            case .Count:
+            case .count:
                 return nil
             }
         } else {
@@ -246,51 +246,51 @@ class DayViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            todayList.items.removeAtIndex(indexPath.row)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            todayList.items.remove(at: indexPath.row)
             UserDataController.sharedController().addOrUpdateList(todayList)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
-    private func listForIndexPath(indexPath: NSIndexPath) -> List? {
-        if indexPath.section < DayViewControllerRegularSection.Count.rawValue {
-            switch DayViewControllerRegularSection(rawValue: indexPath.section) ?? .Count {
-            case .Info:
+    fileprivate func listForIndexPath(_ indexPath: IndexPath) -> List? {
+        if indexPath.section < DayViewControllerRegularSection.count.rawValue {
+            switch DayViewControllerRegularSection(rawValue: indexPath.section) ?? .count {
+            case .info:
                 return nil
-            case .PastDue:
+            case .pastDue:
                 return UserDataController.sharedController().listWithID(pastDueItems[indexPath.row].listID)
-            case .Today:
+            case .today:
                 return todayList
-            case .Count:
+            case .count:
                 return nil
             }
         } else {
-            return anytimeSections[indexPath.section - DayViewControllerRegularSection.Count.rawValue].list
+            return anytimeSections[indexPath.section - DayViewControllerRegularSection.count.rawValue].list
         }
     }
     
-    private func itemAtIndexPath(indexPath: NSIndexPath) -> TodoItem? {
-        if indexPath.section < DayViewControllerRegularSection.Count.rawValue {
-            switch DayViewControllerRegularSection(rawValue: indexPath.section) ?? .Count {
-            case .Info:
+    fileprivate func itemAtIndexPath(_ indexPath: IndexPath) -> TodoItem? {
+        if indexPath.section < DayViewControllerRegularSection.count.rawValue {
+            switch DayViewControllerRegularSection(rawValue: indexPath.section) ?? .count {
+            case .info:
                 return nil
-            case .PastDue:
+            case .pastDue:
                 return pastDueItems[indexPath.row].item
-            case .Today:
+            case .today:
                 return todayList.items[indexPath.row]
-            case .Count:
+            case .count:
                 return nil
             }
         } else {
-            return anytimeSections[indexPath.section - DayViewControllerRegularSection.Count.rawValue].list.items[indexPath.row]
+            return anytimeSections[indexPath.section - DayViewControllerRegularSection.count.rawValue].list.items[indexPath.row]
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let item = sender as? TodoItem {
-            if let editViewController = segue.destinationViewController as? EditTodoItemTableViewController {
+            if let editViewController = segue.destination as? EditTodoItemTableViewController {
                 editViewController.item = item
                 editViewController.anytime = false
                 editViewController.saveFunction = {
@@ -301,23 +301,23 @@ class DayViewController: UITableViewController {
         }
     }
     
-    private func quotientAndRemainder(dividend: Int, divisor: Int) -> (Int, Int) {
+    fileprivate func quotientAndRemainder(_ dividend: Int, divisor: Int) -> (Int, Int) {
         return (dividend / divisor, dividend % divisor)
     }
     
-    func significantTimeChange(_: NSNotification) {
+    func significantTimeChange(_: Notification) {
         isNewDay = true
     }
     
-    func applicationDidBecomeActive(_: NSNotification) {
+    func applicationDidBecomeActive(_: Notification) {
         if isNewDay {
             isNewDay = false
-            day = UserDataController.sharedController().dayForDate(Date(date: NSDate()))
+            day = UserDataController.sharedController().dayForDate(Date(date: Foundation.Date()))
             updateData()
         }
     }
     
-    func profileChanged(_: NSNotification) {
+    func profileChanged(_: Notification) {
         day = nil
         updateData()
     }

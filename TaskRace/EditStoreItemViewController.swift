@@ -14,28 +14,28 @@ class EditStoreItemViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var pointsTextField: UITextField!
     @IBOutlet weak var repeatsSwitch: UISwitch!
     var item: StoreItem!
-    var saveFunction: (name: String, points: Int?, repeats: Bool) -> Void = {_, _, _ in print("Save function not implemented") }
+    var saveFunction: (_ name: String, _ points: Int?, _ repeats: Bool) -> Void = {_, _, _ in print("Save function not implemented") }
     
     override func viewDidLoad() {
         nameTextField.text = item.name
-        nameTextField.autocapitalizationType = .Sentences
+        nameTextField.autocapitalizationType = .sentences
         pointsTextField.text = "\(item.points)"
-        repeatsSwitch.on = item.repeats
+        repeatsSwitch.isOn = item.repeats
     }
     
-    @IBAction func cancelPressed(sender: UIBarButtonItem) {
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func cancelPressed(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func savePressed(sender: UIBarButtonItem) {
-        saveFunction(name: nameTextField.text!, points: Int(pointsTextField.text!), repeats: repeatsSwitch.on)
-        navigationController?.popViewControllerAnimated(true)
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
+        saveFunction(nameTextField.text!, Int(pointsTextField.text!), repeatsSwitch.isOn)
+        navigationController?.popViewController(animated: true)
     }
     
     // MARK: - UITextFieldDelegate Methods
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let text = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let text = (textField.text! as NSString).replacingCharacters(in: range, with: string)
         return Int(text) != nil
     }
 }

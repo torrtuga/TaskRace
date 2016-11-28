@@ -22,24 +22,33 @@
 
 import Foundation
 
-public extension SequenceType {
-    
+public extension Sequence {
     /// Returns the first element of `self` that tests `true`, or `nil` if no element tests `true`.
-    @warn_unused_result
-    func takeFirst(@noescape test: Generator.Element throws -> Bool) rethrows -> Generator.Element? {
+    func takeFirst(_ test: (Iterator.Element) throws -> Bool) rethrows -> Iterator.Element? {
         for element in self where try test(element) {
             return element
         }
         return nil
     }
     
+    /// Returns all elements until the first element of `self` that tests `false`.
+    func takeWhile(_ test: (Iterator.Element) throws -> Bool) rethrows -> [Iterator.Element] {
+        var results: [Iterator.Element] = []
+        for element in self {
+            if try !test(element) {
+                break
+            }
+            results.append(element)
+        }
+        return results
+    }
+    
     /// Returns the array of elements for which condition(element) is unique
-    @warn_unused_result
-    func uniqueBy<T: Hashable>(condition: (Generator.Element) -> T) -> [Generator.Element] {
-        var results: [Generator.Element] = []
+    func unique<T: Hashable>(by condition: (Iterator.Element) throws -> T) rethrows -> [Iterator.Element] {
+        var results: [Iterator.Element] = []
         var tempSet = Set<T>()
         for element in self {
-            let value: T = condition(element)
+            let value: T = try condition(element)
             if !tempSet.contains(value) {
                 tempSet.insert(value)
                 results.append(element)
@@ -49,42 +58,42 @@ public extension SequenceType {
     }
     
     /// Checks if test returns true for any element of self.
-    @warn_unused_result
-    func any(condition: (Generator.Element) -> Bool) -> Bool {
-        for element in self where condition(element) {
+    func any(_ condition: (Iterator.Element) throws -> Bool) rethrows -> Bool {
+        for element in self where try condition(element) {
             return true
         }
         return false
     }
-   
+    
+    /// Checks if test returns true for every element of self.
+    func all(_ condition: (Iterator.Element) throws -> Bool) rethrows -> Bool {
+        for element in self where try !condition(element) {
+            return false
+        }
+        return true
+    }
 }
 
-public extension SequenceType where Generator.Element: Hashable {
-    
+public extension Sequence where Iterator.Element: Hashable {
     /// Returns an array removing the duplicate elements in self. The original element order is preserved.
-    @warn_unused_result
-    func unique() -> [Generator.Element] {
-        var results: [Generator.Element] = []
-        var tempSet = Set<Generator.Element>()
+    func unique() -> [Iterator.Element] {
+        var results: [Iterator.Element] = []
+        var tempSet = Set<Iterator.Element>()
         for element in self where !tempSet.contains(element) {
             tempSet.insert(element)
             results.append(element)
         }
         return results
     }
-    
 }
 
-public extension SequenceType where Generator.Element: Equatable {
-    
+public extension Sequence where Iterator.Element: Equatable {
     /// Returns an array removing the duplicate elements in self. The original element order is preserved.
-    @warn_unused_result
-    func unique() -> [Generator.Element] {
-        var results: [Generator.Element] = []
+    func unique() -> [Iterator.Element] {
+        var results: [Iterator.Element] = []
         for element in self where !results.contains(element) {
             results.append(element)
         }
         return results
     }
-    
 }

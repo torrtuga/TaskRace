@@ -30,37 +30,37 @@ class TemplateViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItems?.append(editButtonItem())
+        navigationItem.rightBarButtonItems?.append(editButtonItem)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         if !UserDataController.sharedController().containsTemplate(template) {
-            navigationController?.popToRootViewControllerAnimated(false)
+            navigationController?.popToRootViewController(animated: false)
         }
     }
     
-    @IBAction func addPressed(sender: UIBarButtonItem) -> Void {
+    @IBAction func addPressed(_ sender: UIBarButtonItem) -> Void {
         let position = list.items.count
         let item = TodoItem(name: "New Item", position: position)
         list.items.append(item)
         UserDataController.sharedController().addOrUpdateList(list)
-        let indexPath = NSIndexPath(forRow: position, inSection: 2)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        let indexPath = IndexPath(row: position, section: 2)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     // MARK: - Table View
     
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section > 1
     }
     
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section > 1
     }
     
-    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        let movedItem = list.items.removeAtIndex(sourceIndexPath.row)
-        list.items.insert(movedItem, atIndex: destinationIndexPath.row)
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedItem = list.items.remove(at: sourceIndexPath.row)
+        list.items.insert(movedItem, at: destinationIndexPath.row)
         
         // Update position
         if destinationIndexPath.row > 0 {
@@ -73,11 +73,11 @@ class TemplateViewController: UITableViewController {
         UserDataController.sharedController().addOrUpdateList(list)
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -87,18 +87,18 @@ class TemplateViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell", forIndexPath: indexPath) 
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchCell", for: indexPath) 
             cell.textLabel?.text = "Anytime"
             let anytimeSwitch = UISwitch()
-            anytimeSwitch.on = template.anytime
-            anytimeSwitch.addTarget(self, action: "switchValueChanged:", forControlEvents: UIControlEvents.ValueChanged)
+            anytimeSwitch.isOn = template.anytime
+            anytimeSwitch.addTarget(self, action: #selector(TemplateViewController.switchValueChanged(_:)), for: UIControlEvents.valueChanged)
             cell.accessoryView = anytimeSwitch
             return cell
         }
         if indexPath.section == 1 {
-            let cell = tableView.dequeueReusableCellWithIdentifier("DayCell", forIndexPath: indexPath) 
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DayCell", for: indexPath) 
             switch indexPath.row {
             case 0:
                 cell.textLabel?.text = TemplateDays.Sunday.stringValue
@@ -125,13 +125,13 @@ class TemplateViewController: UITableViewController {
                 cell.textLabel?.text = "Not handled"
             }
             if template!.templateDays.rawValue & UInt(cell.tag) != 0 {
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
             } else {
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("TodoCell", forIndexPath: indexPath) 
+            let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath) 
             let item = list.items[indexPath.row]
             cell.textLabel?.text = item.name
             var detailText = ""
@@ -140,25 +140,25 @@ class TemplateViewController: UITableViewController {
             }
             detailText += "\(item.points)pts"
             cell.detailTextLabel?.text = detailText
-            cell.accessoryType = .DisclosureIndicator
+            cell.accessoryType = .disclosureIndicator
             return cell
         }
     }
     
-    func switchValueChanged(sender: UISwitch) {
-        template.anytime = sender.on
+    func switchValueChanged(_ sender: UISwitch) {
+        template.anytime = sender.isOn
         UserDataController.sharedController().addOrUpdateTemplate(template)
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
-            let cell = tableView.cellForRowAtIndexPath(indexPath)!
-            if cell.accessoryType == .Checkmark {
-                cell.accessoryType = .None
-                template.templateDays = template.templateDays.exclusiveOr(TemplateDays(UInt(cell.tag)))
+            tableView.deselectRow(at: indexPath, animated: true)
+            let cell = tableView.cellForRow(at: indexPath)!
+            if cell.accessoryType == .checkmark {
+                cell.accessoryType = .none
+                template.templateDays = template.templateDays.symmetricDifference(TemplateDays(UInt(cell.tag)))
             } else {
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
                 template.templateDays = template.templateDays.union(TemplateDays(UInt(cell.tag)))
             }
             UserDataController.sharedController().addOrUpdateTemplate(template)
@@ -169,11 +169,11 @@ class TemplateViewController: UITableViewController {
                 print("\(item.name), \(item.dueDate)")
             }
             let item = list.items[indexPath.row]
-            performSegueWithIdentifier("EditItemSegue", sender: item)
+            performSegue(withIdentifier: "EditItemSegue", sender: item)
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return nil
         } else if section == 1 {
@@ -183,17 +183,17 @@ class TemplateViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            list.items.removeAtIndex(indexPath.row)
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            list.items.remove(at: indexPath.row)
             UserDataController.sharedController().addOrUpdateList(list)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let item = sender as? TodoItem {
-            if let editViewController = segue.destinationViewController as? EditTodoItemTableViewController {
+            if let editViewController = segue.destination as? EditTodoItemTableViewController {
                 editViewController.item = item
                 editViewController.anytime = template.anytime
                 editViewController.saveFunction = {

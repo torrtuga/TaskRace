@@ -12,19 +12,19 @@ import YapDatabase
 let ProfileChangedNotification = "ProfileChangedNotification"
 
 struct UserDataController {
-    private static var sharedInstance = UserDataController()
+    fileprivate static var sharedInstance = UserDataController()
     let database: YapDatabase
     let connection: YapDatabaseConnection
     static var currentProfile: String {
         get {
-            return NSUserDefaults.standardUserDefaults().stringForKey("current_profile") ?? "Default"
+            return UserDefaults.standard.string(forKey: "current_profile") ?? "Default"
         }
         set {
-            let currentProfile = NSUserDefaults.standardUserDefaults().stringForKey("current_profile") ?? ""
+            let currentProfile = UserDefaults.standard.string(forKey: "current_profile") ?? ""
             if newValue != currentProfile {
-                NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "current_profile")
+                UserDefaults.standard.set(newValue, forKey: "current_profile")
                 sharedInstance = UserDataController()
-                NSNotificationCenter.defaultCenter().postNotificationName(ProfileChangedNotification, object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: ProfileChangedNotification), object: nil)
             }
         }
     }
@@ -33,52 +33,52 @@ struct UserDataController {
         return UserDataController.sharedInstance
     }
     
-    private init() {
+    fileprivate init() {
         database = YapDatabase(path: UserDataController.databasePath())
         connection = database.newConnection()
     }
     
-    private static func databasePath() -> String {
+    fileprivate static func databasePath() -> String {
         let dbPath = databasePathForProfile(currentProfile)
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath((dbPath as NSString).stringByDeletingLastPathComponent, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath: (dbPath as NSString).deletingLastPathComponent, withIntermediateDirectories: true, attributes: nil)
         } catch _ {
         }
         return dbPath
     }
     
-    private static func databasePathForProfile(profile: String) -> String {
-        return (NSSearchPathForDirectoriesInDomains(.ApplicationSupportDirectory, NSSearchPathDomainMask.UserDomainMask, true).last! as NSString).stringByAppendingPathComponent(profile + "Data")
+    fileprivate static func databasePathForProfile(_ profile: String) -> String {
+        return (NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as NSString).appendingPathComponent(profile + "Data")
     }
     
     // MARK: - Profiles
     
     static func allProfiles() -> [String] {
-        return NSUserDefaults.standardUserDefaults().arrayForKey("profiles") as? [String] ?? []
+        return UserDefaults.standard.array(forKey: "profiles") as? [String] ?? []
     }
     
-    static func addProfile(profile: String) {
+    static func addProfile(_ profile: String) {
         var profiles = allProfiles()
         profiles.append(profile)
-        NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+        UserDefaults.standard.set(profiles, forKey: "profiles")
     }
     
-    static func renameProfile(currentName: String, toProfile newName: String) {
+    static func renameProfile(_ currentName: String, toProfile newName: String) {
         var profiles = allProfiles()
-        if let index = profiles.indexOf(currentName) {
+        if let index = profiles.index(of: currentName) {
             profiles[index] = newName
-            let directory = (databasePathForProfile(currentName) as NSString).stringByDeletingLastPathComponent
-            for filename in try! NSFileManager.defaultManager().contentsOfDirectoryAtPath(directory) {
+            let directory = (databasePathForProfile(currentName) as NSString).deletingLastPathComponent
+            for filename in try! FileManager.default.contentsOfDirectory(atPath: directory) {
                 if filename.hasPrefix(currentName) {
                     do {
-                        try NSFileManager.defaultManager().moveItemAtPath((directory as NSString).stringByAppendingPathComponent(filename), toPath: (directory as NSString).stringByAppendingPathComponent(filename.stringByReplacingOccurrencesOfString(currentName, withString: newName)))
+                        try FileManager.default.moveItem(atPath: (directory as NSString).appendingPathComponent(filename), toPath: (directory as NSString).appendingPathComponent(filename.replacingOccurrences(of: currentName, with: newName)))
                     }
                     catch let error {
                         print(error)
                     }
                 }
             }
-            NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+            UserDefaults.standard.set(profiles, forKey: "profiles")
             
             if currentName == currentProfile {
                 currentProfile = newName
@@ -86,11 +86,11 @@ struct UserDataController {
         }
     }
     
-    static func removeProfile(profile: String) {
+    static func removeProfile(_ profile: String) {
         var profiles = allProfiles()
         if profiles.count > 0 {
-            profiles.removeAtIndex(profiles.indexOf(profile)!)
-            NSUserDefaults.standardUserDefaults().setObject(profiles, forKey: "profiles")
+            profiles.remove(at: profiles.index(of: profile)!)
+            UserDefaults.standard.set(profiles, forKey: "profiles")
             if profile == currentProfile {
                 currentProfile = profiles.count > 0 ? profiles[0] : "Default"
             }
@@ -100,27 +100,27 @@ struct UserDataController {
     // MARK: - Settings
     
     func useGlobalOrdering() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey("useGlobalOrdering")
+        return UserDefaults.standard.bool(forKey: "useGlobalOrdering")
     }
     
-    func setUseGlobalOrdering(useGlobal: Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(useGlobal, forKey: "useGlobalOrdering")
-        NSUserDefaults.standardUserDefaults().synchronize()
+    func setUseGlobalOrdering(_ useGlobal: Bool) {
+        UserDefaults.standard.set(useGlobal, forKey: "useGlobalOrdering")
+        UserDefaults.standard.synchronize()
     }
     
     // MARK: - Templates
     
     func allTemplates() -> [Template] {
         var templates: [Template] = []
-        connection.readWithBlock() { transaction in
-            transaction.enumerateKeysAndObjectsInCollection("templates") { key, object, _ in
+        connection.read() { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: "templates") { key, object, _ in
                 if let template = object as? Template {
                     templates.append(template)
                 }
             }
         }
         
-        return templates.sort { $0.position < $1.position }
+        return templates.sorted { $0.position < $1.position }
     }
     
     func regularTemplateLists() -> [List] {
@@ -135,10 +135,10 @@ struct UserDataController {
         }
     }
     
-    func containsTemplate(template: Template) -> Bool {
+    func containsTemplate(_ template: Template) -> Bool {
         var hasTemplate = false
-        connection.readWithBlock { transaction in
-            if (transaction.objectForKey(template.id, inCollection: "templates") as? Template) != nil {
+        connection.read { transaction in
+            if (transaction.object(forKey: template.id, inCollection: "templates") as? Template) != nil {
                 hasTemplate = true
             }
         }
@@ -146,32 +146,32 @@ struct UserDataController {
         return hasTemplate
     }
     
-    func addOrUpdateTemplate(template: Template) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    func addOrUpdateTemplate(_ template: Template) -> Void {
+        connection.readWrite() { transaction in
             transaction.setObject(template, forKey: template.id, inCollection: "templates")
         }
     }
     
-    func updateTemplates(templates: [Template]) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    func updateTemplates(_ templates: [Template]) -> Void {
+        connection.readWrite() { transaction in
             for template in templates {
                 transaction.setObject(template, forKey: template.id, inCollection: "templates")
             }
         }
     }
     
-    func removeTemplate(template: Template) -> Void {
-        connection.readWriteWithBlock() { transaction in
-            transaction.removeObjectForKey(template.id, inCollection: "templates")
+    func removeTemplate(_ template: Template) -> Void {
+        connection.readWrite() { transaction in
+            transaction.removeObject(forKey: template.id, inCollection: "templates")
         }
     }
     
     // MARK: - Days
     
-    func dayForDate(date: Date) -> Day {
+    func dayForDate(_ date: Date) -> Day {
         var days: [Day] = []
-        connection.readWithBlock() { transaction in
-            transaction.enumerateKeysAndObjectsInCollection("days") { key, object, _ in
+        connection.read() { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: "days") { key, object, _ in
                 if let day = object as? Day {
                     days.append(day)
                 }
@@ -191,18 +191,18 @@ struct UserDataController {
         return day
     }
     
-    private func addOrUpdateDay(day: Day) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    fileprivate func addOrUpdateDay(_ day: Day) -> Void {
+        connection.readWrite() { transaction in
             transaction.setObject(day, forKey: day.id, inCollection: "days")
         }
     }
     
     // MARK: - Lists
     
-    func listWithID(id: String) -> List {
+    func listWithID(_ id: String) -> List {
         var list: List? = nil
-        connection.readWithBlock() { transaction in
-            list = transaction.objectForKey(id, inCollection: "lists") as? List
+        connection.read() { transaction in
+            list = transaction.object(forKey: id, inCollection: "lists") as? List
         }
         if let list = list {
             return list
@@ -218,14 +218,14 @@ struct UserDataController {
         return list
     }
     
-    func updateDayListFromTemplates(list list: List, forDate date: Date) -> List {
+    func updateDayListFromTemplates(list: List, forDate date: Date) -> List {
         let templates = allTemplates()
         for template in templates {
-            if !template.anytime && template.templateDays.intersect(date.dayOfWeek) {
+            if !template.anytime && template.templateDays.intersection(date.dayOfWeek) {
                 if let listID = template.listID {
                     let templateList = listWithID(listID)
                     for templateItem in templateList.items {
-                        if let index = list.items.indexOf(templateItem) {
+                        if let index = list.items.index(of: templateItem) {
                             let item = list.items[index]
                             item.updateFromItem(templateItem)
                         } else {
@@ -238,22 +238,22 @@ struct UserDataController {
         }
         
         if useGlobalOrdering() {
-            list.items.sortInPlace { $0.position <= $1.position }
+            list.items.sort { $0.position <= $1.position }
         }
         
         addOrUpdateList(list)
         return list
     }
     
-    func addOrUpdateList(list: List) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    func addOrUpdateList(_ list: List) -> Void {
+        connection.readWrite() { transaction in
             transaction.setObject(list, forKey: list.id, inCollection: "lists")
         }
     }
     
-    func anytimeListsForDate(date: Date) -> [(name: String, list: List)] {
+    func anytimeListsForDate(_ date: Date) -> [(name: String, list: List)] {
         return allTemplates().flatMap { template -> (String, List)? in
-            if template.anytime && template.templateDays.intersect(date.dayOfWeek) {
+            if template.anytime && template.templateDays.intersection(date.dayOfWeek) {
                 if let id = template.listID {
                     let list = self.listWithID(id)
                     list.items = list.items.filter() { item in
@@ -270,13 +270,13 @@ struct UserDataController {
         return allTemplates().flatMap { template -> [(item: TodoItem, listID: String)] in
             guard template.anytime, let id = template.listID else { return [] }
             let list = self.listWithID(id)
-            let today = Date(date: NSDate())
+            let today = Date(date: Foundation.Date())
             return list.items.filter {
                 if let dueDate = $0.dueDate {
                     return !$0.completed && dueDate <= today
                 }
                 return false
-                }.sort { $0.dueDate! > $1.dueDate! }.map { ($0, id) }
+                }.sorted { $0.dueDate! > $1.dueDate! }.map { ($0, id) }
         }
     }
     
@@ -284,16 +284,16 @@ struct UserDataController {
     
     func storePoints() -> Int {
         var points = 0
-        connection.readWithBlock() { transaction in
-            if let pts = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
-                points = pts.integerValue
+        connection.read() { transaction in
+            if let pts = transaction.object(forKey: "points", inCollection: "store") as? NSNumber {
+                points = pts.intValue
             }
         }
         
         return points
     }
     
-    func updateWithCompletedItem(item: AnyObject, numberComplete: Int) -> Void {
+    func updateWithCompletedItem(_ item: AnyObject, numberComplete: Int) -> Void {
         let pointsToAdd: Int = {
             switch item {
             case let storeItem as StoreItem:
@@ -306,14 +306,14 @@ struct UserDataController {
         }()
         
         if pointsToAdd != 0 {
-            connection.readWriteWithBlock() { transaction in
+            connection.readWrite() { transaction in
                 var currentPoints = 0
-                if let storePoints = transaction.objectForKey("points", inCollection: "store") as? NSNumber {
-                    currentPoints += storePoints.integerValue
+                if let storePoints = transaction.object(forKey: "points", inCollection: "store") as? NSNumber {
+                    currentPoints += storePoints.intValue
                 }
-                transaction.setObject(NSNumber(integer: currentPoints + pointsToAdd), forKey: "points", inCollection: "store")
+                transaction.setObject(NSNumber(value: currentPoints + pointsToAdd as Int), forKey: "points", inCollection: "store")
                 
-                let historyItem = HistoryItem(name: item.name, points: pointsToAdd, dateCompleted: NSDate(), numberCompleted: numberComplete)
+                let historyItem = HistoryItem(name: item.name, points: pointsToAdd, dateCompleted: Foundation.Date(), numberCompleted: numberComplete)
                 transaction.setObject(historyItem, forKey: historyItem.id, inCollection: "history")
             }
         }
@@ -321,31 +321,31 @@ struct UserDataController {
     
     func storeItems() -> [StoreItem] {
         var items: [StoreItem] = []
-        connection.readWithBlock() { transaction in
-            transaction.enumerateKeysAndObjectsInCollection("store") { key, object, _ in
+        connection.read() { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: "store") { key, object, _ in
                 if let item = object as? StoreItem {
                     items.append(item)
                 }
             }
         }
         
-        return items.sort { $0.position < $1.position }
+        return items.sorted { $0.position < $1.position }
     }
     
-    func addOrUpdateStoreItem(item: StoreItem) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    func addOrUpdateStoreItem(_ item: StoreItem) -> Void {
+        connection.readWrite() { transaction in
             transaction.setObject(item, forKey: item.id, inCollection: "store")
         }
     }
     
-    func deleteStoreItem(item: StoreItem) -> Void {
-        connection.readWriteWithBlock() { transaction in
-            transaction.removeObjectForKey(item.id, inCollection: "store")
+    func deleteStoreItem(_ item: StoreItem) -> Void {
+        connection.readWrite() { transaction in
+            transaction.removeObject(forKey: item.id, inCollection: "store")
         }
     }
     
-    func updateStoreItems(items: [StoreItem]) -> Void {
-        connection.readWriteWithBlock() { transaction in
+    func updateStoreItems(_ items: [StoreItem]) -> Void {
+        connection.readWrite() { transaction in
             for item in items {
                 transaction.setObject(item, forKey: item.id, inCollection: "store")
             }
@@ -356,14 +356,14 @@ struct UserDataController {
     
     func historyItems() -> [HistoryItem] {
         var items: [HistoryItem] = []
-        connection.readWithBlock() { transaction in
-            transaction.enumerateKeysAndObjectsInCollection("history") { key, object, _ in
+        connection.read() { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: "history") { key, object, _ in
                 if let item = object as? HistoryItem {
                     items.append(item)
                 }
             }
         }
         
-        return items.sort { $0.dateCompleted.timeIntervalSince1970 > $1.dateCompleted.timeIntervalSince1970 }
+        return items.sorted { $0.dateCompleted.timeIntervalSince1970 > $1.dateCompleted.timeIntervalSince1970 }
     }
 }

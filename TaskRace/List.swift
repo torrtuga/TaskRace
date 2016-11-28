@@ -13,17 +13,17 @@ class List: NSObject, NSCoding {
     var items: [TodoItem]
     
     override init() {
-        id = NSUUID().UUIDString
+        id = UUID().uuidString
         items = []
     }
     
     required init?(coder aDecoder: NSCoder) {
-        id = aDecoder.decodeObjectForKey("id") as! String
-        items = aDecoder.decodeObjectForKey("items") as! [TodoItem]
+        id = aDecoder.decodeObject(forKey: "id") as! String
+        items = aDecoder.decodeObject(forKey: "items") as! [TodoItem]
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: "id")
-        aCoder.encodeObject(items, forKey: "items")
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: "id")
+        aCoder.encode(items, forKey: "items")
     }
 }
